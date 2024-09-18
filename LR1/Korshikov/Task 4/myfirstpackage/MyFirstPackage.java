@@ -18,7 +18,7 @@ public class MyFirstPackage {
 	public int getSecond(){
 		return second;
 	}
-	public int sum(int x, int y){
-		return x + y;
+	public int sum(){
+		return first + second;
 	}
 }
