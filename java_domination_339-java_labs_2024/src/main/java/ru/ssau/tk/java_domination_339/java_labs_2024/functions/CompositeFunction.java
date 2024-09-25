@@ -8,7 +8,7 @@ public class CompositeFunction implements MathFunction{
         firstFunction =first;
         secondFunction =second;
     }
-
+    @Override
     public double apply(double x){
         return (secondFunction.apply(firstFunction.apply(x)));
     }
