@@ -24,7 +24,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             xTo = temp;
         }
 
-        else if (xTo - xFrom < 1e-9) {
+        if (xTo - xFrom < 1e-9) {
             double yValue = source.apply(xFrom);
             for (int i = 0; i < count; ++i) {
                 xValues[i] = xFrom;
@@ -74,7 +74,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     @Override
     public int indexOfX(double x) {
         for (int i = 0; i < count; i++) {
-            if (xValues[i] == x) {
+            if (Math.abs(xValues[i] - x) < 1e-9) {
                 return i;
             }
         }
@@ -84,7 +84,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     @Override
     public int indexOfY(double y) {
         for (int i = 0; i < count; i++) {
-            if (yValues[i] == y) {
+            if (Math.abs(yValues[i] - y) < 1e-9) {
                 return i;
             }
         }
@@ -122,6 +122,9 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     @Override
     protected double interpolate(double x, int floorIndex) {
+        if (count == 1) {
+            return yValues[0];
+        }
         return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1], yValues[floorIndex], yValues[floorIndex + 1]);
     }
 
