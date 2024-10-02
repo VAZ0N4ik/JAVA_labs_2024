@@ -2,7 +2,7 @@ package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
 import static java.lang.Math.abs;
 
-public class LinkedListTabulatedFunction extends  AbstractTabulatedFunction{
+public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable{
     private Node head;
 
     private void addNode(double x, double y){
@@ -178,6 +178,44 @@ public class LinkedListTabulatedFunction extends  AbstractTabulatedFunction{
             } else {
                 Node floor = floorNodeOfX(x);
                 return interpolate(x, floor.x,floor.next.x,floor.y,floor.next.y);
+            }
+        }
+    }
+
+    @Override
+    public void insert(double x, double y) {
+        if (head == null) {
+            addNode(x, y);
+        }
+        else {
+            Node cur = head;
+            Node prev = head.prev;
+
+            while (cur.x < x && cur.next != head) {
+                cur = cur.next;
+            }
+
+            if (cur.x < x) {
+                cur = head;
+            }
+
+            if (cur.x == x) {
+                cur.y = y;
+            }
+
+            else {
+                Node newNode = new Node();
+                newNode.x = x;
+                newNode.y = y;
+
+                newNode.next = cur;
+                newNode.prev = cur.prev;
+                cur.prev = newNode;
+                newNode.prev.next = newNode;
+
+                if (cur == head && x < head.x)
+                    head = newNode;
+                ++count;
             }
         }
     }

@@ -123,4 +123,46 @@ class LinkedListTabulatedFunctionTest {
         assertEquals(1, dList2.apply(1), eps);
     }
 
+    final private LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(new double[]{1.0, 2.0}, new double[]{1.0, 2.0});
+
+    @Test
+    public void testInsertIntoEmptyList() {
+        LinkedListTabulatedFunction emptyFunction = new LinkedListTabulatedFunction(new double[]{}, new double[]{});
+        emptyFunction.insert(1.0, 2.0);
+        assertEquals(1, emptyFunction.getCount());
+        assertEquals(1.0, emptyFunction.getX(0));
+        assertEquals(2.0, emptyFunction.getY(0));
+    }
+
+    @Test
+    public void testInsertUniqueXGreater() {
+        func.insert(3.0, 3.0);
+        assertEquals(3, func.getCount());
+        assertEquals(3.0, func.getX(2));
+        assertEquals(3.0, func.getY(2));
+    }
+
+    @Test
+    public void testInsertUniqueXLess() {
+        func.insert(0.5, 0.5);
+        assertEquals(3, func.getCount());
+        assertEquals(0.5, func.getX(0));
+        assertEquals(1.0, func.getX(1));
+    }
+
+    @Test
+    public void testInsertUniqueXBetween() {
+        func.insert(1.5, 1.5);
+        assertEquals(3, func.getCount());
+        assertEquals(1.5, func.getX(1));
+    }
+
+    @Test
+    public void testInsertDuplicateX() {
+        func.insert(1.0, 10.0);
+        assertEquals(2, func.getCount());
+        assertEquals(10.0, func.getY(0));
+    }
+
+
 }
