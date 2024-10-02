@@ -102,4 +102,37 @@ public class ArrayTabulatedFunctionTest {
         Assertions.assertEquals(0, func.floorIndexOfX(-3), 1e-9);
         Assertions.assertEquals(10, func.floorIndexOfX(1000), 1e-9);
     }
+
+    final ArrayTabulatedFunction func1 = new ArrayTabulatedFunction(new double[]{1.0, 2.0, 3.0}, new double[]{1.0, 2.0, 3.0});
+
+    @Test
+    public void testRemoveByIndex() {
+        func1.remove(1); // Remove element at index 1 (x = 2.0)
+        Assertions.assertEquals(2, func1.getCount());
+        Assertions.assertEquals(1.0, func1.getX(0));
+        Assertions.assertEquals(3.0, func1.getX(1));
+    }
+
+    @Test
+    public void testRemoveFirstElementByIndex() {
+        func1.remove(0); // Remove the first element (x = 1.0)
+        Assertions.assertEquals(2, func1.getCount());
+        Assertions.assertEquals(2.0, func1.getX(0));
+    }
+
+    @Test
+    public void testRemoveLastElementByIndex() {
+        func1.remove(2); // Remove the last element (x = 3.0)
+        Assertions.assertEquals(2, func1.getCount());
+        Assertions.assertEquals(1.0, func1.getX(0));
+        Assertions.assertEquals(2.0, func1.getX(1));
+    }
+
+    @Test
+    public void testRemoveAllElements() {
+        func1.remove(0); // Remove x = 1.0
+        func1.remove(0); // Remove x = 2.0
+        func1.remove(0); // Remove x = 3.0
+        Assertions.assertEquals(0, func1.getCount()); // Count should be zero
+    }
 }
