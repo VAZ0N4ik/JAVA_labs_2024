@@ -13,19 +13,11 @@ class ChordMethodFunctionTest {
         testX2_1 = 10;
         testX1_2 = -10;
         testX2_2 = 0;
-        testF1 = new MathFunction(){
-            public double apply(double x) {
-                return x * x * x - 18 * x - 83;
-            }
-        };
+        testF1 = x -> x * x * x - 18 * x - 83;
 
-        testF2 = new MathFunction(){
-            public double apply(double x) { return - (x * x * x) - ( x * x ) + 10 * x  - 83; }
-        };
+        testF2 = x -> - (x * x * x) - ( x * x ) + 10 * x  - 83;
 
-        testF3 = new MathFunction(){
-            public double apply(double x) { return x; }
-        };
+        testF3 = x -> x;
 
         cF1 = new ChordMethodFunction(testX1_1, testX2_1, testF1);
         cF2 = new ChordMethodFunction(testX1_2, testX2_2, testF2);
