@@ -13,106 +13,114 @@ class LinkedListTabulatedFunctionTest {
 
     @Test
     void testGetCount() {
-        assertEquals(clList1.getCount(),5,eps);
-        assertEquals(clList2.getCount(),3,eps);
-        assertEquals(dList1.getCount(),30,eps);
-        assertEquals(dList2.getCount(),5,eps);
+        assertEquals(5, clList1.getCount(), eps);
+        assertEquals(3, clList2.getCount(), eps);
+        assertEquals(30, dList1.getCount(), eps);
+        assertEquals(5, dList2.getCount(), eps);
     }
 
     @Test
     void testRightBound() {
-        assertEquals(clList1.rightBound(),4,eps);
-        assertEquals(clList2.rightBound(),3,eps);
-        assertEquals(dList1.rightBound(),20,eps);
-        assertEquals(dList2.rightBound(),1,eps);
+        assertEquals(4, clList1.rightBound(), eps);
+        assertEquals(3, clList2.rightBound(), eps);
+        assertEquals(20, dList1.rightBound(), eps);
+        assertEquals(1, dList2.rightBound(), eps);
     }
 
     @Test
     void testLeftBound() {
-        assertEquals(clList1.leftBound(),-5,eps);
-        assertEquals(clList2.leftBound(),1,eps);
-        assertEquals(dList1.leftBound(),-10,eps);
-        assertEquals(dList2.leftBound(),1,eps);
+        assertEquals(-5, clList1.leftBound(), eps);
+        assertEquals(1, clList2.leftBound(), eps);
+        assertEquals(-10, dList1.leftBound(), eps);
+        assertEquals(1, dList2.leftBound(), eps);
     }
 
     @Test
     void testGetX() {
-        assertEquals(clList1.getX(1),-3.6,eps);
-        assertEquals(clList2.getX(2),3,eps);
-        assertEquals(dList1.getX(0),-10,eps);
-        assertEquals(dList2.getX(3),1,eps);
+        assertEquals(-3.6, clList1.getX(1), eps);
+        assertEquals(3, clList2.getX(2), eps);
+        assertEquals(-10, dList1.getX(0), eps);
+        assertEquals(1, dList2.getX(3), eps);
     }
 
     @Test
     void testGetY() {
-        assertEquals(clList1.getY(1),3.6,eps);
-        assertEquals(clList2.getY(2),15,eps);
-        assertEquals(dList1.getY(0),100,eps);
-        assertEquals(dList2.getY(3),1,eps);
+        assertEquals(3.6, clList1.getY(1), eps);
+        assertEquals(15, clList2.getY(2), eps);
+        assertEquals(100, dList1.getY(0), eps);
+        assertEquals(1, dList2.getY(3), eps);
     }
 
     @Test
     void testSetY() {
-        clList1.setY(0,-100);
-        clList2.setY(2,100);
-        dList1.setY(1,-9.5);
-        assertEquals(clList1.getY(0),-100,eps);
-        assertEquals(clList2.getY(2),100,eps);
-        assertEquals(dList1.getY(1),-9.5,eps);
+        clList1.setY(0, -100);
+        clList2.setY(2, 100);
+        dList1.setY(1, -9.5);
+        assertEquals(-100, clList1.getY(0), eps);
+        assertEquals(100, clList2.getY(2), eps);
+        assertEquals(-9.5, dList1.getY(1), eps);
     }
 
     @Test
     void testIndexOfX() {
-        assertEquals(clList1.indexOfX(100),-1,eps);
-        assertEquals(clList1.indexOfX(0.01),2,eps);
-        assertEquals(dList1.indexOfX(20),29,eps);
+        assertEquals(-1, clList1.indexOfX(100), eps);
+        assertEquals(2, clList1.indexOfX(0.01), eps);
+        assertEquals(29, dList1.indexOfX(20), eps);
     }
 
     @Test
     void testIndexOfY() {
-        assertEquals(clList1.indexOfY(1000),-1,eps);
-        assertEquals(clList1.indexOfY(5),2,eps);
-        assertEquals(dList1.indexOfY(400),29,eps);
+        assertEquals(-1, clList1.indexOfY(1000), eps);
+        assertEquals(2, clList1.indexOfY(5), eps);
+        assertEquals(29, dList1.indexOfY(400), eps);
     }
 
     @Test
-    void floorIndexOfX() {
-        assertEquals(clList1.floorIndexOfX(1),3,eps);
-        assertEquals(clList2.floorIndexOfX(2.5),1,eps);
-        assertEquals(dList1.floorIndexOfX(25),30,eps);
-        assertEquals(dList2.floorIndexOfX(0),0,eps);
+    void testFloorIndexOfX() {
+        assertEquals(3, clList1.floorIndexOfX(1), eps);
+        assertEquals(1, clList2.floorIndexOfX(2.5), eps);
+        assertEquals(30, dList1.floorIndexOfX(25), eps);
+        assertEquals(0, dList2.floorIndexOfX(0), eps);
     }
 
     @Test
-    void extrapolateLeft() {
-        assertEquals(clList1.extrapolateLeft(-10),-12.85,eps);
-        assertEquals(clList2.extrapolateLeft(0),8,eps);
-        assertEquals(dList1.extrapolateLeft(-11),118.96,eps);
-        //assertEquals(dList2.extrapolateLeft(0),NaN,eps);
+    void testExtrapolateLeft() {
+        assertEquals(-12.85, clList1.extrapolateLeft(-10), eps);
+        assertEquals(8, clList2.extrapolateLeft(0), eps);
+        assertEquals(118.96, dList1.extrapolateLeft(-11), eps);
+        //assertEquals(NaN, dList2.extrapolateLeft(0), eps);
     }
 
     @Test
-    void interpolate() {
-        assertEquals(clList1.interpolate(3,3),33.39,eps);
-        assertEquals(clList2.interpolate(2.5,1),12.5,eps);
-        assertEquals(dList1.interpolate(19,28),361.03,eps);
+    void testInterpolate() {
+        assertEquals(33.39, clList1.interpolate(3, 3), eps);
+        assertEquals(12.5, clList2.interpolate(2.5, 1), eps);
+        assertEquals(361.03, dList1.interpolate(19, 28), eps);
     }
 
     @Test
-    void extrapolateRight() {
-        assertEquals(clList1.extrapolateRight(10),-199.7,eps);
-        assertEquals(clList2.extrapolateRight(10),50,eps);
-        assertEquals(dList1.extrapolateRight(22),477.93,eps);
+    void testExtrapolateRight() {
+        assertEquals(-199.7, clList1.extrapolateRight(10), eps);
+        assertEquals(50, clList2.extrapolateRight(10), eps);
+        assertEquals(477.93, dList1.extrapolateRight(22), eps);
     }
 
     @Test
-    void floorNodeOfX() {
+    void testApply() {
+        assertEquals(-199.7, clList1.apply(10), eps);
+        assertEquals(9.1, clList2.apply(1.1), eps);
+        assertEquals(0.23, dList1.apply(0.01), eps);
+        assertEquals(-12.85, clList1.apply(-10), eps);
+        assertEquals(118.96, dList1.apply(-11), eps);
+        assertEquals(-199.7, clList1.apply(10), eps);
+        assertEquals(0, clList1.apply(-5), eps);
+        assertEquals(0.1, clList1.apply(4), eps);
+        assertEquals(9, clList2.apply(1), eps);
+        assertEquals(15, clList2.apply(3), eps);
+        assertEquals(3.6, clList1.apply(-3.6), eps);
+        assertEquals(100, dList1.apply(-10), eps);
+        assertEquals(400, dList1.apply(20), eps);
+        assertEquals(1, dList2.apply(1), eps);
     }
 
-    @Test
-    void apply() {
-        assertEquals(clList1.apply(10),-199.7,eps);
-        assertEquals(clList2.apply(1.1),9.1,eps);
-        assertEquals(dList1.apply(0.01),0.23,eps);
-    }
 }
