@@ -2,7 +2,7 @@ package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
 import java.util.Arrays;
 
-public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
+public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable{
     protected double[] xValues;
     protected double[] yValues;
 
@@ -123,5 +123,41 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     @Override
     protected double interpolate(double x, int floorIndex) {
         return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1], yValues[floorIndex], yValues[floorIndex + 1]);
+    }
+
+    @Override
+    public void insert(double x, double y){
+        if (indexOfX(x) != -1){
+            setY(indexOfX(x),y);
+        }
+        else{
+            double[] xBuffer = new double[count+1];
+            double[] yBuffer = new double[count+1];
+
+            if (x < leftBound()){
+                xBuffer[0] = x;
+                yBuffer[0] = y;
+                System.arraycopy(xValues,0,xBuffer,1, count);
+                System.arraycopy(yValues,0,yBuffer,1, count);
+            }
+            else if (x > rightBound()){
+                xBuffer[xValues.length - 1] = x;
+                yBuffer[yValues.length - 1] = y;
+                System.arraycopy(xValues,0,xBuffer,0, count);
+                System.arraycopy(yValues,0,yBuffer,0, count);
+            }
+            else {
+                int index = floorIndexOfX(x);
+                System.arraycopy(xValues,0,xBuffer, 0, index +1);
+                System.arraycopy(yValues,0,xBuffer, 0, index +1);
+                System.arraycopy(xValues,index+1,xBuffer, index+1, count - index);
+                System.arraycopy(yValues,index+1,xBuffer, index+1, count - index);
+                xBuffer[index+1] = x;
+                yBuffer[index+1] = y;
+            }
+            xValues = xBuffer;
+            yValues = yBuffer;
+            count++;
+        }
     }
 }
