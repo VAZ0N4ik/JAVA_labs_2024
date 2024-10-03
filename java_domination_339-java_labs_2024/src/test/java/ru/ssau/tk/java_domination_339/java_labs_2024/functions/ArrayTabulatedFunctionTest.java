@@ -135,4 +135,28 @@ public class ArrayTabulatedFunctionTest {
         func1.remove(0); // Remove x = 3.0
         Assertions.assertEquals(0, func1.getCount()); // Count should be zero
     }
+    ArrayTabulatedFunction arrayForInsert =new ArrayTabulatedFunction(new double[]{}, new double[]{});
+    @Test
+    public void testInsert(){
+        arrayForInsert.insert(1,1);
+        Assertions.assertEquals(1, arrayForInsert.getCount(),1e-9);
+        Assertions.assertEquals(1, arrayForInsert.getX(0),1e-9);
+        Assertions.assertEquals(1, arrayForInsert.getY(0),1e-9);
+        arrayForInsert.insert(0,0);
+        Assertions.assertEquals(2, arrayForInsert.getCount(),1e-9);
+        Assertions.assertEquals(0, arrayForInsert.getX(0),1e-9);
+        Assertions.assertEquals(0, arrayForInsert.getY(0),1e-9);
+        arrayForInsert.insert(2,2);
+        Assertions.assertEquals(3, arrayForInsert.getCount(),1e-9);
+        Assertions.assertEquals(2, arrayForInsert.getX(2),1e-9);
+        Assertions.assertEquals(2, arrayForInsert.getY(2),1e-9);
+        arrayForInsert.insert(1.5,1.5);
+        Assertions.assertEquals(4, arrayForInsert.getCount(),1e-9);
+        Assertions.assertEquals(1.5, arrayForInsert.getX(2),1e-9);
+        Assertions.assertEquals(1.5, arrayForInsert.getY(2),1e-9);
+        arrayForInsert.insert(0,5);
+        Assertions.assertEquals(4, arrayForInsert.getCount(),1e-9);
+        Assertions.assertEquals(0, arrayForInsert.getX(0),1e-9);
+        Assertions.assertEquals(5, arrayForInsert.getY(0),1e-9);
+    }
 }

@@ -20,10 +20,10 @@ class NewtonMethodFunctionTest {
                 return x * x * x + 2*x*x -x  - 1;
             }
         };
-        nF1 = new NewtonMethodFunction(testFunc1);
-        nF2 = new NewtonMethodFunction(testFunc2);
+        nF1 = new NewtonMethodFunction(testFunc1,1);
+        nF2 = new NewtonMethodFunction(testFunc2,0);
 
         Assertions.assertEquals(1, nF1.apply(10), 0.01);
-        Assertions.assertEquals(0.8, nF2.apply(20), 0.01);
+        Assertions.assertEquals(-0.55, nF2.apply(20), 0.01);
     }
 }

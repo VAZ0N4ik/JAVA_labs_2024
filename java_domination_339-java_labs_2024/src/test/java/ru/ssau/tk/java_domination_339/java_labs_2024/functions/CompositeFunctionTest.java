@@ -83,9 +83,31 @@ class CompositeFunctionTest {
 
         MathFunction andThenFunction = composite1.andThen(composite2);
 
-        // Test the application
         // For x = 1, composite1(1) = f8(f7(1)) = f8(3) = 9
         // composite2(9) = f7(f8(9)) = f7(81) = 163
         assertEquals(163, andThenFunction.apply(1), 1e-9);
+    }
+    @Test
+    public void testComposite(){
+        ArrayTabulatedFunction f9 = new ArrayTabulatedFunction(new double[]{1,2,3,4}, new double[]{1,2,3,4});
+        UnitFunction f10 = new UnitFunction();
+        CompositeFunction composite1 = new CompositeFunction(f9,f10);
+        ConstantFunction constant = new ConstantFunction(2);
+        CompositeFunction composite3 = new CompositeFunction(constant, new SqrFunction());
+        MathFunction andThen = composite3.andThen(composite1);
+
+        assertEquals(1, composite1.apply(6),1e-9);
+        assertEquals(1, composite1.apply(-100),1e-9);
+        assertEquals(1, andThen.apply(100),1e-9);
+        assertEquals(4,composite3.apply(100),1e-9);
+
+        MathFunction mf = new MathFunction(){
+            public double apply(double x) {
+                return x * x * x + 2*x*x -x  - 1;}
+            };
+        NewtonMethodFunction nm = new NewtonMethodFunction(mf, 0);
+
+        assertEquals(-0.55,new CompositeFunction(nm,f9).apply(15),1e-2);
+
     }
 }

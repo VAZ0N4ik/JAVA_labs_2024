@@ -2,21 +2,25 @@ package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class LinkedListTabulatedFunctionTest {
     double eps = 0.01;
     LinkedListTabulatedFunction clList1 = new LinkedListTabulatedFunction(new double[]{-5,-3.6,0.01,1,4}, new double[]{0,3.6,5,100,0.1});
     LinkedListTabulatedFunction clList2 = new LinkedListTabulatedFunction(new double[]{1,2,3}, new double[]{9,10,15});
+    LinkedListTabulatedFunction clList3 = new LinkedListTabulatedFunction(new double[]{1}, new double[]{1});
     LinkedListTabulatedFunction dList1 = new LinkedListTabulatedFunction(new SqrFunction(), -10, 20, 30);
     LinkedListTabulatedFunction dList2 = new LinkedListTabulatedFunction(new SqrFunction(), 1, 1, 5);
-
+    LinkedListTabulatedFunction dList3 = new LinkedListTabulatedFunction(new ConstantFunction(3), 5, -5, 5);
     @Test
     void testGetCount() {
         assertEquals(5, clList1.getCount(), eps);
         assertEquals(3, clList2.getCount(), eps);
         assertEquals(30, dList1.getCount(), eps);
         assertEquals(5, dList2.getCount(), eps);
+        assertEquals(5, dList3.getCount(), eps);
     }
 
     @Test
@@ -108,6 +112,9 @@ class LinkedListTabulatedFunctionTest {
     @Test
     void testApply() {
         assertEquals(-199.7, clList1.apply(10), eps);
+        assertEquals(1, clList3.apply(-1), eps);
+        assertEquals(1, clList3.apply(1), eps);
+        assertEquals(1, clList3.apply(2), eps);
         assertEquals(9.1, clList2.apply(1.1), eps);
         assertEquals(0.23, dList1.apply(0.01), eps);
         assertEquals(-12.85, clList1.apply(-10), eps);
@@ -162,6 +169,19 @@ class LinkedListTabulatedFunctionTest {
         func.insert(1.0, 10.0);
         assertEquals(2, func.getCount());
         assertEquals(10.0, func.getY(0));
+    }
+
+    final private LinkedListTabulatedFunction list_for_remove = new LinkedListTabulatedFunction(new double[]{1.0, 2.0, 3.5}, new double[]{3.5,0.1, -1});
+    @Test
+    public void testRemove(){
+        list_for_remove.remove(1);
+        assertEquals(2,list_for_remove.getCount(),eps);
+        assertEquals(-1,list_for_remove.getY(1),eps);
+        list_for_remove.remove(1);
+        assertEquals(1,list_for_remove.getCount(),eps);
+        assertEquals(3.5,list_for_remove.getY(0),eps);
+        list_for_remove.remove(1);
+        assertEquals(0,list_for_remove.getCount(),eps);
     }
 
 
