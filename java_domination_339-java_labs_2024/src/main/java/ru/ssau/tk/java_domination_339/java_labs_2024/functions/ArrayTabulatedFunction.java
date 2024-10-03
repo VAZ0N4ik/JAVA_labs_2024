@@ -134,27 +134,31 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             setY(indexOfX(x),y);
         }
         else{
+
             double[] xBuffer = new double[count+1];
             double[] yBuffer = new double[count+1];
-
-            if (x < leftBound()){
+            if (count == 0){
+                xBuffer[0] = x;
+                yBuffer[0] = y;
+            }
+            else if (x < leftBound()){
                 xBuffer[0] = x;
                 yBuffer[0] = y;
                 System.arraycopy(xValues,0,xBuffer,1, count);
                 System.arraycopy(yValues,0,yBuffer,1, count);
             }
             else if (x > rightBound()){
-                xBuffer[xValues.length - 1] = x;
-                yBuffer[yValues.length - 1] = y;
+                xBuffer[xBuffer.length - 1] = x;
+                yBuffer[yBuffer.length - 1] = y;
                 System.arraycopy(xValues,0,xBuffer,0, count);
                 System.arraycopy(yValues,0,yBuffer,0, count);
             }
             else {
                 int index = floorIndexOfX(x);
                 System.arraycopy(xValues,0,xBuffer, 0, index +1);
-                System.arraycopy(yValues,0,xBuffer, 0, index +1);
-                System.arraycopy(xValues,index+1,xBuffer, index+1, count - index);
-                System.arraycopy(yValues,index+1,xBuffer, index+1, count - index);
+                System.arraycopy(yValues,0,yBuffer, 0, index +1);
+                System.arraycopy(xValues,index+1,xBuffer, index+2, count - index - 1);
+                System.arraycopy(yValues,index+1,yBuffer, index+2, count - index - 1);
                 xBuffer[index+1] = x;
                 yBuffer[index+1] = y;
             }
