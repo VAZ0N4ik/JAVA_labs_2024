@@ -13,15 +13,15 @@ public class ChordMethodFunction implements MathFunction {
 
     @Override
     public double apply(double eps) {
-        double x_next = 0;
         double temp;
-        do{
-            temp = x_next;
-            x_next = x1 - function.apply(x1) * (x0 - x1) / (function.apply(x0 - eps) - function.apply(x1 + eps));
-            x0 = x1;
-            x1 = temp;
-        } while (Math.abs(x_next - x1) > eps);
-        return x_next;
+
+        while (Math.abs(x0 - x1) > eps) {
+            temp = x1;
+            x1 = x0;
+            x0 -= function.apply(x1) * (x1 - temp) / (function.apply(x1) - function.apply(temp));
+        }
+
+        return x0;
     }
 
 }
