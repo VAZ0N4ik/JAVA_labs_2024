@@ -2,7 +2,7 @@ package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
 import java.util.Arrays;
 
-public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable{
+public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable{
     protected double[] xValues;
     protected double[] yValues;
 
@@ -24,7 +24,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             xTo = temp;
         }
 
-        else if (xTo - xFrom < 1e-9) {
+        if (xTo - xFrom < 1e-9) {
             double yValue = source.apply(xFrom);
             for (int i = 0; i < count; ++i) {
                 xValues[i] = xFrom;
@@ -74,7 +74,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     @Override
     public int indexOfX(double x) {
         for (int i = 0; i < count; i++) {
-            if (xValues[i] == x) {
+            if (Math.abs(xValues[i] - x) < 1e-9) {
                 return i;
             }
         }
@@ -84,7 +84,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     @Override
     public int indexOfY(double y) {
         for (int i = 0; i < count; i++) {
-            if (yValues[i] == y) {
+            if (Math.abs(yValues[i] - y) < 1e-9) {
                 return i;
             }
         }
@@ -122,6 +122,9 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     @Override
     protected double interpolate(double x, int floorIndex) {
+        if (count == 1) {
+            return yValues[0];
+        }
         return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1], yValues[floorIndex], yValues[floorIndex + 1]);
     }
 
@@ -158,6 +161,23 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             xValues = xBuffer;
             yValues = yBuffer;
             count++;
+        }
+    }
+
+    @Override
+    public void remove(int index) {
+        if (index >= 0 && index < count){
+            double[] newXValues = new double[count - 1];
+            double[] newYValues = new double[count - 1];
+
+            System.arraycopy(xValues, 0, newXValues, 0, index);
+            System.arraycopy(yValues, 0, newYValues, 0, index);
+            System.arraycopy(xValues, index + 1, newXValues, index, count - index - 1);
+            System.arraycopy(yValues, index + 1, newYValues, index, count - index - 1);
+
+            xValues = newXValues;
+            yValues = newYValues;
+            count--;
         }
     }
 }
