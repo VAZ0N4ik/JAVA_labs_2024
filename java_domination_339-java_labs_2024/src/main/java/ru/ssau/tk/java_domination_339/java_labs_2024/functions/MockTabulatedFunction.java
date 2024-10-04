@@ -1,5 +1,7 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
+import java.util.Iterator;
+
 import static java.lang.Math.abs;
 
 public class MockTabulatedFunction extends AbstractTabulatedFunction {
@@ -120,6 +122,8 @@ public class MockTabulatedFunction extends AbstractTabulatedFunction {
     }
 
 
-
-
+    @Override
+    public Iterator<Point> iterator() {
+        return null;
+    }
 }
