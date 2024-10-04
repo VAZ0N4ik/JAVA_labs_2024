@@ -1,6 +1,9 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
 import org.junit.jupiter.api.Test;
+import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.ArrayIsNotSortedException;
+import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.DifferentLengthOfArraysException;
+import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
 
 import java.util.LinkedList;
 
@@ -184,5 +187,37 @@ class LinkedListTabulatedFunctionTest {
         assertEquals(0,list_for_remove.getCount(),eps);
     }
 
+    @Test
+    void testCheckLength() {
+        double[] xValues = {1.0, 2.0, 3.0};
+        double[] yValues = {1.0, 2.0}; // Different lengths
+
+        assertThrows(DifferentLengthOfArraysException.class, () -> {
+            new LinkedListTabulatedFunction(xValues, yValues);
+        });
+    }
+
+    @Test
+    void testCheckSorted() {
+        double[] unsortedXValues = {1.0, 2.0, 3.0, 2.0};
+        double[] sortedXValues = {1.0, 2.0, 3.0};
+
+        // Should not throw exception for sorted array
+        assertDoesNotThrow(() -> {
+            new LinkedListTabulatedFunction(sortedXValues, new double[]{1, 2, 3});
+        });
+
+        // Should throw exception for unsorted array
+        assertThrows(ArrayIsNotSortedException.class, () -> {
+            new LinkedListTabulatedFunction(unsortedXValues, new double[]{1, 2, 3, 4});
+        });
+    }
+
+    @Test
+    void testInterpolationException() {
+        LinkedListTabulatedFunction function = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 4, 9});
+        assertThrows(InterpolationException.class, () -> function.interpolate(0, 0));
+        assertThrows(InterpolationException.class, () -> function.interpolate(4, 1));
+    }
 
 }
