@@ -3,6 +3,7 @@ package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable{
     protected double[] xValues;
@@ -196,4 +197,10 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             count--;
         }
     }
+
+    @Override
+    public Iterator<Point> iterator() {
+        throw new UnsupportedOperationException();
+    }
+
 }
