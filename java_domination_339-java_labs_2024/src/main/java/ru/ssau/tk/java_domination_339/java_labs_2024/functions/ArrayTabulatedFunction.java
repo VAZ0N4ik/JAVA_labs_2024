@@ -8,8 +8,9 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     protected double[] xValues;
     protected double[] yValues;
 
-    public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
-
+    public ArrayTabulatedFunction(double[] xValues, double[] yValues) throws IllegalArgumentException{
+        if (xValues.length < 2 || yValues.length < 2)
+            throw new IllegalArgumentException("Length must be >=2");
         checkLengthIsTheSame(xValues, yValues);
         checkSorted(xValues);
 
@@ -18,8 +19,9 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         this.count = xValues.length;
     }
 
-    public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-
+    public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) throws IllegalArgumentException{
+        if (count < 2)
+            throw new IllegalArgumentException("Length must be >=2");
         xValues = new double[count];
         yValues = new double[count];
         this.count = count;
@@ -53,17 +55,23 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    public double getX(int index) {
+    public double getX(int index) throws IllegalArgumentException {
+        if (index < 0)
+            throw new IllegalArgumentException("Index < 0");
         return xValues[index];
     }
 
     @Override
-    public double getY(int index) {
+    public double getY(int index) throws IllegalArgumentException {
+        if (index < 0)
+            throw new IllegalArgumentException("Index < 0");
         return yValues[index];
     }
 
     @Override
-    public void setY(int index, double value) {
+    public void setY(int index, double value) throws  IllegalArgumentException {
+        if (index < 0)
+            throw new IllegalArgumentException("Index < 0");
         yValues[index] = value;
     }
 
@@ -78,7 +86,8 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    public int indexOfX(double x) {
+    public int indexOfX(double x)  {
+
         for (int i = 0; i < count; i++) {
             if (Math.abs(xValues[i] - x) < 1e-9) {
                 return i;
@@ -98,7 +107,9 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    protected int floorIndexOfX(double x) {
+    protected int floorIndexOfX(double x) throws IllegalArgumentException{
+        if (x < leftBound())
+            throw new IllegalArgumentException("Argument less than left bound");
         if (x < xValues[0]) {
             return 0;
         }
@@ -112,17 +123,12 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     @Override
     protected double extrapolateLeft(double x) {
-        if (count == 1) {
-            return yValues[0];
-        }
         return interpolate(x, xValues[0], xValues[1], yValues[0], yValues[1]);
     }
 
     @Override
     protected double extrapolateRight(double x) {
-        if (count == 1) {
-            return yValues[0];
-        }
+
         return interpolate(x, xValues[count - 2], xValues[count - 1], yValues[count - 2], yValues[count - 1]);
     }
 
@@ -131,10 +137,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
         if (x < xValues[floorIndex] || x > xValues[floorIndex + 1]) {
             throw new InterpolationException();
-        }
-
-        if (count == 1) {
-            return yValues[0];
         }
 
         return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1], yValues[floorIndex], yValues[floorIndex + 1]);
@@ -181,8 +183,10 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    public void remove(int index) {
-        if (index >= 0 && index < count){
+    public void remove(int index) throws IllegalArgumentException{
+        if (index < 0)
+            throw new IllegalArgumentException("Index < 0");
+        if (index < count){
             double[] newXValues = new double[count - 1];
             double[] newYValues = new double[count - 1];
 
