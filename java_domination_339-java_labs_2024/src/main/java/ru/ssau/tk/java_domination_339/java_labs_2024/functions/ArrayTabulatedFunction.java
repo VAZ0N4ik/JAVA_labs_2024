@@ -1,12 +1,20 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
+import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
+
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable{
     protected double[] xValues;
     protected double[] yValues;
 
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
+
+        checkLengthIsTheSame(xValues, yValues);
+        checkSorted(xValues);
+
         this.xValues = Arrays.copyOf(xValues, xValues.length);
         this.yValues = Arrays.copyOf(yValues, yValues.length);
         this.count = xValues.length;
@@ -122,9 +130,15 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     @Override
     protected double interpolate(double x, int floorIndex) {
+
+        if (x < xValues[floorIndex] || x > xValues[floorIndex + 1]) {
+            throw new InterpolationException();
+        }
+
         if (count == 1) {
             return yValues[0];
         }
+
         return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1], yValues[floorIndex], yValues[floorIndex + 1]);
     }
 
@@ -184,4 +198,29 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             count--;
         }
     }
+
+    @Override
+    public Iterator<Point> iterator() {
+        return new Iterator<>() {
+            private int i = 0;
+
+            @Override
+            public boolean hasNext() {
+                return i < count;
+            }
+
+            @Override
+            public Point next() {
+                if (!hasNext())
+                    throw new NoSuchElementException();
+
+                Point point = new Point(xValues[i], yValues[i]);
+
+                ++i;
+
+                return point;
+            }
+        };
+    }
+
 }

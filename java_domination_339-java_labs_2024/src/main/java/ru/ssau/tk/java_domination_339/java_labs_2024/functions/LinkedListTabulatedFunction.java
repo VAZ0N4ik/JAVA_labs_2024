@@ -1,5 +1,9 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
+import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
+
+import java.util.Iterator;
+
 import static java.lang.Math.abs;
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
@@ -25,6 +29,10 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     LinkedListTabulatedFunction (double[] xValues, double[] yValues){
+
+        checkLengthIsTheSame(xValues, yValues);
+        checkSorted(xValues);
+
         for (int i = 0; i < xValues.length; i++) {
             addNode(xValues[i], yValues[i]);
         }
@@ -137,8 +145,13 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     @Override
     protected double interpolate(double x, int floorIndex) {
+
+        if (x < getNode(floorIndex).x || x > getNode(floorIndex + 1).x) {
+            throw new InterpolationException();
+        }
+
         if (count == 1){
-            return 1;
+            return head.y;
         }
         Node temp = getNode(floorIndex);
         return interpolate(x, temp.x, temp.next.x,temp.y,temp.next.y);
@@ -234,4 +247,10 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
         count--;
     }
+
+    @Override
+    public Iterator<Point> iterator() {
+        throw new UnsupportedOperationException();
+    }
+
 }
