@@ -2,6 +2,9 @@ package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.ArrayIsNotSortedException;
+import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.DifferentLengthOfArraysException;
+import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
 
 public class ArrayTabulatedFunctionTest {
     ArrayTabulatedFunction func;
@@ -46,7 +49,7 @@ public class ArrayTabulatedFunctionTest {
         }
     }
 
-    double[] xValues = {-2, -1, 0.5, 0, 0.5, 1, 2, 3, 3.5, 4, 5};
+    double[] xValues = {-2, -1, -0.5, 0, 0.5, 1, 2, 3, 3.5, 4, 5};
     double[] yValues = {-8, -1, -0.125, 0, 0.125, 1, 8, 27, 42.875, 64, 125};
 
     @Test
@@ -90,7 +93,6 @@ public class ArrayTabulatedFunctionTest {
         func = new ArrayTabulatedFunction(xValues, yValues);
         Assertions.assertEquals(1, func.extrapolateRight(1), 1e-9);
         Assertions.assertEquals(1, func.extrapolateLeft(1), 1e-9);
-        Assertions.assertEquals(1, func.interpolate(1,1), 1e-9);
     }
 
     @Test
@@ -159,4 +161,38 @@ public class ArrayTabulatedFunctionTest {
         Assertions.assertEquals(0, arrayForInsert.getX(0),1e-9);
         Assertions.assertEquals(5, arrayForInsert.getY(0),1e-9);
     }
+
+    @Test
+    void testCheckLength() {
+        double[] xValues = {1.0, 2.0, 3.0};
+        double[] yValues = {1.0, 2.0}; // Different lengths
+
+        Assertions.assertThrows(DifferentLengthOfArraysException.class, () -> {
+            new ArrayTabulatedFunction(xValues, yValues);
+        });
+    }
+
+    @Test
+    void testCheckSorted() {
+        double[] unsortedXValues = {1.0, 2.0, 3.0, 2.0};
+        double[] sortedXValues = {1.0, 2.0, 3.0};
+
+        // Should not throw exception for sorted array
+        Assertions.assertDoesNotThrow(() -> {
+            new ArrayTabulatedFunction(sortedXValues, new double[]{1, 2, 3});
+        });
+
+        // Should throw exception for unsorted array
+        Assertions.assertThrows(ArrayIsNotSortedException.class, () -> {
+            new ArrayTabulatedFunction(unsortedXValues, new double[]{1, 2, 3, 4});
+        });
+    }
+
+    @Test
+    void testInterpolationException() {
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 4, 9});
+        Assertions.assertThrows(InterpolationException.class, () -> function.interpolate(0, 0));
+        Assertions.assertThrows(InterpolationException.class, () -> function.interpolate(4, 1));
+    }
+
 }

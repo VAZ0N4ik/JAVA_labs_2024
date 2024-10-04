@@ -1,5 +1,7 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
+import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
+
 import java.util.Arrays;
 
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable{
@@ -7,6 +9,10 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     protected double[] yValues;
 
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
+
+        checkLengthIsTheSame(xValues, yValues);
+        checkSorted(xValues);
+
         this.xValues = Arrays.copyOf(xValues, xValues.length);
         this.yValues = Arrays.copyOf(yValues, yValues.length);
         this.count = xValues.length;
@@ -122,9 +128,15 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     @Override
     protected double interpolate(double x, int floorIndex) {
+
+        if (x < xValues[floorIndex] || x > xValues[floorIndex + 1]) {
+            throw new InterpolationException();
+        }
+
         if (count == 1) {
             return yValues[0];
         }
+
         return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1], yValues[floorIndex], yValues[floorIndex + 1]);
     }
 
