@@ -5,6 +5,12 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationExc
 import static java.lang.Math.abs;
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
+     static class Node {
+        public Node next;
+        public Node prev;
+        public double x;
+        public double y;
+    }
     private Node head;
 
     private void addNode(double x, double y){
@@ -245,4 +251,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
         count--;
     }
+
+
 }
