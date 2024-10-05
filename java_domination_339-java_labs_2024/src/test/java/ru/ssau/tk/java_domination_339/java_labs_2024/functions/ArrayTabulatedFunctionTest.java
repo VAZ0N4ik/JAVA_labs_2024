@@ -8,6 +8,8 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationExc
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.Iterator;
+
 public class ArrayTabulatedFunctionTest {
     ArrayTabulatedFunction func;
 
@@ -113,6 +115,7 @@ public class ArrayTabulatedFunctionTest {
         Assertions.assertEquals(0, func.indexOfX(-2), 1e-9);
         Assertions.assertEquals(0, func.indexOfY(-8), 1e-9);
         Assertions.assertEquals(-1, func.indexOfY(-100), 1e-9);
+        Assertions.assertEquals(0, func.floorIndexOfX(-3), 1e-9);
         Assertions.assertEquals(10, func.floorIndexOfX(1000), 1e-9);
     }
 
@@ -206,6 +209,32 @@ public class ArrayTabulatedFunctionTest {
         ArrayTabulatedFunction function = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 4, 9});
         Assertions.assertThrows(InterpolationException.class, () -> function.interpolate(0, 0));
         Assertions.assertThrows(InterpolationException.class, () -> function.interpolate(4, 1));
+    }
+
+    @Test
+    public void testIteratorWithWhile() {
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{5, 10, 15});
+        Iterator<Point> iterator = function.iterator();
+        int index = 0;
+        while (iterator.hasNext()) {
+            Point point = iterator.next();
+            Assertions.assertEquals(function.getX(index), point.x, 1e-9);
+            Assertions.assertEquals(function.getY(index), point.y, 1e-9);
+            ++index;
+        }
+        Assertions.assertEquals(function.getCount(), index);
+    }
+
+    @Test
+    public void testIteratorWithForEach() {
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{5, 10, 15});
+        int index = 0;
+        for (Point point : function) {
+            Assertions.assertEquals(function.getX(index), point.x, 1e-9);
+            Assertions.assertEquals(function.getY(index), point.y, 1e-9);
+            ++index;
+        }
+        Assertions.assertEquals(function.getCount(), index);
     }
 
 }
