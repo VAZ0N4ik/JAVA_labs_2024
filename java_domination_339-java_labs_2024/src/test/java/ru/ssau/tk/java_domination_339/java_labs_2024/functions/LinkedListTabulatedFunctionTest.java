@@ -5,6 +5,7 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.ArrayIsNotSorted
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.DifferentLengthOfArraysException;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -240,4 +241,21 @@ class LinkedListTabulatedFunctionTest {
         assertThrows(InterpolationException.class, () -> function.interpolate(4, 1));
     }
 
+    @Test
+    void testIterator(){
+        Iterator<Point> iterator1 = clList1.iterator();
+        int i = 0;
+        while (iterator1.hasNext()) {
+            Point point = iterator1.next();
+            assertEquals(clList1.getX(i), point.x,eps);
+            assertEquals(clList1.getY(i), point.y,eps);
+            ++i;
+        }
+        i = 0;
+        for (Point point : clList1){
+            assertEquals(clList1.getX(i), point.x,eps);
+            assertEquals(clList1.getY(i), point.y,eps);
+            ++i;
+        }
+    }
 }

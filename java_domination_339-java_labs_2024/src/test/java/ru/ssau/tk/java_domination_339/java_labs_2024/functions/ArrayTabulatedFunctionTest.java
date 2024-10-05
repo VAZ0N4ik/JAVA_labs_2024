@@ -236,5 +236,4 @@ public class ArrayTabulatedFunctionTest {
         }
         Assertions.assertEquals(function.getCount(), index);
     }
-
 }

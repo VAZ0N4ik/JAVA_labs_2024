@@ -3,6 +3,7 @@ package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static java.lang.Math.abs;
 
@@ -261,7 +262,28 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     @Override
     public Iterator<Point> iterator() {
-        throw new UnsupportedOperationException();
+        return new Iterator<>() {
+
+            Node node = head;
+
+            @Override
+            public boolean hasNext(){
+                return node != null;
+            }
+            @Override
+            public Point next() throws NoSuchElementException{
+                if (!hasNext())
+                    throw new NoSuchElementException();
+                else{
+                    Point curPoint = new Point(node.x,node.y);
+                    node = node.next;
+                    if (node == head)
+                        node = null;
+                    return curPoint;
+                }
+            }
+        };
+
     }
 
 }
