@@ -81,8 +81,8 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     private Node getNode(int index) throws IllegalArgumentException {
-        if (index < 0)
-            throw new IllegalArgumentException("Index < 0");
+        if (index < 0 || index >= count)
+            throw new IllegalArgumentException("Incorrect index");
         Node temp = head;
         while (index > 0) {
             temp = temp.next;
@@ -92,20 +92,20 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     public double getX(int index) throws IllegalArgumentException {
-        if (index < 0)
-            throw new IllegalArgumentException("Index < 0");
+        if (index < 0 || index >= count)
+            throw new IllegalArgumentException("Incorrect index");
         return getNode(index).x;
     }
 
     public double getY(int index) throws IllegalArgumentException {
-        if (index < 0)
-            throw new IllegalArgumentException("Index < 0");
+        if (index < 0 || index >=count)
+            throw new IllegalArgumentException("Incorrect index");
         return getNode(index).y;
     }
 
     public void setY(int index, double value) throws IllegalArgumentException {
-        if (index < 0)
-            throw new IllegalArgumentException("Index < 0");
+        if (index < 0 || index >= count)
+            throw new IllegalArgumentException("Incorrect index");
         getNode(index).y = value;
     }
 
@@ -242,8 +242,8 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     public void remove(int index) {
-        if (index < 0)
-            throw new IllegalArgumentException("Index < 0");
+        if (index < 0 || index >= count)
+            throw new IllegalArgumentException("Incorrect index");
         if (count == 1) {
             head = null;
         } else {

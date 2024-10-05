@@ -56,22 +56,22 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     @Override
     public double getX(int index) throws IllegalArgumentException {
-        if (index < 0)
-            throw new IllegalArgumentException("Index < 0");
+        if (index < 0 || index >= count)
+            throw new IllegalArgumentException("Incorrect index");
         return xValues[index];
     }
 
     @Override
     public double getY(int index) throws IllegalArgumentException {
-        if (index < 0)
-            throw new IllegalArgumentException("Index < 0");
+        if (index < 0 || index >= count)
+            throw new IllegalArgumentException("Incorrect index");
         return yValues[index];
     }
 
     @Override
     public void setY(int index, double value) throws  IllegalArgumentException {
-        if (index < 0)
-            throw new IllegalArgumentException("Index < 0");
+        if (index < 0 || index >= count)
+            throw new IllegalArgumentException("Incorrect index");
         yValues[index] = value;
     }
 
@@ -184,20 +184,20 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     @Override
     public void remove(int index) throws IllegalArgumentException{
-        if (index < 0)
-            throw new IllegalArgumentException("Index < 0");
-        if (index < count){
-            double[] newXValues = new double[count - 1];
-            double[] newYValues = new double[count - 1];
+        if (index < 0 || index >= count)
+            throw new IllegalArgumentException("Incorrect index");
 
-            System.arraycopy(xValues, 0, newXValues, 0, index);
-            System.arraycopy(yValues, 0, newYValues, 0, index);
-            System.arraycopy(xValues, index + 1, newXValues, index, count - index - 1);
-            System.arraycopy(yValues, index + 1, newYValues, index, count - index - 1);
+        double[] newXValues = new double[count - 1];
+        double[] newYValues = new double[count - 1];
 
-            xValues = newXValues;
-            yValues = newYValues;
-            count--;
-        }
+        System.arraycopy(xValues, 0, newXValues, 0, index);
+        System.arraycopy(yValues, 0, newYValues, 0, index);
+        System.arraycopy(xValues, index + 1, newXValues, index, count - index - 1);
+        System.arraycopy(yValues, index + 1, newYValues, index, count - index - 1);
+
+        xValues = newXValues;
+        yValues = newYValues;
+        count--;
+
     }
 }
