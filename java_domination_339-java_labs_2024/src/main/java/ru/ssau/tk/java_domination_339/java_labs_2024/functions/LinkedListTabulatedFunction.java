@@ -36,7 +36,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         count++;
     }
 
-    LinkedListTabulatedFunction(double[] xValues, double[] yValues) throws IllegalArgumentException {
+    public LinkedListTabulatedFunction(double[] xValues, double[] yValues) throws IllegalArgumentException {
         if (xValues.length < 2 || yValues.length < 2)
             throw new IllegalArgumentException("Length must be >=2");
         checkLengthIsTheSame(xValues, yValues);
@@ -47,7 +47,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
     }
 
-    LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) throws IllegalArgumentException {
+    public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) throws IllegalArgumentException {
         if (count < 2)
             throw new IllegalArgumentException("Length must be >=2");
         if (xFrom > xTo) {
