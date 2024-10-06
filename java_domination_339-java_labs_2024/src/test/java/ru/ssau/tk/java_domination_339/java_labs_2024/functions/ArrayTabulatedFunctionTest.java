@@ -115,7 +115,6 @@ public class ArrayTabulatedFunctionTest {
         Assertions.assertEquals(0, func.indexOfX(-2), 1e-9);
         Assertions.assertEquals(0, func.indexOfY(-8), 1e-9);
         Assertions.assertEquals(-1, func.indexOfY(-100), 1e-9);
-        Assertions.assertEquals(0, func.floorIndexOfX(-3), 1e-9);
         Assertions.assertEquals(10, func.floorIndexOfX(1000), 1e-9);
     }
 

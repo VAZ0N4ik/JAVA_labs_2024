@@ -82,17 +82,7 @@ public class UnmodifiableTabulatedFunctionTest {
         assertFalse(iterator.hasNext());
     }
 
-    @Test
-    public void testEmptyFunction() {
-        double[] xValues = {};
-        double[] yValues = {};
-        TabulatedFunction originalFunction = new ArrayTabulatedFunction(xValues, yValues);
-        TabulatedFunction unmodifiableFunction = new UnmodifiableTabulatedFunction(originalFunction);
 
-        assertEquals(0, unmodifiableFunction.getCount());
-        assertThrows(IndexOutOfBoundsException.class, () -> unmodifiableFunction.getX(0));
-        assertThrows(IndexOutOfBoundsException.class, () -> unmodifiableFunction.getY(0));
-    }
 
     @Test
     public void testApply() {

@@ -102,4 +102,23 @@ class StrictTabulatedFunctionTest {
         assertThrows(UnsupportedOperationException.class,()->list.apply(100));
         assertThrows(UnsupportedOperationException.class,()->array.apply(4));
     }
+
+    @Test
+    void testUnmodifable(){
+        LinkedListTabulatedFunction ll = new LinkedListTabulatedFunction(new double[]{1.1,2.2,3.3},new double[] {3.3,4.4,5.5});
+        UnmodifiableTabulatedFunction unmod = new UnmodifiableTabulatedFunction(ll);
+        StrictTabulatedFunction strict = new StrictTabulatedFunction(unmod);
+        assertThrows(UnsupportedOperationException.class,()->strict.apply(100));
+        assertThrows(UnsupportedOperationException.class,()->strict.apply(1.5));
+        assertThrows(UnsupportedOperationException.class,()->strict.setY(1,1));
+        assertThrows(UnsupportedOperationException.class,()->strict.setY(3,1));
+
+        LinkedListTabulatedFunction arr = new LinkedListTabulatedFunction(new double[]{-1,0,1.1},new double[] {3.3,4.4,5.5});
+        UnmodifiableTabulatedFunction unmod2 = new UnmodifiableTabulatedFunction(arr);
+        StrictTabulatedFunction strict2 = new StrictTabulatedFunction(unmod);
+        assertThrows(UnsupportedOperationException.class,()->strict2.apply(100));
+        assertThrows(UnsupportedOperationException.class,()->strict2.apply(1.5));
+        assertThrows(UnsupportedOperationException.class,()->strict2.setY(1,1));
+        assertThrows(UnsupportedOperationException.class,()->strict2.setY(3,1));
+    }
 }
