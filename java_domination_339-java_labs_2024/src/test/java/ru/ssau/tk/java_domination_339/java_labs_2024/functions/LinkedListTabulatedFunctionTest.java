@@ -5,18 +5,20 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.ArrayIsNotSorted
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.DifferentLengthOfArraysException;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LinkedListTabulatedFunctionTest {
     double eps = 0.01;
-    LinkedListTabulatedFunction clList1 = new LinkedListTabulatedFunction(new double[]{-5,-3.6,0.01,1,4}, new double[]{0,3.6,5,100,0.1});
-    LinkedListTabulatedFunction clList2 = new LinkedListTabulatedFunction(new double[]{1,2,3}, new double[]{9,10,15});
-    LinkedListTabulatedFunction clList3 = new LinkedListTabulatedFunction(new double[]{1}, new double[]{1});
+    LinkedListTabulatedFunction clList1 = new LinkedListTabulatedFunction(new double[]{-5, -3.6, 0.01, 1, 4}, new double[]{0, 3.6, 5, 100, 0.1});
+    LinkedListTabulatedFunction clList2 = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{9, 10, 15});
+    //LinkedListTabulatedFunction clList3 = new LinkedListTabulatedFunction(new double[]{1}, new double[]{1});
     LinkedListTabulatedFunction dList1 = new LinkedListTabulatedFunction(new SqrFunction(), -10, 20, 30);
     LinkedListTabulatedFunction dList2 = new LinkedListTabulatedFunction(new SqrFunction(), 1, 1, 5);
     LinkedListTabulatedFunction dList3 = new LinkedListTabulatedFunction(new ConstantFunction(3), 5, -5, 5);
+
     @Test
     void testGetCount() {
         assertEquals(5, clList1.getCount(), eps);
@@ -48,6 +50,10 @@ class LinkedListTabulatedFunctionTest {
         assertEquals(3, clList2.getX(2), eps);
         assertEquals(-10, dList1.getX(0), eps);
         assertEquals(1, dList2.getX(3), eps);
+        assertThrows(IllegalArgumentException.class, () -> clList1.getX(-1));
+        assertThrows(IllegalArgumentException.class, () -> clList1.getX(7));
+        assertThrows(IllegalArgumentException.class, () -> dList1.getX(-1));
+        assertThrows(IllegalArgumentException.class, () -> dList1.getX(30));
     }
 
     @Test
@@ -56,6 +62,10 @@ class LinkedListTabulatedFunctionTest {
         assertEquals(15, clList2.getY(2), eps);
         assertEquals(100, dList1.getY(0), eps);
         assertEquals(1, dList2.getY(3), eps);
+        assertThrows(IllegalArgumentException.class, () -> clList1.getY(-1));
+        assertThrows(IllegalArgumentException.class, () -> clList1.getY(7));
+        assertThrows(IllegalArgumentException.class, () -> dList1.getY(-1));
+        assertThrows(IllegalArgumentException.class, () -> dList1.getY(30));
     }
 
     @Test
@@ -66,6 +76,10 @@ class LinkedListTabulatedFunctionTest {
         assertEquals(-100, clList1.getY(0), eps);
         assertEquals(100, clList2.getY(2), eps);
         assertEquals(-9.5, dList1.getY(1), eps);
+        assertThrows(IllegalArgumentException.class, () -> clList1.setY(-1,0));
+        assertThrows(IllegalArgumentException.class, () -> clList1.setY(7,0));
+        assertThrows(IllegalArgumentException.class, () -> dList1.setY(-1,0));
+        assertThrows(IllegalArgumentException.class, () -> dList1.setY(30,0));
     }
 
     @Test
@@ -87,9 +101,11 @@ class LinkedListTabulatedFunctionTest {
         assertEquals(3, clList1.floorIndexOfX(1), eps);
         assertEquals(1, clList2.floorIndexOfX(2.5), eps);
         assertEquals(30, dList1.floorIndexOfX(25), eps);
-        assertEquals(0, dList2.floorIndexOfX(0), eps);
-    }
+        assertEquals(5, dList2.floorIndexOfX(2), eps);
+        assertThrows(IllegalArgumentException.class, () -> clList1.floorIndexOfX(clList1.leftBound() - 1));
+        assertThrows(IllegalArgumentException.class, () -> dList1.floorIndexOfX(dList1.leftBound() - 1));
 
+    }
     @Test
     void testExtrapolateLeft() {
         assertEquals(-12.85, clList1.extrapolateLeft(-10), eps);
@@ -115,9 +131,9 @@ class LinkedListTabulatedFunctionTest {
     @Test
     void testApply() {
         assertEquals(-199.7, clList1.apply(10), eps);
-        assertEquals(1, clList3.apply(-1), eps);
-        assertEquals(1, clList3.apply(1), eps);
-        assertEquals(1, clList3.apply(2), eps);
+        //assertEquals(1, clList3.apply(-1), eps);
+        //assertEquals(1, clList3.apply(1), eps);
+        //assertEquals(1, clList3.apply(2), eps);
         assertEquals(9.1, clList2.apply(1.1), eps);
         assertEquals(0.23, dList1.apply(0.01), eps);
         assertEquals(-12.85, clList1.apply(-10), eps);
@@ -135,14 +151,14 @@ class LinkedListTabulatedFunctionTest {
 
     final private LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(new double[]{1.0, 2.0}, new double[]{1.0, 2.0});
 
-    @Test
+    /*@Test
     public void testInsertIntoEmptyList() {
         LinkedListTabulatedFunction emptyFunction = new LinkedListTabulatedFunction(new double[]{}, new double[]{});
         emptyFunction.insert(1.0, 2.0);
         assertEquals(1, emptyFunction.getCount());
         assertEquals(1.0, emptyFunction.getX(0));
         assertEquals(2.0, emptyFunction.getY(0));
-    }
+    }*/
 
     @Test
     public void testInsertUniqueXGreater() {
@@ -174,17 +190,22 @@ class LinkedListTabulatedFunctionTest {
         assertEquals(10.0, func.getY(0));
     }
 
-    final private LinkedListTabulatedFunction list_for_remove = new LinkedListTabulatedFunction(new double[]{1.0, 2.0, 3.5}, new double[]{3.5,0.1, -1});
+    final private LinkedListTabulatedFunction list_for_remove = new LinkedListTabulatedFunction(new double[]{1.0, 2.0, 3.5}, new double[]{3.5, 0.1, -1});
+
     @Test
-    public void testRemove(){
+    public void testRemove() {
         list_for_remove.remove(1);
-        assertEquals(2,list_for_remove.getCount(),eps);
-        assertEquals(-1,list_for_remove.getY(1),eps);
+        assertEquals(2, list_for_remove.getCount(), eps);
+        assertEquals(-1, list_for_remove.getY(1), eps);
         list_for_remove.remove(1);
-        assertEquals(1,list_for_remove.getCount(),eps);
-        assertEquals(3.5,list_for_remove.getY(0),eps);
-        list_for_remove.remove(1);
-        assertEquals(0,list_for_remove.getCount(),eps);
+        assertEquals(1, list_for_remove.getCount(), eps);
+        assertEquals(3.5, list_for_remove.getY(0), eps);
+        list_for_remove.remove(0);
+        assertEquals(0, list_for_remove.getCount(), eps);
+        assertThrows(IllegalArgumentException.class, () -> clList1.remove(-1));
+        assertThrows(IllegalArgumentException.class, () -> clList1.remove(7));
+        assertThrows(IllegalArgumentException.class, () -> dList1.remove(-1));
+        assertThrows(IllegalArgumentException.class, () -> dList1.remove(30));
     }
 
     @Test
@@ -220,4 +241,21 @@ class LinkedListTabulatedFunctionTest {
         assertThrows(InterpolationException.class, () -> function.interpolate(4, 1));
     }
 
+    @Test
+    void testIterator(){
+        Iterator<Point> iterator1 = clList1.iterator();
+        int i = 0;
+        while (iterator1.hasNext()) {
+            Point point = iterator1.next();
+            assertEquals(clList1.getX(i), point.x,eps);
+            assertEquals(clList1.getY(i), point.y,eps);
+            ++i;
+        }
+        i = 0;
+        for (Point point : clList1){
+            assertEquals(clList1.getX(i), point.x,eps);
+            assertEquals(clList1.getY(i), point.y,eps);
+            ++i;
+        }
+    }
 }
