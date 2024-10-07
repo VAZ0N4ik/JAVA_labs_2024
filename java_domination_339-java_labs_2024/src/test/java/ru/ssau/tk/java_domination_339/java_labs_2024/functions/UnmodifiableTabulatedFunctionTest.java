@@ -83,7 +83,6 @@ public class UnmodifiableTabulatedFunctionTest {
     }
 
 
-
     @Test
     public void testApply() {
         double[] xValues = {1.0, 2.0, 3.0};
@@ -100,4 +99,38 @@ public class UnmodifiableTabulatedFunctionTest {
 
         assertEquals(3.0, unmodifiableFunction.apply(1.5), 1e-9);
     }
+
+    @Test
+    void testUnmodifiableTabulatedFunctionWrappingStrict() {
+        TabulatedFunction baseFunction = new ArrayTabulatedFunction(new double[]{0, 1, 2}, new double[]{0, 1, 4});
+        TabulatedFunction strictFunction = new StrictTabulatedFunction(baseFunction);
+        TabulatedFunction unmodifiableFunction = new UnmodifiableTabulatedFunction(strictFunction);
+
+        assertThrows(UnsupportedOperationException.class, () -> {
+            unmodifiableFunction.setY(1, 5);
+        });
+
+        assertThrows(UnsupportedOperationException.class, () -> {
+            unmodifiableFunction.apply(0.5);
+        });
+    }
+
+    @Test
+    void testChainingWraps() {
+        TabulatedFunction baseFunction = new ArrayTabulatedFunction(new double[]{0, 1, 2}, new double[]{0, 1, 4});
+        TabulatedFunction unmodifiable = new UnmodifiableTabulatedFunction(baseFunction);
+        TabulatedFunction strict = new StrictTabulatedFunction(unmodifiable);
+
+        assertEquals(0, strict.getY(0));
+        assertEquals(4, strict.getY(2));
+
+        assertThrows(UnsupportedOperationException.class, () -> {
+            strict.setY(0, 10);
+        });
+
+        assertThrows(UnsupportedOperationException.class, () -> {
+            strict.apply(1.5);
+        });
+    }
+
 }

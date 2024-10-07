@@ -104,7 +104,7 @@ class StrictTabulatedFunctionTest {
     }
 
     @Test
-    void testUnmodifable(){
+    void testUnmodifiable(){
         LinkedListTabulatedFunction ll = new LinkedListTabulatedFunction(new double[]{1.1,2.2,3.3},new double[] {3.3,4.4,5.5});
         UnmodifiableTabulatedFunction unmod = new UnmodifiableTabulatedFunction(ll);
         StrictTabulatedFunction strict = new StrictTabulatedFunction(unmod);
