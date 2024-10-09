@@ -1,6 +1,9 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
 import org.junit.jupiter.api.Test;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.ArrayTabulatedFunctionFactory;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.LinkedListTabulatedFunctionFactory;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.TabulatedFunctionFactory;
 
 import java.util.Iterator;
 
@@ -103,6 +106,9 @@ class StrictTabulatedFunctionTest {
         assertThrows(UnsupportedOperationException.class,()->array.apply(4));
     }
 
+
+
+
     @Test
     void testUnmodifiable(){
         LinkedListTabulatedFunction ll = new LinkedListTabulatedFunction(new double[]{1.1,2.2,3.3},new double[] {3.3,4.4,5.5});
@@ -120,5 +126,104 @@ class StrictTabulatedFunctionTest {
         assertThrows(UnsupportedOperationException.class,()->strict2.apply(1.5));
         assertThrows(UnsupportedOperationException.class,()->strict2.setY(1,1));
         assertThrows(UnsupportedOperationException.class,()->strict2.setY(3,1));
+    }
+
+    private double[] xValues = new double[]{1.0, 2.0, 3.0};
+    private double[] yValues= new double[]{2.0, 4.0, 6.0};
+
+    private TabulatedFunctionFactory arrayFactory = new ArrayTabulatedFunctionFactory();;
+    private TabulatedFunctionFactory linkedListFactory = new LinkedListTabulatedFunctionFactory();
+
+    @Test
+    public void testCreateStrictArray() {
+        TabulatedFunction strictArrayFunction = arrayFactory.createStrict(xValues, yValues);
+        assertInstanceOf(StrictTabulatedFunction.class, strictArrayFunction);
+
+        // Проверка работы метода apply
+        assertEquals(2.0, strictArrayFunction.apply(1.0));
+        assertEquals(4.0, strictArrayFunction.apply(2.0));
+        assertThrows(UnsupportedOperationException.class, () -> strictArrayFunction.apply(2.5)); // Недопустимая интерполяция
+
+        // Проверка работы setY
+        strictArrayFunction.setY(1, 5.0);
+        assertEquals(5.0, strictArrayFunction.getY(1));
+
+        // Проверка на наличие точек
+        assertEquals(3, strictArrayFunction.getCount());
+        assertEquals(1.0, strictArrayFunction.getX(0));
+        assertEquals(5.0, strictArrayFunction.getY(1));
+    }
+
+    @Test
+    public void testCreateStrictLinkedList() {
+        TabulatedFunction strictLinkedListFunction = linkedListFactory.createStrict(xValues, yValues);
+        assertInstanceOf(StrictTabulatedFunction.class, strictLinkedListFunction);
+
+        // Проверка работы метода apply
+        assertEquals(2.0, strictLinkedListFunction.apply(1.0));
+        assertEquals(4.0, strictLinkedListFunction.apply(2.0));
+        assertThrows(UnsupportedOperationException.class, () -> strictLinkedListFunction.apply(2.5)); // Недопустимая интерполяция
+
+        // Проверка работы setY
+        strictLinkedListFunction.setY(1, 5.0);
+        assertEquals(5.0, strictLinkedListFunction.getY(1));
+
+        // Проверка на наличие точек
+        assertEquals(3, strictLinkedListFunction.getCount());
+        assertEquals(1.0, strictLinkedListFunction.getX(0));
+        assertEquals(5.0, strictLinkedListFunction.getY(1));
+    }
+
+    @Test
+    public void testCreateStrictUnmodifiableArray() {
+        TabulatedFunction strictUnmodifiableArrayFunction = arrayFactory.createStrictUnmodifiable(xValues, yValues);
+        assertInstanceOf(StrictTabulatedFunction.class, strictUnmodifiableArrayFunction);
+
+        // Проверка работы метода apply
+        assertEquals(2.0, strictUnmodifiableArrayFunction.apply(1.0));
+        assertEquals(4.0, strictUnmodifiableArrayFunction.apply(2.0));
+        assertThrows(UnsupportedOperationException.class, () -> strictUnmodifiableArrayFunction.apply(2.5)); // Недопустимая интерполяция
+
+        // Проверка на недоступность модификации
+        assertThrows(UnsupportedOperationException.class, () -> strictUnmodifiableArrayFunction.setY(1, 10.0));
+    }
+
+    @Test
+    public void testCreateStrictUnmodifiableLinkedList() {
+        TabulatedFunction strictUnmodifiableLinkedListFunction = linkedListFactory.createStrictUnmodifiable(xValues, yValues);
+        assertInstanceOf(StrictTabulatedFunction.class, strictUnmodifiableLinkedListFunction);
+
+        // Проверка работы метода apply
+        assertEquals(2.0, strictUnmodifiableLinkedListFunction.apply(1.0));
+        assertEquals(4.0, strictUnmodifiableLinkedListFunction.apply(2.0));
+        assertThrows(UnsupportedOperationException.class, () -> strictUnmodifiableLinkedListFunction.apply(2.5)); // Недопустимая интерполяция
+
+        // Проверка на недоступность модификации
+        assertThrows(UnsupportedOperationException.class, () -> strictUnmodifiableLinkedListFunction.setY(1, 10.0));
+    }
+
+    @Test
+    public void testUnmodifiableBehavior() {
+        TabulatedFunction unmodifiableFunction = new UnmodifiableTabulatedFunction(arrayFactory.create(xValues, yValues));
+
+        // Проверка работы методов get и apply
+        assertEquals(3, unmodifiableFunction.getCount());
+        assertEquals(2.0, unmodifiableFunction.getY(0));
+        assertEquals(4.0, unmodifiableFunction.getY(1));
+        assertEquals(6.0, unmodifiableFunction.getY(2));
+        assertEquals(4.0, unmodifiableFunction.apply(2.0));
+
+        // Проверка на недоступность модификации
+        assertThrows(UnsupportedOperationException.class, () -> unmodifiableFunction.setY(1, 10.0));
+    }
+
+    @Test
+    public void testStrictBehavior() {
+        TabulatedFunction strictFunction = new StrictTabulatedFunction(arrayFactory.create(xValues, yValues));
+
+        // Проверка работы метода apply
+        assertEquals(2.0, strictFunction.apply(1.0));
+        assertEquals(4.0, strictFunction.apply(2.0));
+        assertThrows(UnsupportedOperationException.class, () -> strictFunction.apply(1.5)); // Недопустимая интерполяция
     }
 }

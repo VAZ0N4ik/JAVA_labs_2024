@@ -165,6 +165,26 @@ public class TabulatedFunctionOperationServiceTest {
         assertThrows(InconsistentFunctionsException.class, () -> {
             service.substractionOperation(functionA, functionB);
         });
+
+    }
+    @Test
+    public void testMultiplicationOperationWithLinkedListAndArray() {
+        service.setFactory(new LinkedListTabulatedFunctionFactory());
+        TabulatedFunction result = service.multiplicationOperation(linkedListFunction, arrayFunction);
+
+        assertEquals(2.0, result.getY(0));
+        assertEquals(8.0, result.getY(1));
+        assertEquals(18.0, result.getY(2));
+    }
+
+    @Test
+    public void testDivisionOperationWithLinkedListAndArray() {
+        service.setFactory(new LinkedListTabulatedFunctionFactory());
+        TabulatedFunction result = service.divisionOperation(linkedListFunction, arrayFunction);
+
+        assertEquals(0.5, result.getY(0));
+        assertEquals(0.5, result.getY(1));
+        assertEquals(0.5, result.getY(2));
     }
 
 }
