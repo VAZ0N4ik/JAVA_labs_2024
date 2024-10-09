@@ -120,6 +120,7 @@ public class ArrayTabulatedFunctionTest {
 
     final ArrayTabulatedFunction func1 = new ArrayTabulatedFunction(new double[]{1.0, 2.0, 3.0}, new double[]{1.0, 2.0, 3.0});
 
+
     @Test
     public void testRemoveByIndex() {
         func1.remove(1); // Remove element at index 1 (x = 2.0)
@@ -152,6 +153,12 @@ public class ArrayTabulatedFunctionTest {
     }
 
     ArrayTabulatedFunction arrayForInsert = new ArrayTabulatedFunction(new double[]{-2,-1}, new double[]{-2,-1});
+
+    @Test
+    public void testToString(){
+        Assertions.assertEquals("ArrayTabulatedFunction size = 3\n[1.0; 1.0]\n[2.0; 2.0]\n[3.0; 3.0]", func1.toString());
+        Assertions.assertEquals("ArrayTabulatedFunction size = 2\n[-2.0; -2.0]\n[-1.0; -1.0]", arrayForInsert.toString());
+    }
 
     @Test
     public void testInsert() {

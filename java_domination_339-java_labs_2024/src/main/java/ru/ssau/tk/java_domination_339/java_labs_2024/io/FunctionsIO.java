@@ -53,4 +53,15 @@ public final class FunctionsIO {
         return factory.create(xValues, yValues);
     }
 
+    public static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
+        DataOutputStream dataOut = new DataOutputStream(outputStream);
+        dataOut.writeInt(function.getCount());
+
+        for (Point p : function) {
+            dataOut.writeDouble(p.x);
+            dataOut.writeDouble(p.y);
+        }
+
+        dataOut.flush();
+    }
 }
