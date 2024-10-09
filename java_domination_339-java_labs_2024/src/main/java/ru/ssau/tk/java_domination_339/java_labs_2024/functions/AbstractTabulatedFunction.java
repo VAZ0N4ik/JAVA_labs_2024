@@ -3,7 +3,13 @@ package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.ArrayIsNotSortedException;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.DifferentLengthOfArraysException;
 
-public abstract class AbstractTabulatedFunction implements TabulatedFunction {
+import java.io.Serial;
+import java.io.Serializable;
+
+public abstract class AbstractTabulatedFunction implements TabulatedFunction, Serializable {
+    @Serial
+    private static final long serialVersionUID = -2740685364905867954L;
+
     protected int count;
 
     protected abstract int floorIndexOfX(double x);
