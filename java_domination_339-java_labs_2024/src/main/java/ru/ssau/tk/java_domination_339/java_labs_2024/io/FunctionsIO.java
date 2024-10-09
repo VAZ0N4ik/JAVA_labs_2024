@@ -4,10 +4,7 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.Point;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.TabulatedFunctionFactory;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
@@ -15,6 +12,12 @@ import java.util.Locale;
 public final class FunctionsIO {
     private FunctionsIO() {
         throw new UnsupportedOperationException();
+    }
+
+    public static void serialize(BufferedOutputStream stream, TabulatedFunction function) throws IOException {
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(stream);
+        objectOutputStream.writeObject(function);
+        objectOutputStream.flush();
     }
 
     public static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) {
