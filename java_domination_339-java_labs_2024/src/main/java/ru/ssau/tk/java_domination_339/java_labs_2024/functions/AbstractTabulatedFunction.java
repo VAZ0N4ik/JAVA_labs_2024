@@ -54,7 +54,7 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction, Se
     public String toString() {
         StringBuilder strBuild = new StringBuilder(this.getClass().getSimpleName());
         strBuild.append(" size = ");
-        strBuild.append(this.count);
+        strBuild.append(this.getCount());
         strBuild.append('\n');
         int c = 0;
         for (Point p: this){
@@ -63,7 +63,7 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction, Se
             strBuild.append("; ");
             strBuild.append(p.y);
             strBuild.append("]");
-            if (c < count - 1)
+            if (c < this.getCount() - 1)
                 strBuild.append("\n");
             c++;
         }
