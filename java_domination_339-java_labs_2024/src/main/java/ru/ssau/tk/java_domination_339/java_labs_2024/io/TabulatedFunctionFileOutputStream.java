@@ -15,8 +15,6 @@ public class TabulatedFunctionFileOutputStream {
              BufferedOutputStream bufOutLinkedList = new BufferedOutputStream(new FileOutputStream("output/linked list function.bin"));
              )
         {
-
-
             ArrayTabulatedFunction arrFunc = new ArrayTabulatedFunction(new double[]{1,2,3},new double[]{1,4,9});
             LinkedListTabulatedFunction linkedListFunc = new LinkedListTabulatedFunction(new double[]{1,2,3},new double[]{1,4,9});
 
