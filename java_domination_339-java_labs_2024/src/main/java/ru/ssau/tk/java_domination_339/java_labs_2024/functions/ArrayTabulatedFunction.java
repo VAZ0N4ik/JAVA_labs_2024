@@ -2,11 +2,16 @@ package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable{
+public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable, Serializable {
+    @Serial
+    private static final long serialVersionUID = 9108249239180936404L;
+
     protected double[] xValues;
     protected double[] yValues;
 
