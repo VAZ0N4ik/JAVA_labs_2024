@@ -44,4 +44,23 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction {
                     throw new ArrayIsNotSortedException();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder strBuild = new StringBuilder(this.getClass().getSimpleName());
+        strBuild.append(" size = ");
+        strBuild.append(this.count);
+        strBuild.append('\n');
+        int c = 0;
+        for (Point p: this){
+            strBuild.append("[");
+            strBuild.append(p.x);
+            strBuild.append("; ");
+            strBuild.append(p.y);
+            strBuild.append("]");
+            if (c < count - 1)
+                strBuild.append("\n");
+            c++;
+        }
+        return strBuild.toString();
+    }
 }

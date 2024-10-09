@@ -20,6 +20,11 @@ class LinkedListTabulatedFunctionTest {
     LinkedListTabulatedFunction dList3 = new LinkedListTabulatedFunction(new ConstantFunction(3), 5, -5, 5);
 
     @Test
+    void testToString(){
+        assertEquals("LinkedListTabulatedFunction size = 3\n[1.0; 9.0]\n[2.0; 10.0]\n[3.0; 15.0]", clList2.toString());
+        assertEquals("LinkedListTabulatedFunction size = 5\n[-5.0; 3.0]\n[-2.5; 3.0]\n[0.0; 3.0]\n[2.5; 3.0]\n[5.0; 3.0]", dList3.toString());
+    }
+    @Test
     void testGetCount() {
         assertEquals(5, clList1.getCount(), eps);
         assertEquals(3, clList2.getCount(), eps);
