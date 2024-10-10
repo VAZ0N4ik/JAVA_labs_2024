@@ -1,17 +1,29 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable{
+public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable, Serializable {
+    @Serial
+    private static final long serialVersionUID = 9108249239180936404L;
+
+    @JsonFormat (shape = JsonFormat.Shape.ARRAY)
     protected double[] xValues;
+    @JsonFormat (shape = JsonFormat.Shape.ARRAY)
     protected double[] yValues;
 
-    public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
-
+    @JsonCreator
+    public ArrayTabulatedFunction(@JsonProperty(value = "xValues") double[] xValues, @JsonProperty(value = "yValues") double[] yValues) throws IllegalArgumentException{
+        if (xValues.length < 2 || yValues.length < 2)
+            throw new IllegalArgumentException("Length must be >=2");
         checkLengthIsTheSame(xValues, yValues);
         checkSorted(xValues);
 
@@ -20,8 +32,9 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         this.count = xValues.length;
     }
 
-    public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-
+    public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) throws IllegalArgumentException{
+        if (count < 2)
+            throw new IllegalArgumentException("Length must be >=2");
         xValues = new double[count];
         yValues = new double[count];
         this.count = count;
@@ -55,17 +68,23 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    public double getX(int index) {
+    public double getX(int index) throws IllegalArgumentException {
+        if (index < 0 || index >= count)
+            throw new IllegalArgumentException("Incorrect index");
         return xValues[index];
     }
 
     @Override
-    public double getY(int index) {
+    public double getY(int index) throws IllegalArgumentException {
+        if (index < 0 || index >= count)
+            throw new IllegalArgumentException("Incorrect index");
         return yValues[index];
     }
 
     @Override
-    public void setY(int index, double value) {
+    public void setY(int index, double value) throws  IllegalArgumentException {
+        if (index < 0 || index >= count)
+            throw new IllegalArgumentException("Incorrect index");
         yValues[index] = value;
     }
 
@@ -80,7 +99,8 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    public int indexOfX(double x) {
+    public int indexOfX(double x)  {
+
         for (int i = 0; i < count; i++) {
             if (Math.abs(xValues[i] - x) < 1e-9) {
                 return i;
@@ -100,7 +120,9 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    protected int floorIndexOfX(double x) {
+    protected int floorIndexOfX(double x) throws IllegalArgumentException{
+        if (x < leftBound())
+            throw new IllegalArgumentException("Argument less than left bound");
         if (x < xValues[0]) {
             return 0;
         }
@@ -114,17 +136,12 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
     @Override
     protected double extrapolateLeft(double x) {
-        if (count == 1) {
-            return yValues[0];
-        }
         return interpolate(x, xValues[0], xValues[1], yValues[0], yValues[1]);
     }
 
     @Override
     protected double extrapolateRight(double x) {
-        if (count == 1) {
-            return yValues[0];
-        }
+
         return interpolate(x, xValues[count - 2], xValues[count - 1], yValues[count - 2], yValues[count - 1]);
     }
 
@@ -133,10 +150,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
 
         if (x < xValues[floorIndex] || x > xValues[floorIndex + 1]) {
             throw new InterpolationException();
-        }
-
-        if (count == 1) {
-            return yValues[0];
         }
 
         return interpolate(x, xValues[floorIndex], xValues[floorIndex + 1], yValues[floorIndex], yValues[floorIndex + 1]);
@@ -183,20 +196,22 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    public void remove(int index) {
-        if (index >= 0 && index < count){
-            double[] newXValues = new double[count - 1];
-            double[] newYValues = new double[count - 1];
+    public void remove(int index) throws IllegalArgumentException{
+        if (index < 0 || index >= count)
+            throw new IllegalArgumentException("Incorrect index");
 
-            System.arraycopy(xValues, 0, newXValues, 0, index);
-            System.arraycopy(yValues, 0, newYValues, 0, index);
-            System.arraycopy(xValues, index + 1, newXValues, index, count - index - 1);
-            System.arraycopy(yValues, index + 1, newYValues, index, count - index - 1);
+        double[] newXValues = new double[count - 1];
+        double[] newYValues = new double[count - 1];
 
-            xValues = newXValues;
-            yValues = newYValues;
-            count--;
-        }
+        System.arraycopy(xValues, 0, newXValues, 0, index);
+        System.arraycopy(yValues, 0, newYValues, 0, index);
+        System.arraycopy(xValues, index + 1, newXValues, index, count - index - 1);
+        System.arraycopy(yValues, index + 1, newYValues, index, count - index - 1);
+
+        xValues = newXValues;
+        yValues = newYValues;
+        count--;
+
     }
 
     @Override

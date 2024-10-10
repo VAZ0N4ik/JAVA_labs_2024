@@ -3,7 +3,13 @@ package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.ArrayIsNotSortedException;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.DifferentLengthOfArraysException;
 
-public abstract class AbstractTabulatedFunction implements TabulatedFunction {
+import java.io.Serial;
+import java.io.Serializable;
+
+public abstract class AbstractTabulatedFunction implements TabulatedFunction, Serializable {
+    @Serial
+    private static final long serialVersionUID = -2740685364905867954L;
+
     protected int count;
 
     protected abstract int floorIndexOfX(double x);
@@ -44,4 +50,23 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction {
                     throw new ArrayIsNotSortedException();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder strBuild = new StringBuilder(this.getClass().getSimpleName());
+        strBuild.append(" size = ");
+        strBuild.append(this.getCount());
+        strBuild.append('\n');
+        int c = 0;
+        for (Point p: this){
+            strBuild.append("[");
+            strBuild.append(p.x);
+            strBuild.append("; ");
+            strBuild.append(p.y);
+            strBuild.append("]");
+            if (c < this.getCount() - 1)
+                strBuild.append("\n");
+            c++;
+        }
+        return strBuild.toString();
+    }
 }

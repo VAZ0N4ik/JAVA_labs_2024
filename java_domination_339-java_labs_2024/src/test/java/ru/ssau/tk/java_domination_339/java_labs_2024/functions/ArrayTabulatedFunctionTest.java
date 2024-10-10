@@ -6,6 +6,8 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.ArrayIsNotSorted
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.DifferentLengthOfArraysException;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Iterator;
 
 public class ArrayTabulatedFunctionTest {
@@ -23,6 +25,14 @@ public class ArrayTabulatedFunctionTest {
         }
         Assertions.assertEquals(0, func.leftBound(), 1e-9);
         Assertions.assertEquals(4, func.rightBound(), 1e-9);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.getX(-1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.getX(func.count));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.getY(-1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.getY(func.count));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.setY(-1,0));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.setY(func.count,0));
+
     }
 
     @Test
@@ -88,6 +98,8 @@ public class ArrayTabulatedFunctionTest {
         Assertions.assertEquals(17.5, func.apply(2.5), 1e-9);
     }
 
+
+    /*
     @Test
     void test9() {
         double[] xValues = {1};
@@ -95,7 +107,7 @@ public class ArrayTabulatedFunctionTest {
         func = new ArrayTabulatedFunction(xValues, yValues);
         Assertions.assertEquals(1, func.extrapolateRight(1), 1e-9);
         Assertions.assertEquals(1, func.extrapolateLeft(1), 1e-9);
-    }
+    }*/
 
     @Test
     void test10() {
@@ -103,11 +115,11 @@ public class ArrayTabulatedFunctionTest {
         Assertions.assertEquals(0, func.indexOfX(-2), 1e-9);
         Assertions.assertEquals(0, func.indexOfY(-8), 1e-9);
         Assertions.assertEquals(-1, func.indexOfY(-100), 1e-9);
-        Assertions.assertEquals(0, func.floorIndexOfX(-3), 1e-9);
         Assertions.assertEquals(10, func.floorIndexOfX(1000), 1e-9);
     }
 
     final ArrayTabulatedFunction func1 = new ArrayTabulatedFunction(new double[]{1.0, 2.0, 3.0}, new double[]{1.0, 2.0, 3.0});
+
 
     @Test
     public void testRemoveByIndex() {
@@ -139,29 +151,37 @@ public class ArrayTabulatedFunctionTest {
         func1.remove(0); // Remove x = 3.0
         Assertions.assertEquals(0, func1.getCount()); // Count should be zero
     }
-    ArrayTabulatedFunction arrayForInsert =new ArrayTabulatedFunction(new double[]{}, new double[]{});
+
+    ArrayTabulatedFunction arrayForInsert = new ArrayTabulatedFunction(new double[]{-2,-1}, new double[]{-2,-1});
+
     @Test
-    public void testInsert(){
-        arrayForInsert.insert(1,1);
-        Assertions.assertEquals(1, arrayForInsert.getCount(),1e-9);
-        Assertions.assertEquals(1, arrayForInsert.getX(0),1e-9);
-        Assertions.assertEquals(1, arrayForInsert.getY(0),1e-9);
-        arrayForInsert.insert(0,0);
-        Assertions.assertEquals(2, arrayForInsert.getCount(),1e-9);
-        Assertions.assertEquals(0, arrayForInsert.getX(0),1e-9);
-        Assertions.assertEquals(0, arrayForInsert.getY(0),1e-9);
-        arrayForInsert.insert(2,2);
-        Assertions.assertEquals(3, arrayForInsert.getCount(),1e-9);
-        Assertions.assertEquals(2, arrayForInsert.getX(2),1e-9);
-        Assertions.assertEquals(2, arrayForInsert.getY(2),1e-9);
-        arrayForInsert.insert(1.5,1.5);
-        Assertions.assertEquals(4, arrayForInsert.getCount(),1e-9);
-        Assertions.assertEquals(1.5, arrayForInsert.getX(2),1e-9);
-        Assertions.assertEquals(1.5, arrayForInsert.getY(2),1e-9);
-        arrayForInsert.insert(0,5);
-        Assertions.assertEquals(4, arrayForInsert.getCount(),1e-9);
-        Assertions.assertEquals(0, arrayForInsert.getX(0),1e-9);
-        Assertions.assertEquals(5, arrayForInsert.getY(0),1e-9);
+    public void testToString(){
+        Assertions.assertEquals("ArrayTabulatedFunction size = 3\n[1.0; 1.0]\n[2.0; 2.0]\n[3.0; 3.0]", func1.toString());
+        Assertions.assertEquals("ArrayTabulatedFunction size = 2\n[-2.0; -2.0]\n[-1.0; -1.0]", arrayForInsert.toString());
+    }
+
+    @Test
+    public void testInsert() {
+        arrayForInsert.insert(1, 1);
+        Assertions.assertEquals(3, arrayForInsert.getCount(), 1e-9);
+        Assertions.assertEquals(-2, arrayForInsert.getX(0), 1e-9);
+        Assertions.assertEquals(-2, arrayForInsert.getY(0), 1e-9);
+        arrayForInsert.insert(-3, -3);
+        Assertions.assertEquals(4, arrayForInsert.getCount(), 1e-9);
+        Assertions.assertEquals(-3, arrayForInsert.getX(0), 1e-9);
+        Assertions.assertEquals(-3, arrayForInsert.getY(0), 1e-9);
+        arrayForInsert.insert(2, 2);
+        Assertions.assertEquals(5, arrayForInsert.getCount(), 1e-9);
+        Assertions.assertEquals(2, arrayForInsert.getX(4), 1e-9);
+        Assertions.assertEquals(2, arrayForInsert.getY(4), 1e-9);
+        arrayForInsert.insert(1.5, 1.5);
+        Assertions.assertEquals(6, arrayForInsert.getCount(), 1e-9);
+        Assertions.assertEquals(1.5, arrayForInsert.getX(4), 1e-9);
+        Assertions.assertEquals(1.5, arrayForInsert.getY(4), 1e-9);
+        arrayForInsert.insert(0, 5);
+        Assertions.assertEquals(7, arrayForInsert.getCount(), 1e-9);
+        Assertions.assertEquals(0, arrayForInsert.getX(3), 1e-9);
+        Assertions.assertEquals(5, arrayForInsert.getY(3), 1e-9);
     }
 
     @Test
@@ -222,5 +242,4 @@ public class ArrayTabulatedFunctionTest {
         }
         Assertions.assertEquals(function.getCount(), index);
     }
-
 }
