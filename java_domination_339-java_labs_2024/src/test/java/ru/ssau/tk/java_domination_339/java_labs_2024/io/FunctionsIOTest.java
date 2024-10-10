@@ -82,8 +82,8 @@ public class FunctionsIOTest {
 
     @Test
     public void testSerializeDeserializeArrayTabulatedFunction() throws IOException, ClassNotFoundException {
-        double[] xValues = {1.0, 2.0, 3.0};
-        double[] yValues = {1.0, 4.0, 9.0};
+        double[] xValues = {1.0, 2.0, 3.0, 4.0, 5.0};
+        double[] yValues = {2.0, 8.0, 18.0, 32.0, 50.0};
 
         BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream("output/serialized array functions.bin"));
         TabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
@@ -93,6 +93,26 @@ public class FunctionsIOTest {
         BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream("output/serialized array functions.bin"));
         TabulatedFunction deserializedFunction = FunctionsIO.deserialize(inputStream);
 
+
+        assertEquals(function.getCount(), deserializedFunction.getCount());
+        for (int i = 0; i < function.getCount(); i++) {
+            assertEquals(function.getX(i), deserializedFunction.getX(i),10e-9);
+            assertEquals(function.getY(i), deserializedFunction.getY(i), 10e-9);
+        }
+    }
+
+    @Test
+    public void testSerializeXmlDeserializeArrayTabulatedFunction() throws IOException, ClassNotFoundException {
+        double[] xValues = {1.0, 2.0, 3.0, 4.0, 5.0};
+        double[] yValues = {2.0, 8.0, 18.0, 32.0, 50.0};
+
+        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter("output/serialized array functions.xml"));
+        FunctionsIO.serializeXml(writer, function);
+
+        BufferedReader reader = new BufferedReader(new FileReader("output/serialized array functions.xml"));
+        ArrayTabulatedFunction deserializedFunction = FunctionsIO.deserializeXml(reader);
 
         assertEquals(function.getCount(), deserializedFunction.getCount());
         for (int i = 0; i < function.getCount(); i++) {

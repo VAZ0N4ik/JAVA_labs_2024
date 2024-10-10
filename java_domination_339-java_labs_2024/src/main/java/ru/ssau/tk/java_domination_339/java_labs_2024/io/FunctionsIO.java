@@ -3,6 +3,8 @@ package ru.ssau.tk.java_domination_339.java_labs_2024.io;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFunction;
+import com.thoughtworks.xstream.XStream;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.Point;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.TabulatedFunctionFactory;
@@ -99,4 +101,18 @@ public final class FunctionsIO {
         Object function = objectInputStream.readObject();
         return (TabulatedFunction)function;
     }
+
+    public static void serializeXml(BufferedWriter writer, ArrayTabulatedFunction function) throws IOException {
+        XStream xStream = new XStream();
+        String xml = xStream.toXML(function);
+        writer.write(xml);
+        writer.flush();
+    }
+
+    public static ArrayTabulatedFunction deserializeXml(BufferedReader reader) throws IOException {
+        XStream xStream = new XStream();
+        xStream.allowTypes(new Class[]{ArrayTabulatedFunction.class});
+        return (ArrayTabulatedFunction) xStream.fromXML(reader);
+    }
+
 }
