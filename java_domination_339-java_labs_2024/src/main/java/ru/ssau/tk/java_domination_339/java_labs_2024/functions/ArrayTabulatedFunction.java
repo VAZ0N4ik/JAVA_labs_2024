@@ -1,5 +1,8 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
 
 import java.io.Serial;
@@ -12,10 +15,13 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     @Serial
     private static final long serialVersionUID = 9108249239180936404L;
 
+    @JsonFormat (shape = JsonFormat.Shape.ARRAY)
     protected double[] xValues;
+    @JsonFormat (shape = JsonFormat.Shape.ARRAY)
     protected double[] yValues;
 
-    public ArrayTabulatedFunction(double[] xValues, double[] yValues) throws IllegalArgumentException{
+    @JsonCreator
+    public ArrayTabulatedFunction(@JsonProperty(value = "xValues") double[] xValues, @JsonProperty(value = "yValues") double[] yValues) throws IllegalArgumentException{
         if (xValues.length < 2 || yValues.length < 2)
             throw new IllegalArgumentException("Length must be >=2");
         checkLengthIsTheSame(xValues, yValues);

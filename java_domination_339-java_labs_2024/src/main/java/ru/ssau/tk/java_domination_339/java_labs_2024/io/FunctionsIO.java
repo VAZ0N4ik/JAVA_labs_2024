@@ -1,5 +1,8 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.io;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.Point;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.TabulatedFunctionFactory;
@@ -18,6 +21,18 @@ public final class FunctionsIO {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(stream);
         objectOutputStream.writeObject(function);
         objectOutputStream.flush();
+    }
+
+    public static void serializeJson(BufferedWriter writer, ArrayTabulatedFunction function) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        writer.write(mapper.writeValueAsString(function));
+        writer.flush();
+    }
+
+    public static ArrayTabulatedFunction deserializeJson(BufferedReader reader) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Object obj =  mapper.readerFor(ArrayTabulatedFunction.class).readValue(reader);
+        return (ArrayTabulatedFunction) obj;
     }
 
     public static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) {
