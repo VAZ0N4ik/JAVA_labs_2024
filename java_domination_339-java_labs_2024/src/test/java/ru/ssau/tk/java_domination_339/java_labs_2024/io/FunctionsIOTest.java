@@ -4,8 +4,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFunction;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.LinkedListTabulatedFunction;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.SqrFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.LinkedListTabulatedFunctionFactory;
+import ru.ssau.tk.java_domination_339.java_labs_2024.operations.TabulatedDifferentialOperator;
 
 import java.io.*;
 import java.util.Objects;
@@ -92,8 +96,30 @@ public class FunctionsIOTest {
 
         assertEquals(function.getCount(), deserializedFunction.getCount());
         for (int i = 0; i < function.getCount(); i++) {
-            assertEquals(function.getX(i), deserializedFunction.getX(i),0.001);
+            assertEquals(function.getX(i), deserializedFunction.getX(i), 0.001);
             assertEquals(function.getY(i), deserializedFunction.getY(i), 0.001);
         }
+    }
+
+    @Test
+    public void testArrayTabulatedFunctionSerialization() throws IOException, ClassNotFoundException {
+        BufferedOutputStream bufOut = new BufferedOutputStream(new FileOutputStream("output/serialized linked list functions.bin"));
+
+        TabulatedFunction ll = new LinkedListTabulatedFunction(new SqrFunction(), 1, 3, 3);
+        TabulatedDifferentialOperator der = new TabulatedDifferentialOperator(new LinkedListTabulatedFunctionFactory());
+
+        FunctionsIO.serialize(bufOut, ll);
+
+        BufferedInputStream bufIN = new BufferedInputStream(new FileInputStream("output/serialized linked list functions.bin"));
+
+        TabulatedFunction llIn = FunctionsIO.deserialize(bufIN);
+
+
+        assertEquals(llIn.getCount(), llIn.getCount());
+        for (int i = 0; i < llIn.getCount(); i++) {
+            assertEquals(llIn.getX(i), llIn.getX(i), 0.001);
+            assertEquals(llIn.getY(i), llIn.getY(i), 0.001);
+        }
+
     }
 }
