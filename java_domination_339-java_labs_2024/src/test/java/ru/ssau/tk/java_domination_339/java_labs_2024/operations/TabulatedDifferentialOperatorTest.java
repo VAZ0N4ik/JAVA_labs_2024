@@ -1,12 +1,18 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.operations;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ru.ssau.tk.java_domination_339.java_labs_2024.concurrent.SynchronizedTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.LinkedListTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.LinkedListTabulatedFunctionFactory;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.TabulatedFunctionFactory;
 
+import java.util.NoSuchElementException;
+
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TabulatedDifferentialOperatorTest {
@@ -64,5 +70,36 @@ class TabulatedDifferentialOperatorTest {
             assertEquals(linkedListFunction.getCount(), derivedLinkedListFunction.getCount());
         }
 
+    private TabulatedFunctionFactory factory;
+    private TabulatedDifferentialOperator operator;
 
+    @BeforeEach
+    void setUp() {
+        factory = new ArrayTabulatedFunctionFactory();
+        operator = new TabulatedDifferentialOperator(factory);
+    }
+
+    @Test
+    void testDeriveSynchronously() {
+        double[] xValues = {0.0, 1.0, 2.0};
+        double[] yValues = {0.0, 2.0, 4.0};
+        TabulatedFunction function = factory.create(xValues, yValues);
+
+        TabulatedFunction derivedFunction = operator.deriveSynchronously(function);
+
+        assertEquals(2.0, derivedFunction.getY(0));
+        assertEquals(2.0, derivedFunction.getY(1));
+    }
+
+    @Test
+    void testDeriveSynchronouslyWithSynchronizedFunction() {
+        double[] xValues = {0.0, 1.0, 2.0};
+        double[] yValues = {0.0, 3.0, 6.0};
+        TabulatedFunction function = new SynchronizedTabulatedFunction(factory.create(xValues, yValues));
+
+        TabulatedFunction derivedFunction = operator.deriveSynchronously(function);
+
+        assertEquals(3.0, derivedFunction.getY(0));
+        assertEquals(3.0, derivedFunction.getY(1));
+    }
 }
