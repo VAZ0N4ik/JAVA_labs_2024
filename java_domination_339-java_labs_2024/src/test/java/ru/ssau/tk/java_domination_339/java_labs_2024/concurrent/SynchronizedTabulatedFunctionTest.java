@@ -1,10 +1,12 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.concurrent;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.LinkedListTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.Point;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
 
 import java.util.Iterator;
 
@@ -102,6 +104,53 @@ class SynchronizedTabulatedFunctionTest {
             assertEquals(clList1.getY(i), point.y,eps);
             ++i;
         }
-
     }
+
+
+    private TabulatedFunction originalFunction;
+    private SynchronizedTabulatedFunction syncFunction;
+
+    @BeforeEach
+    void setUp() {
+        originalFunction = new ArrayTabulatedFunction(new double[] {1, 2, 3, 4, 5}, new double[] {1, 8, 27, 64, 125});
+        syncFunction = new SynchronizedTabulatedFunction(originalFunction);
+    }
+
+    @Test
+    void testGetY() {
+        double expectedY = syncFunction.doSynchronously(func -> func.getY(0));
+        assertEquals(expectedY, originalFunction.getY(0));
+    }
+
+    @Test
+    void testSetY() {
+        syncFunction.doSynchronously(func -> {
+            func.setY(0, 5.0);
+            return null;
+        });
+
+        double newYValue = syncFunction.doSynchronously(func -> func.getY(0));
+        assertEquals(5.0, newYValue);
+    }
+
+    @Test
+    void testGetCount() {
+        int expectedCount = syncFunction.doSynchronously(SynchronizedTabulatedFunction::getCount);
+        assertEquals(expectedCount, originalFunction.getCount());
+    }
+
+    @Test
+    void testIndexOfX() {
+        int index = syncFunction.doSynchronously(func -> func.indexOfX(originalFunction.getX(0)));
+        assertEquals(index, originalFunction.indexOfX(originalFunction.getX(0)));
+    }
+
+    @Test
+    void testApplyFunction() {
+        double xValue = 1.0;
+        double expectedValue = syncFunction.doSynchronously(func -> func.apply(xValue));
+        assertEquals(expectedValue, originalFunction.apply(xValue));
+    }
+
+
 }
