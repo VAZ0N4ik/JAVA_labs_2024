@@ -2,8 +2,10 @@ package ru.ssau.tk.java_domination_339.java_labs_2024.concurrent;
 
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.Point;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
+import ru.ssau.tk.java_domination_339.java_labs_2024.operations.TabulatedFunctionOperationService;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class SynchronizedTabulatedFunction implements TabulatedFunction {
     final private TabulatedFunction tabulatedFunction;
@@ -78,7 +80,29 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
     @Override
     public Iterator<Point> iterator() {
         synchronized (tabulatedFunction) {
-            return tabulatedFunction.iterator();
+            Point[] points = TabulatedFunctionOperationService.asPoints(tabulatedFunction);
+
+            return new Iterator<>() {
+                private int i = 0;
+
+                @Override
+                public boolean hasNext() {
+                    return i < points.length;
+                }
+
+                @Override
+                public Point next() {
+                    if (!hasNext())
+                        throw new NoSuchElementException();
+
+                    Point point = new Point(points[i].x, points[i].y);
+
+                    ++i;
+
+                    return point;
+                }
+            };
+
         }
     }
 }
