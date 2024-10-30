@@ -57,7 +57,7 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction, Se
         strBuild.append(this.getCount());
         strBuild.append('\n');
         int c = 0;
-        for (Point p: this){
+        for (Point p : this) {
             strBuild.append("[");
             strBuild.append(p.x);
             strBuild.append("; ");

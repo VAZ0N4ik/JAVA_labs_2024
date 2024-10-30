@@ -4,10 +4,11 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ConstantFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.LinkedListTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
 
-public class WriteTask implements Runnable{
+public class WriteTask implements Runnable {
     private final TabulatedFunction func;
     private final double value;
-    public WriteTask(TabulatedFunction f, double v){
+
+    public WriteTask(TabulatedFunction f, double v) {
         func = f;
         value = v;
     }

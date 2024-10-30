@@ -1,7 +1,8 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
 import java.util.Iterator;
-public class StrictTabulatedFunction implements TabulatedFunction{
+
+public class StrictTabulatedFunction implements TabulatedFunction {
     TabulatedFunction func;
 
     public StrictTabulatedFunction(TabulatedFunction function) {

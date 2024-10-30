@@ -14,9 +14,8 @@ public class TabulatedFunctionFileInputStream {
         try (
                 BufferedInputStream bufOutArr = new BufferedInputStream(new FileInputStream("input/binary function.bin"));
 
-        )
-        {
-            TabulatedFunction arrFunc = FunctionsIO.readTabulatedFunction(bufOutArr,new ArrayTabulatedFunctionFactory());
+        ) {
+            TabulatedFunction arrFunc = FunctionsIO.readTabulatedFunction(bufOutArr, new ArrayTabulatedFunctionFactory());
             System.out.println(arrFunc.toString());
         } catch (IOException e) {
             e.printStackTrace();
@@ -28,7 +27,7 @@ public class TabulatedFunctionFileInputStream {
             TabulatedDifferentialOperator diffOperator = new TabulatedDifferentialOperator(new LinkedListTabulatedFunctionFactory());
             TabulatedFunction llDerivative = diffOperator.derive(ll);
             System.out.println(llDerivative.toString());
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
