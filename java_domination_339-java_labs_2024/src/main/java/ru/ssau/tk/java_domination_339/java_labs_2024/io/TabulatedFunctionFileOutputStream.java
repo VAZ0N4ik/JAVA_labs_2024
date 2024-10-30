@@ -11,15 +11,14 @@ import java.io.IOException;
 public class TabulatedFunctionFileOutputStream {
     public static void main(String[] args) {
         try (
-             BufferedOutputStream bufOutArr = new BufferedOutputStream(new FileOutputStream("output/array function.bin"));
-             BufferedOutputStream bufOutLinkedList = new BufferedOutputStream(new FileOutputStream("output/linked list function.bin"));
-             )
-        {
-            ArrayTabulatedFunction arrFunc = new ArrayTabulatedFunction(new double[]{1,2,3},new double[]{1,4,9});
-            LinkedListTabulatedFunction linkedListFunc = new LinkedListTabulatedFunction(new double[]{1,2,3},new double[]{1,4,9});
+                BufferedOutputStream bufOutArr = new BufferedOutputStream(new FileOutputStream("output/array function.bin"));
+                BufferedOutputStream bufOutLinkedList = new BufferedOutputStream(new FileOutputStream("output/linked list function.bin"));
+        ) {
+            ArrayTabulatedFunction arrFunc = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 4, 9});
+            LinkedListTabulatedFunction linkedListFunc = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 4, 9});
 
-            FunctionsIO.writeTabulatedFunction(bufOutArr,arrFunc);
-            FunctionsIO.writeTabulatedFunction(bufOutLinkedList,linkedListFunc);
+            FunctionsIO.writeTabulatedFunction(bufOutArr, arrFunc);
+            FunctionsIO.writeTabulatedFunction(bufOutLinkedList, linkedListFunc);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -8,15 +8,17 @@ import java.util.concurrent.*;
 
 public class TabulatedIntegrationOperator implements MathFunction {
 
-    private final int numThreads;
+    final int numThreads;
 
     public TabulatedIntegrationOperator(int numThreads) {
         this.numThreads = numThreads;
     }
+
     public TabulatedIntegrationOperator() {
         this.numThreads = Runtime.getRuntime().availableProcessors() - 1;
 
     }
+
     public double integrate(TabulatedFunction function) {
         double start = function.leftBound();
         double end = function.rightBound();

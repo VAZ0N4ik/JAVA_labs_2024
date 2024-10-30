@@ -33,7 +33,7 @@ public final class FunctionsIO {
 
     public static ArrayTabulatedFunction deserializeJson(BufferedReader reader) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        Object obj =  mapper.readerFor(ArrayTabulatedFunction.class).readValue(reader);
+        Object obj = mapper.readerFor(ArrayTabulatedFunction.class).readValue(reader);
         return (ArrayTabulatedFunction) obj;
     }
 
@@ -99,7 +99,7 @@ public final class FunctionsIO {
     static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException {
         ObjectInputStream objectInputStream = new ObjectInputStream(stream);
         Object function = objectInputStream.readObject();
-        return (TabulatedFunction)function;
+        return (TabulatedFunction) function;
     }
 
     public static void serializeXml(BufferedWriter writer, ArrayTabulatedFunction function) throws IOException {

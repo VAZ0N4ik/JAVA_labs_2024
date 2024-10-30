@@ -140,6 +140,25 @@ public class FunctionsIOTest {
             assertEquals(llIn.getX(i), llIn.getX(i), 0.001);
             assertEquals(llIn.getY(i), llIn.getY(i), 0.001);
         }
+    }
 
+    @Test
+    public void testJsonSerializationDeserialization() throws IOException {
+        BufferedWriter bufWriter = new BufferedWriter(new FileWriter("output/serialized array functions.json"));
+        double[] xValues = {1.0, 2.0, 3.0, 4.0, 5.0};
+        double[] yValues = {2.0, 8.0, 18.0, 32.0, 50.0};
+        ArrayTabulatedFunction function1 = new ArrayTabulatedFunction(xValues, yValues);
+
+        FunctionsIO.serializeJson(bufWriter, function1);
+
+        BufferedReader bufReader = new BufferedReader(new FileReader("output/serialized array functions.json"));
+        TabulatedFunction deserializedFunction1 = FunctionsIO.deserializeJson(bufReader);
+        System.out.println(deserializedFunction1.toString());
+
+        assertEquals(function1.getCount(), deserializedFunction1.getCount());
+        for (int i = 0; i < function1.getCount(); i++) {
+            assertEquals(function1.getX(i), deserializedFunction1.getX(i), 0.001);
+            assertEquals(function1.getY(i), deserializedFunction1.getY(i), 0.001);
+        }
     }
 }

@@ -21,8 +21,7 @@ public class ArrayTabulatedFunctionSerialization {
             FunctionsIO.serialize(outputStream, function1);
             FunctionsIO.serialize(outputStream, function2);
             FunctionsIO.serialize(outputStream, function3);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

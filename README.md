@@ -30,14 +30,14 @@
 
 ЛР4
 ---
-***in progress***
+**Completed**
 - [x] Task 1
-- [ ] Task 2
-- [ ] Task 3
+- [x] Task 2
+- [x] Task 3
 
 ЛР5
 ---
-***pending***
+***in progress***
 - [ ] Task 1
 - [ ] Task 2
 
