@@ -15,13 +15,13 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     @Serial
     private static final long serialVersionUID = 9108249239180936404L;
 
-    @JsonFormat (shape = JsonFormat.Shape.ARRAY)
+    @JsonFormat(shape = JsonFormat.Shape.ARRAY)
     protected double[] xValues;
-    @JsonFormat (shape = JsonFormat.Shape.ARRAY)
+    @JsonFormat(shape = JsonFormat.Shape.ARRAY)
     protected double[] yValues;
 
     @JsonCreator
-    public ArrayTabulatedFunction(@JsonProperty(value = "xValues") double[] xValues, @JsonProperty(value = "yValues") double[] yValues) throws IllegalArgumentException{
+    public ArrayTabulatedFunction(@JsonProperty(value = "xValues") double[] xValues, @JsonProperty(value = "yValues") double[] yValues) throws IllegalArgumentException {
         if (xValues.length < 2 || yValues.length < 2)
             throw new IllegalArgumentException("Length must be >=2");
         checkLengthIsTheSame(xValues, yValues);
@@ -32,7 +32,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         this.count = xValues.length;
     }
 
-    public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) throws IllegalArgumentException{
+    public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) throws IllegalArgumentException {
         if (count < 2)
             throw new IllegalArgumentException("Length must be >=2");
         xValues = new double[count];
@@ -51,9 +51,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
                 xValues[i] = xFrom;
                 yValues[i] = yValue;
             }
-        }
-
-        else {
+        } else {
             double step = (xTo - xFrom) / (count - 1);
             for (int i = 0; i < count; ++i) {
                 xValues[i] = xFrom + i * step;
@@ -82,7 +80,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    public void setY(int index, double value) throws  IllegalArgumentException {
+    public void setY(int index, double value) throws IllegalArgumentException {
         if (index < 0 || index >= count)
             throw new IllegalArgumentException("Incorrect index");
         yValues[index] = value;
@@ -99,7 +97,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    public int indexOfX(double x)  {
+    public int indexOfX(double x) {
 
         for (int i = 0; i < count; i++) {
             if (Math.abs(xValues[i] - x) < 1e-9) {
@@ -120,7 +118,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    protected int floorIndexOfX(double x) throws IllegalArgumentException{
+    protected int floorIndexOfX(double x) throws IllegalArgumentException {
         if (x < leftBound())
             throw new IllegalArgumentException("Argument less than left bound");
         if (x < xValues[0]) {
@@ -156,38 +154,34 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    public void insert(double x, double y){
-        if (indexOfX(x) != -1){
-            setY(indexOfX(x),y);
-        }
-        else{
+    public void insert(double x, double y) {
+        if (indexOfX(x) != -1) {
+            setY(indexOfX(x), y);
+        } else {
 
-            double[] xBuffer = new double[count+1];
-            double[] yBuffer = new double[count+1];
-            if (count == 0){
+            double[] xBuffer = new double[count + 1];
+            double[] yBuffer = new double[count + 1];
+            if (count == 0) {
                 xBuffer[0] = x;
                 yBuffer[0] = y;
-            }
-            else if (x < leftBound()){
+            } else if (x < leftBound()) {
                 xBuffer[0] = x;
                 yBuffer[0] = y;
-                System.arraycopy(xValues,0,xBuffer,1, count);
-                System.arraycopy(yValues,0,yBuffer,1, count);
-            }
-            else if (x > rightBound()){
+                System.arraycopy(xValues, 0, xBuffer, 1, count);
+                System.arraycopy(yValues, 0, yBuffer, 1, count);
+            } else if (x > rightBound()) {
                 xBuffer[xBuffer.length - 1] = x;
                 yBuffer[yBuffer.length - 1] = y;
-                System.arraycopy(xValues,0,xBuffer,0, count);
-                System.arraycopy(yValues,0,yBuffer,0, count);
-            }
-            else {
+                System.arraycopy(xValues, 0, xBuffer, 0, count);
+                System.arraycopy(yValues, 0, yBuffer, 0, count);
+            } else {
                 int index = floorIndexOfX(x);
-                System.arraycopy(xValues,0,xBuffer, 0, index +1);
-                System.arraycopy(yValues,0,yBuffer, 0, index +1);
-                System.arraycopy(xValues,index+1,xBuffer, index+2, count - index - 1);
-                System.arraycopy(yValues,index+1,yBuffer, index+2, count - index - 1);
-                xBuffer[index+1] = x;
-                yBuffer[index+1] = y;
+                System.arraycopy(xValues, 0, xBuffer, 0, index + 1);
+                System.arraycopy(yValues, 0, yBuffer, 0, index + 1);
+                System.arraycopy(xValues, index + 1, xBuffer, index + 2, count - index - 1);
+                System.arraycopy(yValues, index + 1, yBuffer, index + 2, count - index - 1);
+                xBuffer[index + 1] = x;
+                yBuffer[index + 1] = y;
             }
             xValues = xBuffer;
             yValues = yBuffer;
@@ -196,7 +190,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    public void remove(int index) throws IllegalArgumentException{
+    public void remove(int index) throws IllegalArgumentException {
         if (index < 0 || index >= count)
             throw new IllegalArgumentException("Incorrect index");
 

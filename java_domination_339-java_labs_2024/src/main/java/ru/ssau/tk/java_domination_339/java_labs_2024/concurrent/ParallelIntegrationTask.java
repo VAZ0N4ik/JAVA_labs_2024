@@ -19,7 +19,7 @@ public class ParallelIntegrationTask implements Callable<Double> {
 
     @Override
     public Double call() {
-        if (intervals % 2 != 0) 
+        if (intervals % 2 != 0)
             throw new IllegalArgumentException("Number of intervals must be even.");
 
         double totalArea = 0.0;
