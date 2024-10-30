@@ -8,7 +8,7 @@ import java.util.concurrent.*;
 
 public class TabulatedIntegrationOperator implements MathFunction {
 
-    private final int numThreads;
+    final int numThreads;
 
     public TabulatedIntegrationOperator(int numThreads) {
         this.numThreads = numThreads;
