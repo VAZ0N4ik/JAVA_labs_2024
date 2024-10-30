@@ -13,7 +13,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     @Serial
     private static final long serialVersionUID = 853570547915366909L;
 
-    static class Node implements Serializable{
+    static class Node implements Serializable {
 
         @Serial
         private static final long serialVersionUID = 756546866356744591L;
@@ -109,7 +109,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     public double getY(int index) throws IllegalArgumentException {
-        if (index < 0 || index >=count)
+        if (index < 0 || index >= count)
             throw new IllegalArgumentException("Incorrect index");
         return getNode(index).y;
     }
@@ -120,7 +120,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         getNode(index).y = value;
     }
 
-    public int indexOfX(double x)  {
+    public int indexOfX(double x) {
 
         int ans = -1;
         Node temp = head;
@@ -275,15 +275,16 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             Node node = head;
 
             @Override
-            public boolean hasNext(){
+            public boolean hasNext() {
                 return node != null;
             }
+
             @Override
-            public Point next() throws NoSuchElementException{
+            public Point next() throws NoSuchElementException {
                 if (!hasNext())
                     throw new NoSuchElementException();
-                else{
-                    Point curPoint = new Point(node.x,node.y);
+                else {
+                    Point curPoint = new Point(node.x, node.y);
                     node = node.next;
                     if (node == head)
                         node = null;

@@ -25,9 +25,9 @@ public class MultiplyingTaskExecutor {
             thread.start();
         }
 
-       while (!taskMap.isEmpty()) {
-           taskMap.values().removeIf(MultiplyingTask::isFinished); // removeIf() is safe unlike iterator
-       }
+        while (!taskMap.isEmpty()) {
+            taskMap.values().removeIf(MultiplyingTask::isFinished); // removeIf() is safe unlike iterator
+        }
 
         for (int i = 0; i < function.getCount(); i++) {
             System.out.println("x: " + function.getX(i) + ", y: " + function.getY(i));

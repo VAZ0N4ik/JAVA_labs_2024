@@ -4,9 +4,9 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFun
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.LinkedListTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
 
-public class ArrayTabulatedFunctionFactory implements TabulatedFunctionFactory{
+public class ArrayTabulatedFunctionFactory implements TabulatedFunctionFactory {
     @Override
-    public TabulatedFunction create(double[] xValues, double[] yValues){
-        return new ArrayTabulatedFunction(xValues,yValues);
+    public TabulatedFunction create(double[] xValues, double[] yValues) {
+        return new ArrayTabulatedFunction(xValues, yValues);
     }
 }
