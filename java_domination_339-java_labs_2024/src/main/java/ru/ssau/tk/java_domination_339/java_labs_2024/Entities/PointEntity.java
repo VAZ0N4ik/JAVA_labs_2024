@@ -29,11 +29,11 @@ public class PointEntity {
         this.functionEntity = functionEntity;
     }
 
-    public long getId() {
+    public long getPointId() {
         return pointId;
     }
 
-    public void setId(long pointId) {
+    public void setPointId(long pointId) {
         this.pointId = pointId;
     }
 

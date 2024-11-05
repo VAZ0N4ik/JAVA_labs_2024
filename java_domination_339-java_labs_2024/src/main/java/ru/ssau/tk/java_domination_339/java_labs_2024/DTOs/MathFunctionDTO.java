@@ -36,7 +36,7 @@ public class MathFunctionDTO {
         return type;
     }
 
-    public static void setType(String type) {
+    public void setType(String type) {
         MathFunctionDTO.type = type;
     }
 
@@ -72,11 +72,11 @@ public class MathFunctionDTO {
         isCompMethod = compMethod;
     }
 
-    public List<PointDTO> getPontsDTO() {
+    public List<PointDTO> getPointsDTO() {
         return pointsDTO;
     }
 
-    public void setPontsDTO(List<PointDTO> pontsDTO) {
+    public void setPointsDTO(List<PointDTO> pontsDTO) {
         this.pointsDTO = pontsDTO;
     }
 }
