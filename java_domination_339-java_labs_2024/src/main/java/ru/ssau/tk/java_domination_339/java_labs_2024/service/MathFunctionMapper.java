@@ -19,4 +19,20 @@ public class MathFunctionMapper {
 
         return dto;
     }
+
+    public static MathFunctionEntity functionDTOToEntity(MathFunctionDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        MathFunctionEntity entity = new MathFunctionEntity();
+        entity.setCompMethod(dto.getCompMethod());
+        entity.setFunctionId(dto.getFunctionId());
+        entity.setType(dto.getType());
+        entity.setCount(dto.getCount());
+        entity.setStart(dto.getStart());
+        entity.setEnd(dto.getEnd());
+
+        return entity;
+    }
 }

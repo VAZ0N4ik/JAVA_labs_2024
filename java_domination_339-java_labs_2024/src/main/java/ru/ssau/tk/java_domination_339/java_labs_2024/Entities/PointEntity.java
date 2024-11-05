@@ -17,12 +17,12 @@ public class PointEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "functionId")
-    private MathFunctionEntity functionEntity;
+    private Long functionEntity;
 
     public PointEntity() {
     }
 
-    public PointEntity(long pointId, double x, double y, MathFunctionEntity functionEntity) {
+    public PointEntity(long pointId, double x, double y, Long functionEntity) {
         this.pointId = pointId;
         this.x = x;
         this.y = y;
@@ -53,11 +53,11 @@ public class PointEntity {
         this.y = y;
     }
 
-    public MathFunctionEntity getFunctionEntity() {
+    public Long getFunctionEntity() {
         return functionEntity;
     }
 
-    public void setFunctionEntity(MathFunctionEntity functionEntity) {
+    public void setFunctionEntity(Long functionEntity) {
         this.functionEntity = functionEntity;
     }
 }

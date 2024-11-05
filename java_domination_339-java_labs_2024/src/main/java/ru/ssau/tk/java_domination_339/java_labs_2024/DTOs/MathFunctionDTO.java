@@ -32,7 +32,7 @@ public class MathFunctionDTO {
         this.functionId = functionId;
     }
 
-    public static String getType() {
+    public String getType() {
         return type;
     }
 
@@ -64,7 +64,7 @@ public class MathFunctionDTO {
         this.count = count;
     }
 
-    public boolean isCompMethod() {
+    public boolean getCompMethod() {
         return isCompMethod;
     }
 
@@ -76,7 +76,7 @@ public class MathFunctionDTO {
         return pointsDTO;
     }
 
-    public void setPointsDTO(List<PointDTO> pontsDTO) {
-        this.pointsDTO = pontsDTO;
+    public void setPointsDTO(List<PointDTO> pointsDTO) {
+        this.pointsDTO = pointsDTO;
     }
 }

@@ -17,5 +17,17 @@ public class PointMapper {
         dto.setFunctionEntity(dto.getFunctionEntity());
         return dto;
     }
+
+    public static PointEntity functionEntityToDTO(PointDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+        PointEntity entity = new PointEntity();
+        entity.setPointId(dto.getPointId());
+        entity.setX(dto.getX());
+        entity.setY(dto.getY());
+        entity.setFunctionEntity(dto.getFunctionEntity());
+        return entity;
+    }
 }
 
