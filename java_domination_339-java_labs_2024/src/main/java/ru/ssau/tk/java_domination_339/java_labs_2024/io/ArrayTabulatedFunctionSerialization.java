@@ -1,7 +1,6 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.io;
 
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFunction;
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.*;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.java_domination_339.java_labs_2024.operations.TabulatedDifferentialOperator;
 
@@ -17,6 +16,9 @@ public class ArrayTabulatedFunctionSerialization {
             TabulatedDifferentialOperator operator = new TabulatedDifferentialOperator(new ArrayTabulatedFunctionFactory());
             TabulatedFunction function2 = operator.derive(function1);
             TabulatedFunction function3 = operator.derive(function2);
+
+
+
 
             FunctionsIO.serialize(outputStream, function1);
             FunctionsIO.serialize(outputStream, function2);

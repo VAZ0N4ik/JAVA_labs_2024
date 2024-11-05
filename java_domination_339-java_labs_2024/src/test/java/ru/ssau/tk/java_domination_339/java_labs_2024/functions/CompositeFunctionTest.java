@@ -110,4 +110,16 @@ class CompositeFunctionTest {
         assertEquals(-0.55,new CompositeFunction(nm,f9).apply(15),1e-2);
 
     }
+
+    @Test
+    public void NameTest(){
+        ArrayTabulatedFunction f9 = new ArrayTabulatedFunction(new double[]{1,2,3,4}, new double[]{1,2,3,4});
+        UnitFunction f10 = new UnitFunction();
+        CompositeFunction composite1 = new CompositeFunction(f9,f10);
+        ConstantFunction constant = new ConstantFunction(2);
+        CompositeFunction composite3 = new CompositeFunction(constant, new SqrFunction());
+        MathFunction andThen = composite3.andThen(composite1);
+        assertEquals("",composite1.Name());
+        assertEquals("",composite3.Name());
+    }
 }

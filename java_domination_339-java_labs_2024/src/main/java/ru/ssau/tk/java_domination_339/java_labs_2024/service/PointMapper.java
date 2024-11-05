@@ -6,7 +6,7 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.Entities.MathFunctionEntity
 import ru.ssau.tk.java_domination_339.java_labs_2024.Entities.PointEntity;
 
 public class PointMapper {
-    public static PointDTO functionEntityToDTO(PointEntity entity) {
+    public static PointDTO pointEntityToDTO(PointEntity entity) {
         if (entity == null) {
             return null;
         }
@@ -18,7 +18,7 @@ public class PointMapper {
         return dto;
     }
 
-    public static PointEntity functionEntityToDTO(PointDTO dto) {
+    public static PointEntity pointDTOToEntity(PointDTO dto) {
         if (dto == null) {
             return null;
         }
