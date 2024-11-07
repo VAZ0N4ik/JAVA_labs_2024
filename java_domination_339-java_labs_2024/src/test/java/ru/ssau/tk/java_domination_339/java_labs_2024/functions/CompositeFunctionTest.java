@@ -119,7 +119,12 @@ class CompositeFunctionTest {
         ConstantFunction constant = new ConstantFunction(2);
         CompositeFunction composite3 = new CompositeFunction(constant, new SqrFunction());
         MathFunction andThen = composite3.andThen(composite1);
-        assertEquals("",composite1.Name());
-        assertEquals("",composite3.Name());
+        assertEquals("CompositeFunction ArrayTabulatedFunction size = 4\n" +
+                "[1.0; 1.0]\n" +
+                "[2.0; 2.0]\n" +
+                "[3.0; 3.0]\n" +
+                "[4.0; 4.0] UnitFunction",composite1.Name());
+        assertEquals("CompositeFunction ConstantFunction SqrFunction",composite3.Name());
     }
+
 }
