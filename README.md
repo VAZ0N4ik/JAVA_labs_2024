@@ -37,9 +37,9 @@
 
 ЛР5
 ---
-***in progress***
-- [ ] Task 1
-- [ ] Task 2
+**Completed**
+- [x] Task 1
+- [x] Task 2
 
 ЛР6
 ---
