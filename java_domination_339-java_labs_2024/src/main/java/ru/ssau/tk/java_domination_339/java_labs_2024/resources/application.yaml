@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: MathApplication
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: domination
+    password: domination
+    url: jdbc:postgresql://localhost:5432/database
+
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8080

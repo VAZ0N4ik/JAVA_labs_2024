@@ -17,9 +17,6 @@ public class ArrayTabulatedFunctionSerialization {
             TabulatedFunction function2 = operator.derive(function1);
             TabulatedFunction function3 = operator.derive(function2);
 
-
-
-
             FunctionsIO.serialize(outputStream, function1);
             FunctionsIO.serialize(outputStream, function2);
             FunctionsIO.serialize(outputStream, function3);
