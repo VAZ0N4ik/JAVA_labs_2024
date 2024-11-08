@@ -4,7 +4,7 @@ public class CompositeFunction implements MathFunction {
     private MathFunction firstFunction;
     private MathFunction secondFunction;
 
-    CompositeFunction(MathFunction first, MathFunction second) {
+    public CompositeFunction(MathFunction first, MathFunction second) {
         firstFunction = first;
         secondFunction = second;
     }
@@ -12,5 +12,10 @@ public class CompositeFunction implements MathFunction {
     @Override
     public double apply(double x) {
         return (secondFunction.apply(firstFunction.apply(x)));
+    }
+
+    @Override
+    public String Name() {
+        return this.getClass().getSimpleName() + " " + firstFunction.Name() + " " +secondFunction.Name();
     }
 }

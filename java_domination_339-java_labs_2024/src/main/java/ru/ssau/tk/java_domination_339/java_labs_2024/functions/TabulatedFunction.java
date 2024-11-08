@@ -1,6 +1,8 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.functions;
 
 public interface TabulatedFunction extends MathFunction, Iterable<Point> {
+
+
     int getCount();
 
     double getX(int index);

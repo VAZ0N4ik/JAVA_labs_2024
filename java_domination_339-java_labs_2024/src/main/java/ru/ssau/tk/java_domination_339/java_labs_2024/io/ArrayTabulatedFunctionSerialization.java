@@ -1,7 +1,6 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.io;
 
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFunction;
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.*;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.java_domination_339.java_labs_2024.operations.TabulatedDifferentialOperator;
 
