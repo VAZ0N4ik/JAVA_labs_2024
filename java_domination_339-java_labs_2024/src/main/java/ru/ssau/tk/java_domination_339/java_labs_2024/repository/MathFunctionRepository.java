@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 public interface MathFunctionRepository extends JpaRepository<MathFunctionEntity, Integer> {
 
-    Stream<MathFunctionEntity> findAllStream();
+    List<MathFunctionEntity> findAllBy();
 
     Optional<MathFunctionEntity> findByHash(Integer id);
 
