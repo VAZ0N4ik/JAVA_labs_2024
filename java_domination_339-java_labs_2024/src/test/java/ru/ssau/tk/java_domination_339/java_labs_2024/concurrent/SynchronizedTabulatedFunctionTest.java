@@ -94,14 +94,14 @@ class SynchronizedTabulatedFunctionTest {
         int i = 0;
         while (iterator1.hasNext()) {
             Point point = iterator1.next();
-            assertEquals(clList1.getX(i), point.x,eps);
-            assertEquals(clList1.getY(i), point.y,eps);
+            assertEquals(clList1.getX(i), point.x, eps);
+            assertEquals(clList1.getY(i), point.y, eps);
             ++i;
         }
         i = 0;
-        for (Point point : clList1){
-            assertEquals(clList1.getX(i), point.x,eps);
-            assertEquals(clList1.getY(i), point.y,eps);
+        for (Point point : clList1) {
+            assertEquals(clList1.getX(i), point.x, eps);
+            assertEquals(clList1.getY(i), point.y, eps);
             ++i;
         }
     }
@@ -112,7 +112,7 @@ class SynchronizedTabulatedFunctionTest {
 
     @BeforeEach
     void setUp() {
-        originalFunction = new ArrayTabulatedFunction(new double[] {1, 2, 3, 4, 5}, new double[] {1, 8, 27, 64, 125});
+        originalFunction = new ArrayTabulatedFunction(new double[]{1, 2, 3, 4, 5}, new double[]{1, 8, 27, 64, 125});
         syncFunction = new SynchronizedTabulatedFunction(originalFunction);
     }
 

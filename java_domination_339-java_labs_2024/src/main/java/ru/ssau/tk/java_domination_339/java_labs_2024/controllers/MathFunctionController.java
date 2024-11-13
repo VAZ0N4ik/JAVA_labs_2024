@@ -2,19 +2,13 @@ package ru.ssau.tk.java_domination_339.java_labs_2024.controllers;
 
 
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import ru.ssau.tk.java_domination_339.java_labs_2024.MathApplication;
 import ru.ssau.tk.java_domination_339.java_labs_2024.dto.MathFunctionDto;
 import ru.ssau.tk.java_domination_339.java_labs_2024.dto.builder.MathFunctionDtoBuilder;
 import ru.ssau.tk.java_domination_339.java_labs_2024.entities.MathFunctionEntity;
 import ru.ssau.tk.java_domination_339.java_labs_2024.repository.MathFunctionRepository;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Transactional
@@ -27,8 +21,8 @@ public class MathFunctionController {
 
 
     @PostMapping("/api/functions")
-    public ResponseEntity<MathFunctionDto> createOrUpdateMathFunction(@RequestBody MathFunctionEntity function){
-        MathFunctionEntity functionEntity =mathFunctionRepository.save(function);
+    public ResponseEntity<MathFunctionDto> createOrUpdateMathFunction(@RequestBody MathFunctionEntity function) {
+        MathFunctionEntity functionEntity = mathFunctionRepository.save(function);
         //TODO throw exceptions and if update change just array
         //MathFunctionEntity foundFunction = mathFunctionRepository.findById(Math.toIntExact(function.getHash())).orElse(null);
         MathFunctionDto dto = MathFunctionDtoBuilder.makeMathFunctionDto(functionEntity);

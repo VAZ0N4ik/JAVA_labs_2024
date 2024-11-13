@@ -8,13 +8,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CompositeFunctionTest {
     CompositeFunction cF, secondCF;
-    IdentityFunction iF1,iF2,iF3;
+    IdentityFunction iF1, iF2, iF3;
+
     @Test
-    void test(){
+    void test() {
         iF1 = new IdentityFunction();
         iF2 = new IdentityFunction();
         iF3 = new IdentityFunction();
-        secondCF = new CompositeFunction(iF1,iF2);
+        secondCF = new CompositeFunction(iF1, iF2);
         cF = new CompositeFunction(iF3, secondCF);
         Assertions.assertEquals(10, secondCF.apply(10), 0.00000000001);
         Assertions.assertEquals(23434.00001, cF.apply(23434.00001), 0.00000000001);
@@ -44,7 +45,7 @@ class CompositeFunctionTest {
         LinkedListTabulatedFunction f3 = new LinkedListTabulatedFunction(xValues, yValues);
 
         // f3(2) = 2, f4(x) = x^2
-        MathFunction f4 = x ->  x * x;
+        MathFunction f4 = x -> x * x;
 
         MathFunction andThenFunction = f3.andThen(f4);
 
@@ -87,35 +88,33 @@ class CompositeFunctionTest {
         // composite2(9) = f7(f8(9)) = f7(81) = 163
         assertEquals(163, andThenFunction.apply(1), 1e-9);
     }
+
     @Test
-    public void testComposite(){
-        ArrayTabulatedFunction f9 = new ArrayTabulatedFunction(new double[]{1,2,3,4}, new double[]{1,2,3,4});
+    public void testComposite() {
+        ArrayTabulatedFunction f9 = new ArrayTabulatedFunction(new double[]{1, 2, 3, 4}, new double[]{1, 2, 3, 4});
         UnitFunction f10 = new UnitFunction();
-        CompositeFunction composite1 = new CompositeFunction(f9,f10);
+        CompositeFunction composite1 = new CompositeFunction(f9, f10);
         ConstantFunction constant = new ConstantFunction(2);
         CompositeFunction composite3 = new CompositeFunction(constant, new SqrFunction());
         MathFunction andThen = composite3.andThen(composite1);
 
-        assertEquals(1, composite1.apply(6),1e-9);
-        assertEquals(1, composite1.apply(-100),1e-9);
-        assertEquals(1, andThen.apply(100),1e-9);
-        assertEquals(4,composite3.apply(100),1e-9);
+        assertEquals(1, composite1.apply(6), 1e-9);
+        assertEquals(1, composite1.apply(-100), 1e-9);
+        assertEquals(1, andThen.apply(100), 1e-9);
+        assertEquals(4, composite3.apply(100), 1e-9);
 
-        MathFunction mf = new MathFunction(){
-            public double apply(double x) {
-                return x * x * x + 2*x*x -x  - 1;}
-            };
+        MathFunction mf = x -> x * x * x + 2 * x * x - x - 1;
         NewtonMethodFunction nm = new NewtonMethodFunction(mf, 0);
 
-        assertEquals(-0.55,new CompositeFunction(nm,f9).apply(15),1e-2);
+        assertEquals(-0.55, new CompositeFunction(nm, f9).apply(15), 1e-2);
 
     }
 
     @Test
-    public void NameTest(){
-        ArrayTabulatedFunction f9 = new ArrayTabulatedFunction(new double[]{1,2,3,4}, new double[]{1,2,3,4});
+    public void NameTest() {
+        ArrayTabulatedFunction f9 = new ArrayTabulatedFunction(new double[]{1, 2, 3, 4}, new double[]{1, 2, 3, 4});
         UnitFunction f10 = new UnitFunction();
-        CompositeFunction composite1 = new CompositeFunction(f9,f10);
+        CompositeFunction composite1 = new CompositeFunction(f9, f10);
         ConstantFunction constant = new ConstantFunction(2);
         CompositeFunction composite3 = new CompositeFunction(constant, new SqrFunction());
         MathFunction andThen = composite3.andThen(composite1);
@@ -123,8 +122,8 @@ class CompositeFunctionTest {
                 "[1.0; 1.0]\n" +
                 "[2.0; 2.0]\n" +
                 "[3.0; 3.0]\n" +
-                "[4.0; 4.0] UnitFunction",composite1.Name());
-        assertEquals("CompositeFunction ConstantFunction SqrFunction",composite3.Name());
+                "[4.0; 4.0] UnitFunction", composite1.Name());
+        assertEquals("CompositeFunction ConstantFunction SqrFunction", composite3.Name());
     }
 
 }

@@ -7,7 +7,6 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFun
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.LinkedListTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.SqrFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.LinkedListTabulatedFunctionFactory;
 import ru.ssau.tk.java_domination_339.java_labs_2024.operations.TabulatedDifferentialOperator;
 
@@ -96,7 +95,7 @@ public class FunctionsIOTest {
 
         assertEquals(function.getCount(), deserializedFunction.getCount());
         for (int i = 0; i < function.getCount(); i++) {
-            assertEquals(function.getX(i), deserializedFunction.getX(i),10e-9);
+            assertEquals(function.getX(i), deserializedFunction.getX(i), 10e-9);
             assertEquals(function.getY(i), deserializedFunction.getY(i), 10e-9);
         }
     }

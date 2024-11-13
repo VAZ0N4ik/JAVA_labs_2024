@@ -1,3 +1,5 @@
+package ru.ssau.tk.java_domination_339.java_labs_2024.repository;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;

@@ -7,7 +7,7 @@ class IdentityFunctionTest {
     IdentityFunction IF;
 
     @Test
-    void test(){
+    void test() {
         IF = new IdentityFunction();
         Assertions.assertEquals(10, IF.apply(10), 0.00000000001);
         Assertions.assertEquals(23434.00001, IF.apply(23434.00001), 0.00000000001);

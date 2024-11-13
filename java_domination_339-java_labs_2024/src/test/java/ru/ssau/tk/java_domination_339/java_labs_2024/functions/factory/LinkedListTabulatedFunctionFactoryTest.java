@@ -8,10 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LinkedListTabulatedFunctionFactoryTest {
     LinkedListTabulatedFunctionFactory fact = new LinkedListTabulatedFunctionFactory();
+
     @Test
     void create() {
-        assertInstanceOf(LinkedListTabulatedFunction.class, fact.create(new double[]{1, 2, 3}, new double[]{1, 2,3}));
-        assertInstanceOf(LinkedListTabulatedFunction.class, fact.create(new double[]{0,1}, new double[]{-1,-2}));
+        assertInstanceOf(LinkedListTabulatedFunction.class, fact.create(new double[]{1, 2, 3}, new double[]{1, 2, 3}));
+        assertInstanceOf(LinkedListTabulatedFunction.class, fact.create(new double[]{0, 1}, new double[]{-1, -2}));
     }
 
     @Test

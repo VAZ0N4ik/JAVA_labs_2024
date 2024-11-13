@@ -7,15 +7,16 @@ class ChordMethodFunctionTest {
     ChordMethodFunction cF1, cF2, cF3;
     MathFunction testF1, testF2, testF3;
     double testX1_1, testX2_1, testX1_2, testX2_2;
+
     @Test
-    void test(){
+    void test() {
         testX1_1 = 2;
         testX2_1 = 10;
         testX1_2 = -10;
         testX2_2 = 0;
         testF1 = x -> x * x * x - 18 * x - 83;
 
-        testF2 = x -> - (x * x * x) - ( x * x ) + 10 * x  - 83;
+        testF2 = x -> -(x * x * x) - (x * x) + 10 * x - 83;
 
         testF3 = x -> x;
 

@@ -11,7 +11,7 @@ import java.io.*;
 public class LinkedListTabulatedFunctionSerialization {
     public static void main(String[] args) {
         try (
-                BufferedOutputStream bufOut = new BufferedOutputStream(new FileOutputStream("output/serialized linked list functions.bin"));
+                BufferedOutputStream bufOut = new BufferedOutputStream(new FileOutputStream("output/serialized linked list functions.bin"))
         ) {
             TabulatedFunction ll = new LinkedListTabulatedFunction(new SqrFunction(), 1, 3, 3);
             TabulatedDifferentialOperator der = new TabulatedDifferentialOperator(new LinkedListTabulatedFunctionFactory());
@@ -26,9 +26,7 @@ public class LinkedListTabulatedFunctionSerialization {
         try (BufferedInputStream bufIN = new BufferedInputStream(new FileInputStream("output/serialized linked list functions.bin"))) {
 
             TabulatedFunction ll = FunctionsIO.deserialize(bufIN);
-            ;
             TabulatedFunction firstDer = FunctionsIO.deserialize(bufIN);
-            ;
             TabulatedFunction secondDer = FunctionsIO.deserialize(bufIN);
 
             System.out.println(ll.toString());

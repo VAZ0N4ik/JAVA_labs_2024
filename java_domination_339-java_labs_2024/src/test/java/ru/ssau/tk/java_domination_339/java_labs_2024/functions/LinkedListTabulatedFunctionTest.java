@@ -6,7 +6,6 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.DifferentLengthO
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,10 +19,11 @@ class LinkedListTabulatedFunctionTest {
     LinkedListTabulatedFunction dList3 = new LinkedListTabulatedFunction(new ConstantFunction(3), 5, -5, 5);
 
     @Test
-    void testToString(){
+    void testToString() {
         assertEquals("LinkedListTabulatedFunction size = 3\n[1.0; 9.0]\n[2.0; 10.0]\n[3.0; 15.0]", clList2.toString());
         assertEquals("LinkedListTabulatedFunction size = 5\n[-5.0; 3.0]\n[-2.5; 3.0]\n[0.0; 3.0]\n[2.5; 3.0]\n[5.0; 3.0]", dList3.toString());
     }
+
     @Test
     void testGetCount() {
         assertEquals(5, clList1.getCount(), eps);
@@ -81,10 +81,10 @@ class LinkedListTabulatedFunctionTest {
         assertEquals(-100, clList1.getY(0), eps);
         assertEquals(100, clList2.getY(2), eps);
         assertEquals(-9.5, dList1.getY(1), eps);
-        assertThrows(IllegalArgumentException.class, () -> clList1.setY(-1,0));
-        assertThrows(IllegalArgumentException.class, () -> clList1.setY(7,0));
-        assertThrows(IllegalArgumentException.class, () -> dList1.setY(-1,0));
-        assertThrows(IllegalArgumentException.class, () -> dList1.setY(30,0));
+        assertThrows(IllegalArgumentException.class, () -> clList1.setY(-1, 0));
+        assertThrows(IllegalArgumentException.class, () -> clList1.setY(7, 0));
+        assertThrows(IllegalArgumentException.class, () -> dList1.setY(-1, 0));
+        assertThrows(IllegalArgumentException.class, () -> dList1.setY(30, 0));
     }
 
     @Test
@@ -111,6 +111,7 @@ class LinkedListTabulatedFunctionTest {
         assertThrows(IllegalArgumentException.class, () -> dList1.floorIndexOfX(dList1.leftBound() - 1));
 
     }
+
     @Test
     void testExtrapolateLeft() {
         assertEquals(-12.85, clList1.extrapolateLeft(-10), eps);
@@ -218,9 +219,7 @@ class LinkedListTabulatedFunctionTest {
         double[] xValues = {1.0, 2.0, 3.0};
         double[] yValues = {1.0, 2.0}; // Different lengths
 
-        assertThrows(DifferentLengthOfArraysException.class, () -> {
-            new LinkedListTabulatedFunction(xValues, yValues);
-        });
+        assertThrows(DifferentLengthOfArraysException.class, () -> new LinkedListTabulatedFunction(xValues, yValues));
     }
 
     @Test
@@ -234,9 +233,7 @@ class LinkedListTabulatedFunctionTest {
         });
 
         // Should throw exception for unsorted array
-        assertThrows(ArrayIsNotSortedException.class, () -> {
-            new LinkedListTabulatedFunction(unsortedXValues, new double[]{1, 2, 3, 4});
-        });
+        assertThrows(ArrayIsNotSortedException.class, () -> new LinkedListTabulatedFunction(unsortedXValues, new double[]{1, 2, 3, 4}));
     }
 
     @Test
@@ -247,19 +244,19 @@ class LinkedListTabulatedFunctionTest {
     }
 
     @Test
-    void testIterator(){
+    void testIterator() {
         Iterator<Point> iterator1 = clList1.iterator();
         int i = 0;
         while (iterator1.hasNext()) {
             Point point = iterator1.next();
-            assertEquals(clList1.getX(i), point.x,eps);
-            assertEquals(clList1.getY(i), point.y,eps);
+            assertEquals(clList1.getX(i), point.x, eps);
+            assertEquals(clList1.getY(i), point.y, eps);
             ++i;
         }
         i = 0;
-        for (Point point : clList1){
-            assertEquals(clList1.getX(i), point.x,eps);
-            assertEquals(clList1.getY(i), point.y,eps);
+        for (Point point : clList1) {
+            assertEquals(clList1.getX(i), point.x, eps);
+            assertEquals(clList1.getY(i), point.y, eps);
             ++i;
         }
     }

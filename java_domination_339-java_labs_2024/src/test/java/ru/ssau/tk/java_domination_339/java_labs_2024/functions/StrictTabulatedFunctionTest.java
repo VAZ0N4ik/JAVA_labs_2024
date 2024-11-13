@@ -12,21 +12,22 @@ import static org.junit.jupiter.api.Assertions.*;
 class StrictTabulatedFunctionTest {
     double eps = 1e-8;
     StrictTabulatedFunction list = new StrictTabulatedFunction(new LinkedListTabulatedFunction(new double[]{-5, -3.6, 0.01, 1, 4}, new double[]{0, 3.6, 5, 100, 0.1}));
-    StrictTabulatedFunction array = new StrictTabulatedFunction(new ArrayTabulatedFunction(new double[]{1,2,3},new double[]{1,2,3}));
+    StrictTabulatedFunction array = new StrictTabulatedFunction(new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 2, 3}));
+
     @Test
     void iterator() {
         Iterator<Point> iterator1 = list.iterator();
         int i = 0;
         while (iterator1.hasNext()) {
             Point point = iterator1.next();
-            assertEquals(list.getX(i), point.x,eps);
-            assertEquals(list.getY(i), point.y,eps);
+            assertEquals(list.getX(i), point.x, eps);
+            assertEquals(list.getY(i), point.y, eps);
             ++i;
         }
         i = 0;
-        for (Point point : list){
-            assertEquals(list.getX(i), point.x,eps);
-            assertEquals(list.getY(i), point.y,eps);
+        for (Point point : list) {
+            assertEquals(list.getX(i), point.x, eps);
+            assertEquals(list.getY(i), point.y, eps);
             ++i;
         }
 
@@ -34,42 +35,42 @@ class StrictTabulatedFunctionTest {
         i = 0;
         while (iterator2.hasNext()) {
             Point point = iterator2.next();
-            assertEquals(array.getX(i), point.x,eps);
-            assertEquals(array.getY(i), point.y,eps);
+            assertEquals(array.getX(i), point.x, eps);
+            assertEquals(array.getY(i), point.y, eps);
             ++i;
         }
         i = 0;
-        for (Point point : array){
-            assertEquals(array.getX(i), point.x,eps);
-            assertEquals(array.getY(i), point.y,eps);
+        for (Point point : array) {
+            assertEquals(array.getX(i), point.x, eps);
+            assertEquals(array.getY(i), point.y, eps);
             ++i;
         }
     }
 
     @Test
     void getCount() {
-        assertEquals(3,array.getCount(), eps);
-        assertEquals(5,list.getCount(), eps);
+        assertEquals(3, array.getCount(), eps);
+        assertEquals(5, list.getCount(), eps);
     }
 
     @Test
     void getX() {
-        assertEquals(1,array.getX(0), eps);
-        assertEquals(-5,list.getX(0), eps);
+        assertEquals(1, array.getX(0), eps);
+        assertEquals(-5, list.getX(0), eps);
     }
 
     @Test
     void getY() {
-        assertEquals(1,array.getY(0), eps);
-        assertEquals(0,list.getY(0), eps);
+        assertEquals(1, array.getY(0), eps);
+        assertEquals(0, list.getY(0), eps);
     }
 
     @Test
     void setY() {
-        list.setY(0,5);
-        array.setY(0,5);
-        assertEquals(5,array.getY(0), eps);
-        assertEquals(5,list.getY(0), eps);
+        list.setY(0, 5);
+        array.setY(0, 5);
+        assertEquals(5, array.getY(0), eps);
+        assertEquals(5, list.getY(0), eps);
     }
 
     @Test
@@ -98,40 +99,38 @@ class StrictTabulatedFunctionTest {
 
     @Test
     void apply() {
-        assertEquals(0,list.apply(-5));
-        assertEquals(3.6,list.apply(-3.6));
-        assertEquals(1,array.apply(1));
-        assertEquals(2,array.apply(2));
-        assertThrows(UnsupportedOperationException.class,()->list.apply(100));
-        assertThrows(UnsupportedOperationException.class,()->array.apply(4));
+        assertEquals(0, list.apply(-5));
+        assertEquals(3.6, list.apply(-3.6));
+        assertEquals(1, array.apply(1));
+        assertEquals(2, array.apply(2));
+        assertThrows(UnsupportedOperationException.class, () -> list.apply(100));
+        assertThrows(UnsupportedOperationException.class, () -> array.apply(4));
     }
-
-
 
 
     @Test
-    void testUnmodifiable(){
-        LinkedListTabulatedFunction ll = new LinkedListTabulatedFunction(new double[]{1.1,2.2,3.3},new double[] {3.3,4.4,5.5});
+    void testUnmodifiable() {
+        LinkedListTabulatedFunction ll = new LinkedListTabulatedFunction(new double[]{1.1, 2.2, 3.3}, new double[]{3.3, 4.4, 5.5});
         UnmodifiableTabulatedFunction unmod = new UnmodifiableTabulatedFunction(ll);
         StrictTabulatedFunction strict = new StrictTabulatedFunction(unmod);
-        assertThrows(UnsupportedOperationException.class,()->strict.apply(100));
-        assertThrows(UnsupportedOperationException.class,()->strict.apply(1.5));
-        assertThrows(UnsupportedOperationException.class,()->strict.setY(1,1));
-        assertThrows(UnsupportedOperationException.class,()->strict.setY(3,1));
+        assertThrows(UnsupportedOperationException.class, () -> strict.apply(100));
+        assertThrows(UnsupportedOperationException.class, () -> strict.apply(1.5));
+        assertThrows(UnsupportedOperationException.class, () -> strict.setY(1, 1));
+        assertThrows(UnsupportedOperationException.class, () -> strict.setY(3, 1));
 
-        LinkedListTabulatedFunction arr = new LinkedListTabulatedFunction(new double[]{-1,0,1.1},new double[] {3.3,4.4,5.5});
+        LinkedListTabulatedFunction arr = new LinkedListTabulatedFunction(new double[]{-1, 0, 1.1}, new double[]{3.3, 4.4, 5.5});
         UnmodifiableTabulatedFunction unmod2 = new UnmodifiableTabulatedFunction(arr);
         StrictTabulatedFunction strict2 = new StrictTabulatedFunction(unmod);
-        assertThrows(UnsupportedOperationException.class,()->strict2.apply(100));
-        assertThrows(UnsupportedOperationException.class,()->strict2.apply(1.5));
-        assertThrows(UnsupportedOperationException.class,()->strict2.setY(1,1));
-        assertThrows(UnsupportedOperationException.class,()->strict2.setY(3,1));
+        assertThrows(UnsupportedOperationException.class, () -> strict2.apply(100));
+        assertThrows(UnsupportedOperationException.class, () -> strict2.apply(1.5));
+        assertThrows(UnsupportedOperationException.class, () -> strict2.setY(1, 1));
+        assertThrows(UnsupportedOperationException.class, () -> strict2.setY(3, 1));
     }
 
     private double[] xValues = new double[]{1.0, 2.0, 3.0};
-    private double[] yValues= new double[]{2.0, 4.0, 6.0};
+    private double[] yValues = new double[]{2.0, 4.0, 6.0};
 
-    private TabulatedFunctionFactory arrayFactory = new ArrayTabulatedFunctionFactory();;
+    private TabulatedFunctionFactory arrayFactory = new ArrayTabulatedFunctionFactory();
     private TabulatedFunctionFactory linkedListFactory = new LinkedListTabulatedFunctionFactory();
 
     @Test
