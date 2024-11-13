@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public interface MathFunctionRepository extends JpaRepository<MathFunctionEntity, Integer> {
+public interface MathFunctionRepository extends JpaRepository<MathFunctionEntity, Long> {
 
     List<MathFunctionEntity> findAllBy();
 
     Stream<MathFunctionEntity> streamAllBy();
 
-    Optional<MathFunctionEntity> findByHash(Integer id);
+    Optional<MathFunctionEntity> findByHash(Long id);
 
     List<MathFunctionEntity> findByName(String functionName);
 

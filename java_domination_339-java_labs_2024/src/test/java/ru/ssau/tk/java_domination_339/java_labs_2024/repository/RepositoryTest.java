@@ -11,8 +11,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.ssau.tk.java_domination_339.java_labs_2024.MathApplication;
 import ru.ssau.tk.java_domination_339.java_labs_2024.entities.MathFunctionEntity;
 import ru.ssau.tk.java_domination_339.java_labs_2024.entities.PointEntity;
-import ru.ssau.tk.java_domination_339.java_labs_2024.repository.MathFunctionRepository;
-import ru.ssau.tk.java_domination_339.java_labs_2024.repository.PointRepository;
 
 import java.time.Instant;
 
@@ -80,7 +78,7 @@ public class RepositoryTest {
 
         mathFunctionRepository.save(function);
 
-        MathFunctionEntity foundFunction = mathFunctionRepository.findById(Math.toIntExact(function.getHash())).orElse(null);
+        MathFunctionEntity foundFunction = mathFunctionRepository.findById(function.getHash()).orElse(null);
         assertThat(foundFunction).isNotNull();
         assertThat(foundFunction.getName()).isEqualTo("Test Function");
     }
@@ -95,7 +93,7 @@ public class RepositoryTest {
 
         mathFunctionRepository.delete(function);
 
-        MathFunctionEntity foundFunction = mathFunctionRepository.findById(Math.toIntExact(function.getHash())).orElse(null);
+        MathFunctionEntity foundFunction = mathFunctionRepository.findById(function.getHash()).orElse(null);
         assertThat(foundFunction).isNull();
     }
 }

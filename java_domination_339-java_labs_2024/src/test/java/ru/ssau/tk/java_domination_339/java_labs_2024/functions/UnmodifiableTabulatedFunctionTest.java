@@ -106,13 +106,9 @@ public class UnmodifiableTabulatedFunctionTest {
         TabulatedFunction strictFunction = new StrictTabulatedFunction(baseFunction);
         TabulatedFunction unmodifiableFunction = new UnmodifiableTabulatedFunction(strictFunction);
 
-        assertThrows(UnsupportedOperationException.class, () -> {
-            unmodifiableFunction.setY(1, 5);
-        });
+        assertThrows(UnsupportedOperationException.class, () -> unmodifiableFunction.setY(1, 5));
 
-        assertThrows(UnsupportedOperationException.class, () -> {
-            unmodifiableFunction.apply(0.5);
-        });
+        assertThrows(UnsupportedOperationException.class, () -> unmodifiableFunction.apply(0.5));
     }
 
     @Test
@@ -124,13 +120,9 @@ public class UnmodifiableTabulatedFunctionTest {
         assertEquals(0, strict.getY(0));
         assertEquals(4, strict.getY(2));
 
-        assertThrows(UnsupportedOperationException.class, () -> {
-            strict.setY(0, 10);
-        });
+        assertThrows(UnsupportedOperationException.class, () -> strict.setY(0, 10));
 
-        assertThrows(UnsupportedOperationException.class, () -> {
-            strict.apply(1.5);
-        });
+        assertThrows(UnsupportedOperationException.class, () -> strict.apply(1.5));
     }
 
 }

@@ -30,14 +30,14 @@ public class MathFunctionController {
     }
 
     @DeleteMapping("/api/functions/{hash}")
-    public ResponseEntity<Void> delete(@PathVariable Integer hash) {
+    public ResponseEntity<Void> delete(@PathVariable Long hash) {
         MathFunctionEntity entity = mathFunctionRepository.findByHash(hash).orElseThrow();
         mathFunctionRepository.delete(entity);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/api/functions/{hash}")
-    public ResponseEntity<MathFunctionDto> read(@PathVariable Integer hash) {
+    public ResponseEntity<MathFunctionDto> read(@PathVariable Long hash) {
         MathFunctionDto functionDTO = MathFunctionDtoBuilder.makeMathFunctionDto(mathFunctionRepository.findByHash(hash).orElse(null));
         return functionDTO != null ? ResponseEntity.ok(functionDTO) : ResponseEntity.notFound().build();
     }
