@@ -14,6 +14,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "functions")
+@Builder
 public class MathFunctionEntity {
 
     @Id
@@ -30,6 +31,12 @@ public class MathFunctionEntity {
 
     @Column(name = "modified_at")
     Instant updateAt;
+
+    public MathFunctionEntity(Long hash, String name, List<PointEntity> points){
+        this.hash = hash;
+        this.name = name;
+        this.points = points;
+    }
 
     @PrePersist
     public void prePersist() {

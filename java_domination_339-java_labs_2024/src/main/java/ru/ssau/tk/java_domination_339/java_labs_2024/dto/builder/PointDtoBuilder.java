@@ -6,7 +6,10 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.entities.PointEntity;
 public class PointDtoBuilder {
 
     public static PointDto makePointDto(PointEntity pointEntity) {
-        return PointDto.builder()
+        if(pointEntity == null) {
+            return null;
+        }
+        return PointDto.builder().id(pointEntity.getId())
                 .x(pointEntity.getX())
                 .y(pointEntity.getY())
                 .build();
