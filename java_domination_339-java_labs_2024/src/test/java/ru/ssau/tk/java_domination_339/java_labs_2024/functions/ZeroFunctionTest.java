@@ -7,7 +7,7 @@ class ZeroFunctionTest {
     ZeroFunction ZF;
 
     @Test
-    void test(){
+    void test() {
         ZF = new ZeroFunction();
         Assertions.assertEquals(0, ZF.apply(1000), 1e-9);
         Assertions.assertEquals(0, ZF.apply(68504.5664654), 1e-9);

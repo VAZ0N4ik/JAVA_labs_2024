@@ -1,8 +1,6 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.io;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFunction;
 import com.thoughtworks.xstream.XStream;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;

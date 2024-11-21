@@ -7,7 +7,7 @@ class SqrFunctionTest {
     SqrFunction SF;
 
     @Test
-    void test(){
+    void test() {
         SF = new SqrFunction();
         Assertions.assertEquals(10000, SF.apply(100), 0.00000000001);
         Assertions.assertEquals(0, SF.apply(0), 0.00000000001);

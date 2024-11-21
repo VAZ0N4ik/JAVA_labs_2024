@@ -71,12 +71,12 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction, Se
     }
 
     @Override
-    public String Name(){
+    public String Name() {
         return this.toString();
     }
 
     @Override
-    public int HashName(){
+    public int HashName() {
         return this.Name().hashCode();
     }
 }

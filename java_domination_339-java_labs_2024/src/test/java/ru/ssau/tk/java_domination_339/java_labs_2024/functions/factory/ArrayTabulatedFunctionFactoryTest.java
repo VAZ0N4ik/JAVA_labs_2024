@@ -8,10 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ArrayTabulatedFunctionFactoryTest {
     ArrayTabulatedFunctionFactory fact = new ArrayTabulatedFunctionFactory();
+
     @Test
     void create() {
-        assertInstanceOf(ArrayTabulatedFunction.class, fact.create(new double[]{1, 2, 3}, new double[]{1, 2,3}));
-        assertInstanceOf(ArrayTabulatedFunction.class, fact.create(new double[]{0,1}, new double[]{-1,-2}));
+        assertInstanceOf(ArrayTabulatedFunction.class, fact.create(new double[]{1, 2, 3}, new double[]{1, 2, 3}));
+        assertInstanceOf(ArrayTabulatedFunction.class, fact.create(new double[]{0, 1}, new double[]{-1, -2}));
     }
 
     @Test

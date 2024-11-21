@@ -7,7 +7,7 @@ class UnitFunctionTest {
     UnitFunction UF;
 
     @Test
-    void test(){
+    void test() {
         UF = new UnitFunction();
         Assertions.assertEquals(1, UF.apply(1000), 1e-9);
         Assertions.assertEquals(1, UF.apply(68504.5664654), 1e-9);

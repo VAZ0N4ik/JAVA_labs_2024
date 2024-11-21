@@ -18,7 +18,9 @@ public class MathFunctionDto {
     @JsonProperty("hash_function")
     private Long hashFunction;
 
-    @JsonProperty("countPoint")
+    private String name;
+
+    @JsonProperty("count_point")
     Integer countPoint;
 
     List<PointDto> points;

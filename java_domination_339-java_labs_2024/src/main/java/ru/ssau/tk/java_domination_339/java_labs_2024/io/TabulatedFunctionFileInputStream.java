@@ -1,7 +1,5 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.io;
 
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFunction;
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.LinkedListTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.LinkedListTabulatedFunctionFactory;
@@ -12,7 +10,7 @@ import java.io.*;
 public class TabulatedFunctionFileInputStream {
     public static void main(String[] args) {
         try (
-                BufferedInputStream bufOutArr = new BufferedInputStream(new FileInputStream("input/binary function.bin"));
+                BufferedInputStream bufOutArr = new BufferedInputStream(new FileInputStream("input/binary function.bin"))
 
         ) {
             TabulatedFunction arrFunc = FunctionsIO.readTabulatedFunction(bufOutArr, new ArrayTabulatedFunctionFactory());

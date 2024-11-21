@@ -18,13 +18,13 @@ class MathFunctionDtoBuilderTest {
     void makeMathFunctionDto() {
         Instant instantFromSeconds = Instant.ofEpochSecond(1622520000);
         Instant instantToSeconds = Instant.ofEpochSecond(1622520001);
-        MathFunctionEntity entity = new MathFunctionEntity(123L,"f", new ArrayList<PointEntity> (), instantFromSeconds ,instantToSeconds);
+        MathFunctionEntity entity = new MathFunctionEntity(123L, "f", new ArrayList<PointEntity>(), instantFromSeconds, instantToSeconds);
         MathFunctionDto dto = MathFunctionDtoBuilder.makeMathFunctionDto(entity);
         assertEquals(instantToSeconds, dto.getUpdateAt());
         assertEquals(instantFromSeconds, dto.getCreatedAt());
         assertEquals(0, dto.getCountPoint());
-        assertEquals(new ArrayList<PointDto> (),dto.getPoints());
-        assertEquals(123L,dto.getHashFunction());
+        assertEquals(new ArrayList<PointDto>(), dto.getPoints());
+        assertEquals(123L, dto.getHashFunction());
 
         entity.setHash(12L);
         entity.setName("a");
@@ -32,8 +32,8 @@ class MathFunctionDtoBuilderTest {
         assertEquals(instantToSeconds, entity.getUpdateAt());
         assertEquals(instantFromSeconds, entity.getCreatedAt());
         assertEquals("a", entity.getName());
-        assertEquals(new ArrayList<PointEntity> (),entity.getPoints());
-        assertEquals(12L,entity.getHash());
+        assertEquals(new ArrayList<PointEntity>(), entity.getPoints());
+        assertEquals(12L, entity.getHash());
 
 
     }

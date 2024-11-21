@@ -1,1 +1,2 @@
-INSERT INTO functionSchema.points (x, y) VALUES (?, ?);
+INSERT INTO functionSchema.points (x, y)
+VALUES (?, ?);

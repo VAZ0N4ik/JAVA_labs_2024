@@ -10,7 +10,7 @@ class PointDtoBuilderTest {
 
     @Test
     void makePointDto() {
-        PointEntity entity = new PointEntity(1L,1.0,2.0);
+        PointEntity entity = new PointEntity(1L, 1.0, 2.0);
         PointDto dto = PointDtoBuilder.makePointDto(entity);
         assertEquals(1.0, dto.getX());
         assertEquals(2.0, dto.getY());

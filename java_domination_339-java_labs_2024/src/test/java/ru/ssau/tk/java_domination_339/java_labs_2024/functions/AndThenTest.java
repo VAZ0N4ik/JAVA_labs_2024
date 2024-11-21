@@ -23,18 +23,13 @@ public class AndThenTest {
                 .andThen(new ConstantFunction(739));
 
         Assertions.assertEquals(739, MF.apply(15398.998), 1e-9);
-        Assertions.assertEquals(739, MF.apply(750*1e-7), 1e-9);
+        Assertions.assertEquals(739, MF.apply(750 * 1e-7), 1e-9);
     }
 
     @Test
     void test3() {
         MF = new ConstantFunction(0.0001)
-                .andThen(new ChordMethodFunction(0, 10, new MathFunction() {
-                    @Override
-                    public double apply(double x) {
-                        return x * x * x - 18 * x - 83;
-                    }
-                }));
+                .andThen(new ChordMethodFunction(0, 10, x -> x * x * x - 18 * x - 83));
 
         Assertions.assertEquals(5.7051, MF.apply(0.1), 0.001);
         Assertions.assertEquals(5.7051, MF.apply(1e-9), 0.001);

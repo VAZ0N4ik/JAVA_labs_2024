@@ -38,9 +38,7 @@ public class TabulatedFunctionOperationServiceTest {
         double[] xValues = {};
         double[] yValues = {};
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new ArrayTabulatedFunction(xValues, yValues);
-        });
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new ArrayTabulatedFunction(xValues, yValues));
         assertEquals("Length must be >=2", exception.getMessage());
     }
 
@@ -114,9 +112,7 @@ public class TabulatedFunctionOperationServiceTest {
         double[] xValues = {1.0, 2.0, 4.0}; // Different xValues
         TabulatedFunction inconsistentFunction = new ArrayTabulatedFunction(xValues, yValuesA);
 
-        assertThrows(InconsistentFunctionsException.class, () -> {
-            service.additionOperation(arrayFunction, inconsistentFunction);
-        });
+        assertThrows(InconsistentFunctionsException.class, () -> service.additionOperation(arrayFunction, inconsistentFunction));
     }
 
     @Test
@@ -124,9 +120,7 @@ public class TabulatedFunctionOperationServiceTest {
         double[] xValues = {1.0, 2.0, 4.0}; // Different xValues
         TabulatedFunction inconsistentFunction = new ArrayTabulatedFunction(xValues, yValuesA);
 
-        assertThrows(InconsistentFunctionsException.class, () -> {
-            service.substractionOperation(arrayFunction, inconsistentFunction);
-        });
+        assertThrows(InconsistentFunctionsException.class, () -> service.substractionOperation(arrayFunction, inconsistentFunction));
     }
 
     @Test
@@ -147,9 +141,7 @@ public class TabulatedFunctionOperationServiceTest {
         TabulatedFunction functionA = new ArrayTabulatedFunction(xValuesA, yValuesA);
         TabulatedFunction functionB = new ArrayTabulatedFunction(xValuesB, yValuesB);
 
-        assertThrows(InconsistentFunctionsException.class, () -> {
-            service.additionOperation(functionA, functionB);
-        });
+        assertThrows(InconsistentFunctionsException.class, () -> service.additionOperation(functionA, functionB));
     }
 
     @Test
@@ -162,11 +154,10 @@ public class TabulatedFunctionOperationServiceTest {
         TabulatedFunction functionA = new ArrayTabulatedFunction(xValuesA, yValuesA);
         TabulatedFunction functionB = new ArrayTabulatedFunction(xValuesB, yValuesB);
 
-        assertThrows(InconsistentFunctionsException.class, () -> {
-            service.substractionOperation(functionA, functionB);
-        });
+        assertThrows(InconsistentFunctionsException.class, () -> service.substractionOperation(functionA, functionB));
 
     }
+
     @Test
     public void testMultiplicationOperationWithLinkedListAndArray() {
         service.setFactory(new LinkedListTabulatedFunctionFactory());

@@ -6,8 +6,6 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.ArrayIsNotSorted
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.DifferentLengthOfArraysException;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InterpolationException;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.util.Iterator;
 
 public class ArrayTabulatedFunctionTest {
@@ -30,8 +28,8 @@ public class ArrayTabulatedFunctionTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> func.getX(func.count));
         Assertions.assertThrows(IllegalArgumentException.class, () -> func.getY(-1));
         Assertions.assertThrows(IllegalArgumentException.class, () -> func.getY(func.count));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> func.setY(-1,0));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> func.setY(func.count,0));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.setY(-1, 0));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.setY(func.count, 0));
 
     }
 
@@ -152,10 +150,10 @@ public class ArrayTabulatedFunctionTest {
         Assertions.assertEquals(0, func1.getCount()); // Count should be zero
     }
 
-    ArrayTabulatedFunction arrayForInsert = new ArrayTabulatedFunction(new double[]{-2,-1}, new double[]{-2,-1});
+    ArrayTabulatedFunction arrayForInsert = new ArrayTabulatedFunction(new double[]{-2, -1}, new double[]{-2, -1});
 
     @Test
-    public void testToString(){
+    public void testToString() {
         Assertions.assertEquals("ArrayTabulatedFunction size = 3\n[1.0; 1.0]\n[2.0; 2.0]\n[3.0; 3.0]", func1.toString());
         Assertions.assertEquals("ArrayTabulatedFunction size = 2\n[-2.0; -2.0]\n[-1.0; -1.0]", arrayForInsert.toString());
     }
@@ -189,9 +187,7 @@ public class ArrayTabulatedFunctionTest {
         double[] xValues = {1.0, 2.0, 3.0};
         double[] yValues = {1.0, 2.0}; // Different lengths
 
-        Assertions.assertThrows(DifferentLengthOfArraysException.class, () -> {
-            new ArrayTabulatedFunction(xValues, yValues);
-        });
+        Assertions.assertThrows(DifferentLengthOfArraysException.class, () -> new ArrayTabulatedFunction(xValues, yValues));
     }
 
     @Test
@@ -205,9 +201,7 @@ public class ArrayTabulatedFunctionTest {
         });
 
         // Should throw exception for unsorted array
-        Assertions.assertThrows(ArrayIsNotSortedException.class, () -> {
-            new ArrayTabulatedFunction(unsortedXValues, new double[]{1, 2, 3, 4});
-        });
+        Assertions.assertThrows(ArrayIsNotSortedException.class, () -> new ArrayTabulatedFunction(unsortedXValues, new double[]{1, 2, 3, 4}));
     }
 
     @Test

@@ -1,7 +1,5 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.concurrent;
 
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ConstantFunction;
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.LinkedListTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
 
 public class WriteTask implements Runnable {
