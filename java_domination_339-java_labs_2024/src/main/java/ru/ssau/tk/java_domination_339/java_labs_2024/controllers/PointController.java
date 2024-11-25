@@ -10,8 +10,6 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.entities.PointEntity;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.NotFoundException;
 import ru.ssau.tk.java_domination_339.java_labs_2024.repository.PointRepository;
 
-import java.util.Optional;
-
 @RestController
 public class PointController {
 
@@ -33,6 +31,7 @@ public class PointController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             PointEntity entity = pointRepository.findById(id).orElseThrow(() -> new NotFoundException("Can't find point with id " + id));
+            pointRepository.delete(entity);
             return ResponseEntity.ok().build();
         }
         catch (NotFoundException e) {

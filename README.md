@@ -43,13 +43,13 @@
 
 ЛР6
 ---
-***pending***
-- [ ] Task 1
-- [ ] Task 2
+**Completed**
+- [x] Task 1
+- [x] Task 2
 
 ЛР7
 ---
-***pending***
+***in progress***
 - [ ] Task 1
 - [ ] Task 2
 - [ ] Task 3
