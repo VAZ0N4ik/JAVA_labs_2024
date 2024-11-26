@@ -76,7 +76,7 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction, Se
     }
 
     @Override
-    public int HashName() {
+    public long HashName() {
         return this.Name().hashCode();
     }
 }
