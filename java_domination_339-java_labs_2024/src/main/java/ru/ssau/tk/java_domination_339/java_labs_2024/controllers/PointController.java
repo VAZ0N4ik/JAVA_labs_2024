@@ -11,6 +11,7 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.NotFoundExceptio
 import ru.ssau.tk.java_domination_339.java_labs_2024.repository.PointRepository;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class PointController {
 
     @Autowired

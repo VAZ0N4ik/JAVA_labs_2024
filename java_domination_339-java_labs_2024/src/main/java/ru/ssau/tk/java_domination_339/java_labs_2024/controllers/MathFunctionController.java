@@ -23,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class MathFunctionController {
     @Autowired
     MathFunctionRepository mathFunctionRepository;
