@@ -76,9 +76,9 @@ public class FunctionCreationController {
     ) {
         TabulatedFunctionFactoryType factoryType = settingsController.getCurrentFactoryType().getBody().getFactoryType();
 
-        MathFunction mathFunction = MathFunctionType.getLocalizedFunctionMap()
+        MathFunction mathFunction =  MathFunctionType.getLocalizedFunctionMap()
                 .get(name);
-
+        System.out.println(mathFunction.apply(1));
         TabulatedFunction function = createTabulatedFunction(
                 mathFunction,
                 from,

@@ -7,13 +7,15 @@ import org.springframework.web.bind.annotation.*;
 import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.SettingsDto;
 import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.TabulatedFunctionFactoryType;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/settings")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:8080")
 public class SettingsController {
 
-    private TabulatedFunctionFactoryType currentFactoryType = TabulatedFunctionFactoryType.ARRAY_FACTORY;
+    private static TabulatedFunctionFactoryType currentFactoryType = TabulatedFunctionFactoryType.ARRAY_FACTORY;
 
     @GetMapping("/factory-type")
     public ResponseEntity<SettingsDto> getCurrentFactoryType() {
@@ -21,8 +23,12 @@ public class SettingsController {
     }
 
     @PostMapping("/factory-type")
-    public ResponseEntity<SettingsDto> updateFactoryType(@RequestBody SettingsDto settingsDto) {
-        this.currentFactoryType = settingsDto.getFactoryType();
+    public ResponseEntity<SettingsDto> updateFactoryType(@RequestParam String name) {
+        if (Objects.equals(name, "Массив"))
+            currentFactoryType = TabulatedFunctionFactoryType.ARRAY_FACTORY;
+        else
+            currentFactoryType = TabulatedFunctionFactoryType.LINKED_LIST_FACTORY;
+        SettingsDto settingsDto = new SettingsDto(currentFactoryType);
         return ResponseEntity.ok(settingsDto);
     }
 }
