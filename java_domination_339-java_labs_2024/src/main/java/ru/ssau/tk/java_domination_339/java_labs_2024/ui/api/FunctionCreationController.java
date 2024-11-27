@@ -16,7 +16,9 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.TabulatedFunctionFac
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.*;
 import ru.ssau.tk.java_domination_339.java_labs_2024.repository.MathFunctionRepository;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -62,7 +64,13 @@ public class FunctionCreationController {
                 .hash(function.HashName())
                 .build();
 
-        // Сохранение функции в базу данных
+
+
+        Optional<MathFunctionEntity> entityFind = mathFunctionRepository.findByHash(entity.getHash());
+        if (entityFind.isPresent()) {
+            entity.setUpdateAt(Instant.now());
+            entity.setCreatedAt(entityFind.get().getCreatedAt());
+        }
         MathFunctionDto savedDto = MathFunctionDtoBuilder.makeMathFunctionDto(
                 mathFunctionRepository.save(entity)
         );
@@ -99,14 +107,21 @@ public class FunctionCreationController {
                 .build();
 
         // Сохранение функции в базу данных
+        Optional<MathFunctionEntity> entityFind = mathFunctionRepository.findByHash(entity.getHash());
+        if (entityFind.isPresent()) {
+            entity.setUpdateAt(Instant.now());
+            entity.setCreatedAt(entityFind.get().getCreatedAt());
+        }
         MathFunctionDto savedDto = MathFunctionDtoBuilder.makeMathFunctionDto(
                 mathFunctionRepository.save(entity)
         );
 
+
+
         return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
     }
 
-    private TabulatedFunction createTabulatedFunction(
+    TabulatedFunction createTabulatedFunction(
             double[] xValues,
             double[] yValues,
             TabulatedFunctionFactoryType factoryType
