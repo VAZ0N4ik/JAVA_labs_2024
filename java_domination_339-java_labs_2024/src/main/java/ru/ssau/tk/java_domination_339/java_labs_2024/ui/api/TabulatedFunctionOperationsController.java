@@ -134,7 +134,7 @@ public class TabulatedFunctionOperationsController {
         return functionCreationController.createTabulatedFunction(xValues, yValues, factoryType);
     }
 
-    private MathFunctionEntity createAndSaveMathFunctionEntity(TabulatedFunction function) {
+     MathFunctionEntity createAndSaveMathFunctionEntity(TabulatedFunction function) {
         MathFunctionEntity entity = MathFunctionEntity.builder()
                 .points(
                         IntStream.range(0, function.getCount())
