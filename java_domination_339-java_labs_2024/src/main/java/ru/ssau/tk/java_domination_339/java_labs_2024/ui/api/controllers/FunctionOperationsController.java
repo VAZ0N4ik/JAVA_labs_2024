@@ -192,4 +192,24 @@ public class FunctionOperationsController {
         }
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
+
+    @PostMapping("/getX")
+    public ResponseEntity<Double> getXFunction(@RequestParam Long functionId, @RequestParam int index) {
+        TabulatedFunction myObject = mathFunctionService.convertToTabulatedFunction(functionId);
+        return new ResponseEntity<>(myObject.getX(index), HttpStatus.OK);
+    }
+
+    @PostMapping("/getY")
+    public ResponseEntity<Double> getYFunction(@RequestParam Long functionId, @RequestParam int index) {
+        TabulatedFunction myObject = mathFunctionService.convertToTabulatedFunction(functionId);
+        return new ResponseEntity<>(myObject.getY(index), HttpStatus.OK);
+    }
+
+    @PostMapping("/setY")
+    public ResponseEntity<MathFunctionDto> setYFunction(@RequestParam Long functionId, @RequestParam int index,@RequestParam Double y) {
+        TabulatedFunction myObject = mathFunctionService.convertToTabulatedFunction(functionId);
+        myObject.setY(index,y);
+        mathFunctionRepository.deleteById(functionId);
+        return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(myObject).getBody(), HttpStatus.OK);
+    }
 }
