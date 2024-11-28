@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from "../components/ui/alert";
 import { createArrayFunction, createMathFunction } from '../services/functionService';
+import api from "../services/api";
 
 const ErrorModal = ({ message, onClose }) => (
     <div className="error-modal">
@@ -144,17 +145,26 @@ const ArrayFunctionCreator = ({ onSubmit, onError }) => {
 };
 
 const MathFunctionCreator = ({ onSubmit, onError }) => {
+    // Изменяем начальное состояние на пустой массив
+    const [functions, setFunctions] = useState([]);
     const [selectedFunction, setSelectedFunction] = useState('');
     const [xFrom, setXFrom] = useState('');
     const [xTo, setXTo] = useState('');
     const [pointCount, setPointCount] = useState('');
 
-    const functions = {
-        'Тождественная функция': 'IdentityFunction',
-        'Квадратичная функция': 'SqrFunction',
-        'Единичная функция': 'UnitFunction',
-        'Нулевая функция': 'ZeroFunction'
-    };
+    // Загрузка списка функций при монтировании компонента
+    useEffect(() => {
+        const loadFunctions = async () => {
+            try {
+                const response = await api.get('/api/function-creation/math-functions');
+                // response.data уже является массивом строк
+                setFunctions(response.data);
+            } catch (error) {
+                onError('Ошибка при загрузке списка функций');
+            }
+        };
+        loadFunctions();
+    }, [onError]);
 
     const handleSubmit = async () => {
         try {
@@ -167,6 +177,13 @@ const MathFunctionCreator = ({ onSubmit, onError }) => {
             const to = parseFloat(xTo);
             const count = parseInt(pointCount);
 
+            console.log('Submitting values:', {
+                selectedFunction,
+                from,
+                to,
+                count
+            });
+
             if (isNaN(from) || isNaN(to) || isNaN(count)) {
                 onError('Все поля должны быть заполнены числами');
                 return;
@@ -177,11 +194,16 @@ const MathFunctionCreator = ({ onSubmit, onError }) => {
                 return;
             }
 
+            if (from >= to) {
+                onError('Значение "От" должно быть меньше значения "До"');
+                return;
+            }
+
             await onSubmit({
-                functionType: functions[selectedFunction],
-                xFrom: from,
-                xTo: to,
-                pointCount: count
+                name: selectedFunction,
+                from,
+                to,
+                count
             });
 
             setSelectedFunction('');
@@ -189,6 +211,7 @@ const MathFunctionCreator = ({ onSubmit, onError }) => {
             setXTo('');
             setPointCount('');
         } catch (error) {
+            console.error('Submit error:', error);
             onError(error.message);
         }
     };
@@ -201,7 +224,7 @@ const MathFunctionCreator = ({ onSubmit, onError }) => {
                 className="select"
             >
                 <option value="">Выберите функцию</option>
-                {Object.keys(functions).sort().map(name => (
+                {Array.isArray(functions) && functions.map(name => (
                     <option key={name} value={name}>{name}</option>
                 ))}
             </select>
@@ -271,18 +294,41 @@ const TabulatedFunctionCreator = () => {
     const handleMathFunctionSubmit = async (data) => {
         try {
             setIsLoading(true);
-            console.log('Submitting math function:', data);
-            await createMathFunction(
-                data.functionType,
-                data.xFrom,
-                data.xTo,
-                data.pointCount
+            console.log('Submitting math function data:', data);
+
+            // Проверяем все данные перед отправкой
+            if (!data.name || !data.from || !data.to || !data.count) {
+                throw new Error('Все поля должны быть заполнены');
+            }
+
+            // Добавляем явное преобразование типов
+            const requestData = {
+                name: data.name,
+                from: Number(data.from),
+                to: Number(data.to),
+                count: Number(data.count)
+            };
+
+            console.log('Formatted request data:', requestData);
+            const result = await createMathFunction(
+                requestData.name,
+                requestData.from,
+                requestData.to,
+                requestData.count
             );
+            console.log('Response:', result);
             setSuccessMessage('Функция успешно создана!');
             setTimeout(() => setSuccessMessage(''), 3000);
         } catch (error) {
-            console.error('Error:', error);
-            setError(error.message);
+            console.error('Full error object:', error);
+            // Проверяем, является ли это ошибкой авторизации
+            if (error.response?.status === 403 || error.response?.status === 401) {
+                localStorage.removeItem('token');
+                window.location.reload();
+            } else {
+                // Для других ошибок просто показываем сообщение
+                setError(error.message || 'Произошла ошибка при создании функции');
+            }
         } finally {
             setIsLoading(false);
         }

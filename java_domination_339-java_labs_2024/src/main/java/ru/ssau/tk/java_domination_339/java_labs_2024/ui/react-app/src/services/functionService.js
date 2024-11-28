@@ -2,58 +2,57 @@ import api from './api';
 
 export const createArrayFunction = async (points) => {
     try {
-        const token = localStorage.getItem('token');
-        console.log('Token before request:', token);
+        // Преобразуем массив точек в два массива x и y
+        const xValues = points.map(p => p.x);
+        const yValues = points.map(p => p.y);
 
-        const requestData = {
-            name: "ArrayTabulatedFunction",
-            points: points,
-            count_point: points.length,
-            hash_function: null,
-            created_at: new Date().toISOString(),
-            update_at: new Date().toISOString()
-        };
+        // Формируем URL с параметрами
+        const url = '/api/function-creation/create-from-points?' +
+            `x=${xValues.join(',')}&y=${yValues.join(',')}`;
 
-        console.log('Request data:', requestData);
-
-        const response = await api.post('/api/functions', requestData);
+        const response = await api.post(url);
         return response.data;
     } catch (error) {
-        console.error('Function creation error:', {
+        console.error('Function creation error:', error);
+        throw new Error(error.response?.data?.message || 'Ошибка при создании функции');
+    }
+};
+
+export const createMathFunction = async (functionName, xFrom, xTo, pointCount) => {
+    try {
+        console.log('Creating math function with params:', {
+            functionName,
+            xFrom,
+            xTo,
+            pointCount
+        });
+
+        // Формируем URL с параметрами
+        const params = new URLSearchParams({
+            name: functionName,
+            from: xFrom.toString(),
+            to: xTo.toString(),
+            count: pointCount.toString()
+        });
+
+        const url = `/api/function-creation/create-from-math-function?${params.toString()}`;
+        console.log('Request URL:', url);
+
+        const response = await api.post(url);
+        console.log('Server response:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Detailed error info:', {
             error: error,
             response: error.response,
             status: error.response?.status,
             data: error.response?.data
         });
-        throw new Error(error.response?.data?.message || 'Ошибка при создании функции');
-    }
-};
 
-export const createMathFunction = async (functionType, xFrom, xTo, pointCount) => {
-    try {
-        const points = Array.from({ length: pointCount }, (_, i) => {
-            const x = parseFloat(xFrom) + (parseFloat(xTo) - parseFloat(xFrom)) * i / (pointCount - 1);
-            return {
-                x: x,
-                y: 0 // !!!!!
-            };
-        });
-
-        const requestData = {
-            name: functionType,
-            points: points,
-            count_point: pointCount,
-            hash_function: null,
-            created_at: new Date().toISOString(),
-            update_at: new Date().toISOString()
-        };
-
-        console.log('Sending request:', requestData);
-
-        const response = await api.post('/api/functions', requestData);
-        return response.data;
-    } catch (error) {
-        console.error('Error creating function:', error.response || error);
-        throw new Error(error.response?.data?.message || 'Ошибка при создании функции');
+        // Если это не ошибка авторизации, пробрасываем ее дальше для обработки
+        if (error.response?.status !== 401 && error.response?.status !== 403) {
+            throw new Error(error.response?.data?.message || 'Ошибка при создании функции');
+        }
+        throw error; // Пробрасываем ошибки авторизации дальше
     }
 };

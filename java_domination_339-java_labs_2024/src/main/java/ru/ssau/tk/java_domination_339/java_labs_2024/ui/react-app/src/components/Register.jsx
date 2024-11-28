@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import api from '../services/api';
-import {Alert, AlertTitle, AlertDescription} from "./ui/alert";
+import { Alert, AlertTitle, AlertDescription } from "./ui/alert";
 
-const Login = ({onSuccess}) => {
+const Register = ({ onSuccess }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -14,19 +14,19 @@ const Login = ({onSuccess}) => {
             setIsLoading(true);
             setError(null);
 
-            const response = await api.post('/auth/sign-in', {
+            const response = await api.post('/auth/sign-up', {
                 username,
                 password
             });
 
             if (response.data.token) {
-                localStorage.setItem('token', response.data.token);
-                onSuccess();
+                onSuccess(); // Возвращаемся к форме входа
+                setUsername('');
+                setPassword('');
             }
         } catch (error) {
-            console.error('Login error:', error);
-            setError(error.response?.data?.message || 'Неверное имя пользователя или пароль');
-            setPassword(''); // Очищаем поле пароля при ошибке
+            console.error('Registration error:', error);
+            setError(error.response?.data?.message || 'Ошибка при регистрации');
         } finally {
             setIsLoading(false);
         }
@@ -34,7 +34,7 @@ const Login = ({onSuccess}) => {
 
     return (
         <div className="card">
-            <h2 className="text-2xl font-bold mb-6 text-center">Вход в систему</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">Регистрация</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -76,11 +76,11 @@ const Login = ({onSuccess}) => {
                     className="btn btn-primary w-full"
                     disabled={isLoading}
                 >
-                    {isLoading ? 'Вход...' : 'Войти'}
+                    {isLoading ? 'Регистрация...' : 'Зарегистрироваться'}
                 </button>
             </form>
         </div>
     );
 };
 
-export default Login;
+export default Register;

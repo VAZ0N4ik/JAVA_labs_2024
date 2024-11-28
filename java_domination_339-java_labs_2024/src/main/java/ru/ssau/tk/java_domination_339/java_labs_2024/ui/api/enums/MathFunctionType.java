@@ -1,14 +1,17 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.enums;
 
+import lombok.Getter;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public enum MathFunctionType {
     IDENTITY_FUNCTION("Тождественная функция", new IdentityFunction()),
     SQR_FUNCTION("Квадратичная функция", new SqrFunction()),
-    // Добавьте другие функции по необходимости
+    UNIT_FUNCTION("Единичная функция", new UnitFunction()),
+    ZERO_FUNCTION("Нулевая функция", new ZeroFunction()),
     ;
 
     private final String localizedName;
@@ -17,14 +20,6 @@ public enum MathFunctionType {
     MathFunctionType(String localizedName, MathFunction function) {
         this.localizedName = localizedName;
         this.function = function;
-    }
-
-    public String getLocalizedName() {
-        return localizedName;
-    }
-
-    public MathFunction getFunction() {
-        return function;
     }
 
     public static Map<String, MathFunction> getLocalizedFunctionMap() {
