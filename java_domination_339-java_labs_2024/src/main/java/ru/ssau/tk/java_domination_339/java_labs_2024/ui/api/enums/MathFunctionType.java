@@ -1,4 +1,4 @@
-package ru.ssau.tk.java_domination_339.java_labs_2024.ui.api;
+package ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.enums;
 
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.*;
 
@@ -29,13 +29,10 @@ public enum MathFunctionType {
 
     public static Map<String, MathFunction> getLocalizedFunctionMap() {
         Map<String, MathFunction> map = new HashMap<>();
-        //for (MathFunctionType type : values()) {
-        //    map.put(type.getLocalizedName(), type.getFunction());
-        //}
+        for (MathFunctionType type : values()) {
+           map.put(type.getLocalizedName(), type.getFunction());
+        }
 
-        map.put("Квадратичная функция", new SqrFunction());
-        map.put("Идентичная функция", new IdentityFunction());
-        System.out.println(map.get("Квадратичная функция").apply(1));
         return map;
     }
 }

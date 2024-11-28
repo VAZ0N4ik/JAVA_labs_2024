@@ -37,13 +37,6 @@ public class MathFunctionEntity {
     @PrePersist
     public void prePersist() {
         createdAt = Instant.now();
-        if (hash == null) {
-            String hashInput = points.stream()
-                    .map(p -> p.getX() + ":" + p.getY())
-                    .sorted()
-                    .reduce("", (a, b) -> a + "," + b);
-            hash = (long) hashInput.hashCode();
-        } // !!!!!
     }
 
     @PreUpdate

@@ -1,6 +1,4 @@
-package ru.ssau.tk.java_domination_339.java_labs_2024.ui.api;
-
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.*;
+package ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.enums;
 
 public enum TabulatedFunctionFactoryType {
     ARRAY_FACTORY("Массив"),

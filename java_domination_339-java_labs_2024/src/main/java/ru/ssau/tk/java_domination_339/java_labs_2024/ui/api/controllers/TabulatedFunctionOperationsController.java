@@ -1,25 +1,19 @@
-package ru.ssau.tk.java_domination_339.java_labs_2024.ui.api;
+package ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.controllers;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.ssau.tk.java_domination_339.java_labs_2024.dto.MathFunctionDto;
-import ru.ssau.tk.java_domination_339.java_labs_2024.dto.builder.MathFunctionDtoBuilder;
-import ru.ssau.tk.java_domination_339.java_labs_2024.entities.MathFunctionEntity;
-import ru.ssau.tk.java_domination_339.java_labs_2024.entities.PointEntity;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InconsistentFunctionsException;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.operations.TabulatedFunctionOperationService;
 import ru.ssau.tk.java_domination_339.java_labs_2024.repository.MathFunctionRepository;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.services.MathFunctionService;
+
 
 @RestController
 @RequestMapping("/api/tabulated-function-operations")
@@ -31,22 +25,21 @@ public class TabulatedFunctionOperationsController {
     private final MathFunctionRepository mathFunctionRepository;
     private final SettingsController settingsController;
     private final FunctionCreationController functionCreationController ;
-
+    private final MathFunctionService mathFunctionService;
     @PostMapping("/add")
     public ResponseEntity<MathFunctionDto> addFunctions(
             @RequestParam @NotNull  Long functionId1,
             @RequestParam @NotNull  Long functionId2
     ) {
         try {
-            TabulatedFunction function1 = convertToTabulatedFunction(functionId1);
-            TabulatedFunction function2 = convertToTabulatedFunction(functionId2);
-            System.out.println(function1);
-            System.out.println(function2);
-            TabulatedFunction resultFunction = operationService.additionOperation(function1, function2);
-            System.out.println(resultFunction);
-            MathFunctionEntity entity = createAndSaveMathFunctionEntity(resultFunction);
+            TabulatedFunction function1 = mathFunctionService.convertToTabulatedFunction(functionId1);
+            TabulatedFunction function2 = mathFunctionService.convertToTabulatedFunction(functionId2);
 
-            return new ResponseEntity<>(MathFunctionDtoBuilder.makeMathFunctionDto(entity), HttpStatus.CREATED);
+            TabulatedFunction resultFunction = operationService.additionOperation(function1, function2);
+
+
+
+            return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(resultFunction).getBody(), HttpStatus.CREATED);
         } catch (InconsistentFunctionsException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -60,14 +53,13 @@ public class TabulatedFunctionOperationsController {
             @RequestParam @NotNull Long functionId2
     ) {
         try {
-            TabulatedFunction function1 = convertToTabulatedFunction(functionId1);
-            TabulatedFunction function2 = convertToTabulatedFunction(functionId2);
+            TabulatedFunction function1 = mathFunctionService.convertToTabulatedFunction(functionId1);
+            TabulatedFunction function2 = mathFunctionService.convertToTabulatedFunction(functionId2);
 
             TabulatedFunction resultFunction = operationService.substractionOperation(function1, function2);
 
-            MathFunctionEntity entity = createAndSaveMathFunctionEntity(resultFunction);
 
-            return new ResponseEntity<>(MathFunctionDtoBuilder.makeMathFunctionDto(entity), HttpStatus.CREATED);
+            return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(resultFunction).getBody(), HttpStatus.CREATED);
         } catch (InconsistentFunctionsException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -81,14 +73,12 @@ public class TabulatedFunctionOperationsController {
             @RequestParam @NotNull Long functionId2
     ) {
         try {
-            TabulatedFunction function1 = convertToTabulatedFunction(functionId1);
-            TabulatedFunction function2 = convertToTabulatedFunction(functionId2);
+            TabulatedFunction function1 = mathFunctionService.convertToTabulatedFunction(functionId1);
+            TabulatedFunction function2 = mathFunctionService.convertToTabulatedFunction(functionId2);
 
             TabulatedFunction resultFunction = operationService.multiplicationOperation(function1, function2);
 
-            MathFunctionEntity entity = createAndSaveMathFunctionEntity(resultFunction);
-
-            return new ResponseEntity<>(MathFunctionDtoBuilder.makeMathFunctionDto(entity), HttpStatus.CREATED);
+            return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(resultFunction).getBody(), HttpStatus.CREATED);
         } catch (InconsistentFunctionsException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -102,14 +92,13 @@ public class TabulatedFunctionOperationsController {
             @RequestParam @NotNull Long functionId2
     ) {
         try {
-            TabulatedFunction function1 = convertToTabulatedFunction(functionId1);
-            TabulatedFunction function2 = convertToTabulatedFunction(functionId2);
+            TabulatedFunction function1 = mathFunctionService.convertToTabulatedFunction(functionId1);
+            TabulatedFunction function2 = mathFunctionService.convertToTabulatedFunction(functionId2);
 
             TabulatedFunction resultFunction = operationService.divisionOperation(function1, function2);
 
-            MathFunctionEntity entity = createAndSaveMathFunctionEntity(resultFunction);
 
-            return new ResponseEntity<>(MathFunctionDtoBuilder.makeMathFunctionDto(entity), HttpStatus.CREATED);
+            return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(resultFunction).getBody(), HttpStatus.CREATED);
         } catch (InconsistentFunctionsException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -117,34 +106,5 @@ public class TabulatedFunctionOperationsController {
         }
     }
 
-    public TabulatedFunction convertToTabulatedFunction(Long functionId) {
-        MathFunctionEntity functionEntity = mathFunctionRepository.findById(functionId)
-                .orElseThrow(() -> new RuntimeException("Function not found"));
 
-        TabulatedFunctionFactoryType factoryType = settingsController.getCurrentFactoryType().getBody().getFactoryType();
-
-        double[] xValues = functionEntity.getPoints().stream()
-                .mapToDouble(PointEntity::getX)
-                .toArray();
-
-        double[] yValues = functionEntity.getPoints().stream()
-                .mapToDouble(PointEntity::getY)
-                .toArray();
-
-        return functionCreationController.createTabulatedFunction(xValues, yValues, factoryType);
-    }
-
-     MathFunctionEntity createAndSaveMathFunctionEntity(TabulatedFunction function) {
-        MathFunctionEntity entity = MathFunctionEntity.builder()
-                .points(
-                        IntStream.range(0, function.getCount())
-                                .mapToObj(i -> new PointEntity(function.getX(i), function.getY(i)))
-                                .collect(Collectors.toList())
-                )
-                .name(function.Name())
-                .hash(function.HashName())
-                .build();
-
-        return mathFunctionRepository.save(entity);
-    }
 }

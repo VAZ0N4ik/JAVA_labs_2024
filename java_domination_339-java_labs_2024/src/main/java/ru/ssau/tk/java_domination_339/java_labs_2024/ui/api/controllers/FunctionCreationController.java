@@ -1,18 +1,16 @@
-package ru.ssau.tk.java_domination_339.java_labs_2024.ui.api;
+package ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.ssau.tk.java_domination_339.java_labs_2024.dto.MathFunctionDto;
-import ru.ssau.tk.java_domination_339.java_labs_2024.dto.PointDto;
 import ru.ssau.tk.java_domination_339.java_labs_2024.dto.builder.MathFunctionDtoBuilder;
 import ru.ssau.tk.java_domination_339.java_labs_2024.entities.MathFunctionEntity;
 import ru.ssau.tk.java_domination_339.java_labs_2024.entities.PointEntity;
-import ru.ssau.tk.java_domination_339.java_labs_2024.entities.builder.MathFunctionEntityBuilder;
-import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.MathFunctionType;
-import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.SettingsController;
-import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.TabulatedFunctionFactoryType;
+import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.services.MathFunctionService;
+import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.enums.MathFunctionType;
+import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.enums.TabulatedFunctionFactoryType;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.*;
 import ru.ssau.tk.java_domination_339.java_labs_2024.repository.MathFunctionRepository;
 
@@ -22,6 +20,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+
+
 @RestController
 @RequestMapping("/api/function-creation")
 @RequiredArgsConstructor
@@ -30,7 +30,7 @@ public class FunctionCreationController {
 
     private final MathFunctionRepository mathFunctionRepository;
     private final SettingsController settingsController;
-
+    private final MathFunctionService mathFunctionService;
     @GetMapping("/math-functions")
     public ResponseEntity<List<String>> getMathFunctions() {
         return ResponseEntity.ok(
@@ -47,7 +47,7 @@ public class FunctionCreationController {
     ) {
         TabulatedFunctionFactoryType factoryType = settingsController.getCurrentFactoryType().getBody().getFactoryType();
 
-        TabulatedFunction function = createTabulatedFunction(
+        TabulatedFunction function = mathFunctionService.createTabulatedFunction(
                 x,
                 y,
                 factoryType
@@ -87,7 +87,7 @@ public class FunctionCreationController {
         MathFunction mathFunction =  MathFunctionType.getLocalizedFunctionMap()
                 .get(name);
         System.out.println(mathFunction.apply(1));
-        TabulatedFunction function = createTabulatedFunction(
+        TabulatedFunction function = mathFunctionService.createTabulatedFunction(
                 mathFunction,
                 from,
                 to,
@@ -121,27 +121,5 @@ public class FunctionCreationController {
         return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
     }
 
-    TabulatedFunction createTabulatedFunction(
-            double[] xValues,
-            double[] yValues,
-            TabulatedFunctionFactoryType factoryType
-    ) {
-        return switch (factoryType) {
-            case ARRAY_FACTORY -> new ArrayTabulatedFunction(xValues, yValues);
-            case LINKED_LIST_FACTORY -> new LinkedListTabulatedFunction(xValues, yValues);
-        };
-    }
 
-    private TabulatedFunction createTabulatedFunction(
-            MathFunction source,
-            double xFrom,
-            double xTo,
-            int count,
-            TabulatedFunctionFactoryType factoryType
-    ) {
-        return switch (factoryType) {
-            case ARRAY_FACTORY -> new ArrayTabulatedFunction(source, xFrom, xTo, count);
-            case LINKED_LIST_FACTORY -> new LinkedListTabulatedFunction(source, xFrom, xTo, count);
-        };
-    }
 }
