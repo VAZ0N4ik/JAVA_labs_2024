@@ -36,6 +36,26 @@ public class FunctionIOController {
         return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
     }
 
+    @PostMapping("/input-json")
+    public ResponseEntity<MathFunctionDto> inputJson(@RequestParam String path) throws IOException, ClassNotFoundException {
+        BufferedReader bufReader = new BufferedReader(new FileReader(path));
+        TabulatedFunction deserializedFunction = FunctionsIO.deserializeJson(bufReader);
+        MathFunctionDto savedDto = mathFunctionService.createAndSaveMathFunctionEntity(deserializedFunction).getBody();
+
+
+        return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/input-xml")
+    public ResponseEntity<MathFunctionDto> inputXml(@RequestParam String path) throws IOException, ClassNotFoundException {
+        BufferedReader bufReader = new BufferedReader(new FileReader(path));
+        TabulatedFunction deserializedFunction = FunctionsIO.deserializeXml(bufReader);
+        MathFunctionDto savedDto = mathFunctionService.createAndSaveMathFunctionEntity(deserializedFunction).getBody();
+
+
+        return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
+    }
+
     @GetMapping("/output")
     public ResponseEntity<MathFunctionDto> output(@RequestParam String path,@RequestParam @NotNull Long hash) throws IOException, ClassNotFoundException {
         TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(hash);
@@ -44,7 +64,24 @@ public class FunctionIOController {
         return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(function).getBody(),HttpStatus.OK);
 
     }
-    //TODO compose methods and craft safe method
+
+    @GetMapping("/output-json")
+    public ResponseEntity<MathFunctionDto> outputJson(@RequestParam String path,@RequestParam @NotNull Long hash) throws IOException, ClassNotFoundException {
+        TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(hash);
+        BufferedWriter bufWriter = new BufferedWriter(new FileWriter(path));
+        FunctionsIO.serializeJson(bufWriter, function);
+        return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(function).getBody(),HttpStatus.OK);
+
+    }
+
+    @GetMapping("/output-xml")
+    public ResponseEntity<MathFunctionDto> outputXml(@RequestParam String path,@RequestParam @NotNull Long hash) throws IOException, ClassNotFoundException {
+        TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(hash);
+        BufferedWriter bufWriter = new BufferedWriter(new FileWriter(path));
+        FunctionsIO.serializeXml(bufWriter, function);
+        return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(function).getBody(),HttpStatus.OK);
+
+    }
 }
 
 

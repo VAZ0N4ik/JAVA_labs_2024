@@ -1,5 +1,6 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.controllers;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,9 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.enums.TabulatedFunct
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.*;
 import ru.ssau.tk.java_domination_339.java_labs_2024.repository.MathFunctionRepository;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -81,7 +84,7 @@ public class FunctionCreationController {
     @PostMapping("/create-from-math-function")
     public ResponseEntity<MathFunctionDto> createFromMathFunction(
             @RequestParam String name, @RequestParam Double from, @RequestParam Double to, @RequestParam int count
-    ) {
+    ) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         TabulatedFunctionFactoryType factoryType = settingsController.getCurrentFactoryType().getBody().getFactoryType();
 
         MathFunction mathFunction =  MathFunctionType.getLocalizedFunctionMap()
@@ -120,6 +123,25 @@ public class FunctionCreationController {
 
         return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
     }
+    @GetMapping("/simple-functions")
+    public ResponseEntity<List<String>> getSimpleFunctions() {
+        List<Class<?>> classes = MathFunctionType.findSimpleFunctions();
+        List<String> ans = new ArrayList<>();
+        for (Class<?> clazz : classes) {
+            ans.add(clazz.getAnnotation(SimpleFunctionAnnotation.class).name());
+        }
+        return new ResponseEntity<>(ans, HttpStatus.OK);
+    }
 
 
+    @PostMapping("/create-composite")
+    public ResponseEntity<MathFunctionDto> createCompositeFunction(@RequestParam @NotNull Long hash1, @RequestParam @NotNull Long hash2, @RequestParam @NotNull String name) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        TabulatedFunction function1 = mathFunctionService.convertToTabulatedFunction(hash1);
+        TabulatedFunction function2 = mathFunctionService.convertToTabulatedFunction(hash2);
+        CompositeFunction composite = new CompositeFunction(function1, function2);
+
+        MathFunctionType.addFunctionMap(name,(MathFunction) composite);
+        //return mathFunctionService.createAndSaveMathFunctionEntity((MathFunction) composite);
+        return null;
+    }
 }
