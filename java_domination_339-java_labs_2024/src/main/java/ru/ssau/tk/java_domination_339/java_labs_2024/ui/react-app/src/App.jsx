@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import TabulatedFunctionCreator from './pages/FunctionCreator';
+import MainPage from './pages/MainPage';
 import Login from './components/Login';
-import Register from './components/Register'; // Создадим новый компонент
+import Register from './components/Register';
+
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
@@ -58,7 +60,7 @@ function App() {
                             </div>
                         </div>
                     </div>
-                    <TabulatedFunctionCreator />
+                    <MainPage />
                 </div>
             )}
         </div>
