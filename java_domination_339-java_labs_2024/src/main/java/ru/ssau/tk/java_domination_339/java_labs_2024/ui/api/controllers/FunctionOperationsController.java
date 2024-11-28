@@ -7,9 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.ssau.tk.java_domination_339.java_labs_2024.dto.MathFunctionDto;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InconsistentFunctionsException;
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFunction;
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.LinkedListTabulatedFunction;
-import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.*;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.LinkedListTabulatedFunctionFactory;
 import ru.ssau.tk.java_domination_339.java_labs_2024.operations.TabulatedDifferentialOperator;
@@ -113,7 +111,7 @@ public class FunctionOperationsController {
     }
 
     @PostMapping("/derive")
-    public ResponseEntity<MathFunctionDto> subtractFunctions(
+    public ResponseEntity<MathFunctionDto> deriveFunctions(
             @RequestParam @NotNull Long functionId
     ) {
         try {
@@ -134,5 +132,84 @@ public class FunctionOperationsController {
         }
     }
 
+    @PostMapping("/apply")
+    public ResponseEntity<Double> applyFunctions(
+            @RequestParam @NotNull Long functionId, @RequestParam Double x
+    ) {
+        TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(functionId);
+        double ans;
+        if (function.indexOfX(x) == -1) {
+            ans = function.apply(x);
+        } else {
+            ans = function.getY(function.indexOfX(x));
+            //TODO add insert
+        }
 
+        return new ResponseEntity<>(ans, HttpStatus.OK);
+    }
+
+    @GetMapping("/is-insert")
+    public ResponseEntity<Boolean> isInsertFunction(@RequestParam @NotNull Long functionId) {
+        TabulatedFunction myObject = mathFunctionService.convertToTabulatedFunction(functionId);
+        if (myObject instanceof Insertable) {
+            // Класс реализует интерфейс Insertable
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.OK);
+    }
+
+    @PostMapping("/insert")
+    public ResponseEntity<MathFunctionDto> insertFunction(@RequestParam @NotNull Long functionId,@RequestParam  Double x,@RequestParam  Double y) {
+        TabulatedFunction myObject = mathFunctionService.convertToTabulatedFunction(functionId);
+        if (myObject instanceof Insertable) {
+            Insertable insertableObject = (Insertable) myObject;
+            insertableObject.insert(x,y);
+            mathFunctionRepository.deleteById(functionId);
+            return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity((TabulatedFunction) insertableObject).getBody(), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @GetMapping("/is-remove")
+    public ResponseEntity<Boolean> isRemoveFunction(@RequestParam @NotNull Long functionId) {
+        TabulatedFunction myObject = mathFunctionService.convertToTabulatedFunction(functionId);
+        if (myObject instanceof Removable) {
+            // Класс реализует интерфейс Insertable
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.OK);
+    }
+
+    @PostMapping("/remove")
+    public ResponseEntity<MathFunctionDto> removeFunction(@RequestParam @NotNull Long functionId,@RequestParam Double x){
+        TabulatedFunction myObject = mathFunctionService.convertToTabulatedFunction(functionId);
+        int index = myObject.indexOfX(x);
+        if (myObject instanceof Removable) {
+            Removable removableObject = (Removable) myObject;
+            removableObject.remove(index);
+            mathFunctionRepository.deleteById(functionId);
+            return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity((TabulatedFunction) removableObject).getBody(), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @PostMapping("/getX")
+    public ResponseEntity<Double> getXFunction(@RequestParam Long functionId, @RequestParam int index) {
+        TabulatedFunction myObject = mathFunctionService.convertToTabulatedFunction(functionId);
+        return new ResponseEntity<>(myObject.getX(index), HttpStatus.OK);
+    }
+
+    @PostMapping("/getY")
+    public ResponseEntity<Double> getYFunction(@RequestParam Long functionId, @RequestParam int index) {
+        TabulatedFunction myObject = mathFunctionService.convertToTabulatedFunction(functionId);
+        return new ResponseEntity<>(myObject.getY(index), HttpStatus.OK);
+    }
+
+    @PostMapping("/setY")
+    public ResponseEntity<MathFunctionDto> setYFunction(@RequestParam Long functionId, @RequestParam int index,@RequestParam Double y) {
+        TabulatedFunction myObject = mathFunctionService.convertToTabulatedFunction(functionId);
+        myObject.setY(index,y);
+        mathFunctionRepository.deleteById(functionId);
+        return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(myObject).getBody(), HttpStatus.OK);
+    }
 }
