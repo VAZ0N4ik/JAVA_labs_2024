@@ -1,5 +1,6 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.controllers;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

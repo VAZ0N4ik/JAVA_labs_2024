@@ -23,7 +23,7 @@ public class FunctionIOController {
 
 
     private final MathFunctionRepository mathFunctionRepository;
-    private final TabulatedFunctionOperationsController tabulatedFunctionOperationsController;
+    private final FunctionOperationsController tabulatedFunctionOperationsController;
     private final MathFunctionService mathFunctionService;
 
     @PostMapping("/input")

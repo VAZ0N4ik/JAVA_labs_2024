@@ -7,11 +7,17 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.ssau.tk.java_domination_339.java_labs_2024.dto.MathFunctionDto;
 import ru.ssau.tk.java_domination_339.java_labs_2024.exceptions.InconsistentFunctionsException;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.ArrayTabulatedFunction;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.LinkedListTabulatedFunction;
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.ArrayTabulatedFunctionFactory;
+import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.LinkedListTabulatedFunctionFactory;
+import ru.ssau.tk.java_domination_339.java_labs_2024.operations.TabulatedDifferentialOperator;
 import ru.ssau.tk.java_domination_339.java_labs_2024.operations.TabulatedFunctionOperationService;
 import ru.ssau.tk.java_domination_339.java_labs_2024.repository.MathFunctionRepository;
 
 import jakarta.validation.constraints.NotNull;
+import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.enums.TabulatedFunctionFactoryType;
 import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.services.MathFunctionService;
 
 
@@ -20,7 +26,7 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.services.MathFunctio
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:8080")
 @Validated
-public class TabulatedFunctionOperationsController {
+public class FunctionOperationsController {
     private final TabulatedFunctionOperationService operationService = new TabulatedFunctionOperationService();
     private final MathFunctionRepository mathFunctionRepository;
     private final SettingsController settingsController;
@@ -96,6 +102,28 @@ public class TabulatedFunctionOperationsController {
             TabulatedFunction function2 = mathFunctionService.convertToTabulatedFunction(functionId2);
 
             TabulatedFunction resultFunction = operationService.divisionOperation(function1, function2);
+
+
+            return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(resultFunction).getBody(), HttpStatus.CREATED);
+        } catch (InconsistentFunctionsException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/derive")
+    public ResponseEntity<MathFunctionDto> subtractFunctions(
+            @RequestParam @NotNull Long functionId
+    ) {
+        try {
+            TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(functionId);
+            TabulatedFunctionFactoryType type = settingsController.getCurrentFactoryType().getBody().getFactoryType();
+
+            TabulatedFunction resultFunction = new TabulatedDifferentialOperator(switch (type) {
+                case ARRAY_FACTORY -> new ArrayTabulatedFunctionFactory();
+                case LINKED_LIST_FACTORY -> new LinkedListTabulatedFunctionFactory();
+            }).derive(function);
 
 
             return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(resultFunction).getBody(), HttpStatus.CREATED);
