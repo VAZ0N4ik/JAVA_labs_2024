@@ -21,34 +21,25 @@ import java.io.*;
 @RestController
 @RequestMapping("/api/function-io")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")  // Изменили порт на 3000
+@CrossOrigin(origins = "http://localhost:3000")
 public class FunctionIOController {
-
-
     private final MathFunctionRepository mathFunctionRepository;
-    private final FunctionOperationsController tabulatedFunctionOperationsController;
     private final MathFunctionService mathFunctionService;
 
     @PostMapping("/input")
     public ResponseEntity<MathFunctionDto> input(@RequestParam("file") MultipartFile file) {
         try {
-            // Создаем временный файл
             File tempFile = File.createTempFile("function", ".txt");
-            // Копируем данные из загруженного файла во временный
             file.transferTo(tempFile);
 
-            // Читаем функцию из временного файла
             BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(tempFile));
             TabulatedFunction deserializedFunction = FunctionsIO.deserialize(inputStream);
             inputStream.close();
 
-            // Удаляем временный файл
             tempFile.delete();
 
-            // Сохраняем функцию в базу данных
             MathFunctionDto savedDto = mathFunctionService.createAndSaveMathFunctionEntity(deserializedFunction).getBody();
             return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
-
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -56,23 +47,43 @@ public class FunctionIOController {
     }
 
     @PostMapping("/input-json")
-    public ResponseEntity<MathFunctionDto> inputJson(@RequestParam String path) throws IOException, ClassNotFoundException {
-        BufferedReader bufReader = new BufferedReader(new FileReader(path));
-        TabulatedFunction deserializedFunction = FunctionsIO.deserializeJson(bufReader);
-        MathFunctionDto savedDto = mathFunctionService.createAndSaveMathFunctionEntity(deserializedFunction).getBody();
+    public ResponseEntity<MathFunctionDto> inputJson(@RequestParam("file") MultipartFile file) {
+        try {
+            File tempFile = File.createTempFile("function", ".json");
+            file.transferTo(tempFile);
 
+            BufferedReader reader = new BufferedReader(new FileReader(tempFile));
+            TabulatedFunction deserializedFunction = FunctionsIO.deserializeJson(reader);
+            reader.close();
 
-        return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
+            tempFile.delete();
+
+            MathFunctionDto savedDto = mathFunctionService.createAndSaveMathFunctionEntity(deserializedFunction).getBody();
+            return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping("/input-xml")
-    public ResponseEntity<MathFunctionDto> inputXml(@RequestParam String path) throws IOException, ClassNotFoundException {
-        BufferedReader bufReader = new BufferedReader(new FileReader(path));
-        TabulatedFunction deserializedFunction = FunctionsIO.deserializeXml(bufReader);
-        MathFunctionDto savedDto = mathFunctionService.createAndSaveMathFunctionEntity(deserializedFunction).getBody();
+    public ResponseEntity<MathFunctionDto> inputXml(@RequestParam("file") MultipartFile file) {
+        try {
+            File tempFile = File.createTempFile("function", ".xml");
+            file.transferTo(tempFile);
 
+            BufferedReader reader = new BufferedReader(new FileReader(tempFile));
+            TabulatedFunction deserializedFunction = FunctionsIO.deserializeXml(reader);
+            reader.close();
 
-        return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
+            tempFile.delete();
+
+            MathFunctionDto savedDto = mathFunctionService.createAndSaveMathFunctionEntity(deserializedFunction).getBody();
+            return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/output")
@@ -80,30 +91,24 @@ public class FunctionIOController {
         try {
             TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(hash);
 
-            // Создаем временный файл
             File tempFile = File.createTempFile("function", ".txt");
             BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(tempFile));
 
-            // Сериализуем функцию во временный файл
             FunctionsIO.serialize(outputStream, function);
             outputStream.close();
 
-            // Создаем ресурс из файла
             InputStreamResource resource = new InputStreamResource(new FileInputStream(tempFile));
 
-            // Настраиваем заголовки ответа
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=function_" + hash + ".txt");
             headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
             headers.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(tempFile.length()));
 
-            // Удаляем временный файл после отправки (можно реализовать через ServletContext.cleanup)
             tempFile.deleteOnExit();
 
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(resource);
-
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -111,20 +116,60 @@ public class FunctionIOController {
     }
 
     @GetMapping("/output-json")
-    public ResponseEntity<MathFunctionDto> outputJson(@RequestParam String path,@RequestParam @NotNull Long hash) throws IOException, ClassNotFoundException {
-        TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(hash);
-        BufferedWriter bufWriter = new BufferedWriter(new FileWriter(path));
-        FunctionsIO.serializeJson(bufWriter, function);
-        return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(function).getBody(),HttpStatus.OK);
+    public ResponseEntity<Resource> outputJson(@RequestParam @NotNull Long hash) {
+        try {
+            TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(hash);
 
+            File tempFile = File.createTempFile("function", ".json");
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+            FunctionsIO.serializeJson(writer, function);
+            writer.close();
+
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(tempFile));
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=function_" + hash + ".json");
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+            headers.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(tempFile.length()));
+
+            tempFile.deleteOnExit();
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(resource);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/output-xml")
-    public ResponseEntity<MathFunctionDto> outputXml(@RequestParam String path,@RequestParam @NotNull Long hash) throws IOException, ClassNotFoundException {
-        TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(hash);
-        BufferedWriter bufWriter = new BufferedWriter(new FileWriter(path));
-        FunctionsIO.serializeXml(bufWriter, function);
-        return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(function).getBody(),HttpStatus.OK);
+    public ResponseEntity<Resource> outputXml(@RequestParam @NotNull Long hash) {
+        try {
+            TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(hash);
 
+            File tempFile = File.createTempFile("function", ".xml");
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+            FunctionsIO.serializeXml(writer, function);
+            writer.close();
+
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(tempFile));
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=function_" + hash + ".xml");
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/xml");
+            headers.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(tempFile.length()));
+
+            tempFile.deleteOnExit();
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(resource);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

@@ -276,7 +276,7 @@ const MathFunctionCreator = ({ onSubmit, onError }) => {
     useEffect(() => {
         const loadFunctions = async () => {
             try {
-                const response = await api.get('/api/function-creation/math-functions');
+                const response = await api.get('/api/function-creation/functions-to-create');
                 setFunctions(response.data);
             } catch (error) {
                 onError('Ошибка при загрузке списка функций');

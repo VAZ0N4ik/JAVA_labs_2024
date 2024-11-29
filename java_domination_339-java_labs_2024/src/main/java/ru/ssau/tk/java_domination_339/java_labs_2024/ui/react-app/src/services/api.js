@@ -23,16 +23,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        // Проверяем, есть ли токен и является ли запрос авторизационным
-        const isAuthRequest = error.config.url.includes('/auth/');
-        const hasToken = localStorage.getItem('token');
-
-        // Перезагружаем страницу только если это не запрос авторизации и есть токен
-        if ((error.response?.status === 401 || error.response?.status === 403) && !isAuthRequest && hasToken) {
-            console.error('Session expired');
-            localStorage.removeItem('token');
-            window.location.reload();
-        }
+        // Просто пробрасываем ошибку дальше, без автоматического редиректа
         return Promise.reject(error);
     }
 );

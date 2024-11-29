@@ -16,6 +16,7 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.operations.TabulatedIntegra
 import ru.ssau.tk.java_domination_339.java_labs_2024.repository.MathFunctionRepository;
 
 import jakarta.validation.constraints.NotNull;
+import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.dto.ApplyResultDto;
 import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.enums.TabulatedFunctionFactoryType;
 import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.services.MathFunctionService;
 
@@ -145,25 +146,31 @@ public class FunctionOperationsController {
     }
 
     @PostMapping("/apply")
-    public ResponseEntity<Double> applyFunctions(
+    public ResponseEntity<ApplyResultDto> applyFunctions(
             @RequestParam @NotNull Long functionId, @RequestParam Double x
     ) {
         TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(functionId);
         double ans;
+        ApplyResultDto result;
+
         if (function.indexOfX(x) == -1) {
             ans = function.apply(x);
             if (function instanceof Insertable) {
                 Insertable insertableObject = (Insertable) function;
                 insertableObject.insert(x, ans);
                 mathFunctionRepository.deleteById(functionId);
-                mathFunctionService.createAndSaveMathFunctionEntity((TabulatedFunction) insertableObject);
+                MathFunctionDto savedFunction = mathFunctionService.createAndSaveMathFunctionEntity((TabulatedFunction) insertableObject).getBody();
+                assert savedFunction != null;
+                result = new ApplyResultDto(ans, savedFunction.getHashFunction());
+            } else {
+                result = new ApplyResultDto(ans);
             }
         } else {
             ans = function.getY(function.indexOfX(x));
-
+            result = new ApplyResultDto(ans);
         }
 
-        return new ResponseEntity<>(ans, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/is-insert")

@@ -8,10 +8,10 @@ function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
 
-    // При запуске приложения всегда очищаем токен
+    // Проверяем наличие токена только при первой загрузке
     useEffect(() => {
-        localStorage.removeItem('token');
-        setIsLoggedIn(false);
+        const token = localStorage.getItem('token');
+        setIsLoggedIn(!!token);
     }, []);
 
     const handleLogout = () => {
