@@ -8,16 +8,16 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.functions.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-public enum MathFunctionType {
-    IDENTITY_FUNCTION("Тождественная функция", new IdentityFunction()),
-    SQR_FUNCTION("Квадратичная функция", new SqrFunction()),
-    // Добавьте другие функции по необходимости
+public class MathFunctionType {
+
+
     ;
 
     private final String localizedName;
     private final MathFunction function;
     private static  Map<String, MathFunction> map = new HashMap<>();
-    private static List<Class<?>> func = new ArrayList<>();
+    private static List<String> func = new ArrayList<>();
+    private static List<Class<?>> classes = findSimpleFunctions();
     MathFunctionType(String localizedName, MathFunction function) {
         this.localizedName = localizedName;
         this.function = function;
@@ -30,9 +30,11 @@ public enum MathFunctionType {
     public MathFunction getFunction() {
         return function;
     }
-
+    public static List<String> getFunctions() {
+        return func;
+    }
     static public List<Class<?>> findSimpleFunctions() {
-        if (func.isEmpty()) {
+
             List<Class<?>> functions = new ArrayList<>();
             ClassPathScanningCandidateComponentProvider scanner =
                     new ClassPathScanningCandidateComponentProvider(false);
@@ -61,15 +63,16 @@ public enum MathFunctionType {
 
                 return annotA.name().compareTo(annotB.name());
             });
-            func = functions;
-        }
-
-        return func;
+            classes = functions;
+            for (Class<?> cls : classes) {
+                func.add(cls.getAnnotation(SimpleFunctionAnnotation.class).name());
+            }
+        return classes;
     }
 
     public static Map<String, MathFunction> getLocalizedFunctionMap() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         if (map.isEmpty()) {
-            List<Class<?>> functions = findSimpleFunctions();
+            List<Class<?>> functions = classes;
             for (Class<?> type : functions) {
                 map.put(type.getAnnotation(SimpleFunctionAnnotation.class).name(),(MathFunction) type.getDeclaredConstructor().newInstance());
             }
@@ -80,8 +83,11 @@ public enum MathFunctionType {
     }
 
     public static Map<String, MathFunction> addFunctionMap(String name, MathFunction obj) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (map.isEmpty()) {
+            map = getLocalizedFunctionMap();
+        }
         map.put(name, obj);
-        func.add(obj.getClass());
+        func.add(name);
         return map;
     }
 }

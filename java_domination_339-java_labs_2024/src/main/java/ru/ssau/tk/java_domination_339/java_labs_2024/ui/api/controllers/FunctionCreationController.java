@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -34,15 +35,7 @@ public class FunctionCreationController {
     private final MathFunctionRepository mathFunctionRepository;
     private final SettingsController settingsController;
     private final MathFunctionService mathFunctionService;
-    @GetMapping("/math-functions")
-    public ResponseEntity<List<String>> getMathFunctions() {
-        return ResponseEntity.ok(
-                List.of(MathFunctionType.values()).stream()
-                        .map(MathFunctionType::getLocalizedName)
-                        .sorted()
-                        .collect(Collectors.toList())
-        );
-    }
+
 
     @PostMapping("/create-from-points")
     public ResponseEntity<MathFunctionDto> createFromPoints(
@@ -123,13 +116,9 @@ public class FunctionCreationController {
 
         return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
     }
-    @GetMapping("/simple-functions")
-    public ResponseEntity<List<String>> getSimpleFunctions() {
-        List<Class<?>> classes = MathFunctionType.findSimpleFunctions();
-        List<String> ans = new ArrayList<>();
-        for (Class<?> clazz : classes) {
-            ans.add(clazz.getAnnotation(SimpleFunctionAnnotation.class).name());
-        }
+    @GetMapping("/functions-to-create")
+    public ResponseEntity<List<String>> getSimpleFunctions() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        List<String> ans = MathFunctionType.getFunctions();
         return new ResponseEntity<>(ans, HttpStatus.OK);
     }
 
