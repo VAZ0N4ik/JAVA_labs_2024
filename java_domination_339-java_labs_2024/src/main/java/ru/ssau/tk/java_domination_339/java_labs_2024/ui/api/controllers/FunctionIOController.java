@@ -11,40 +11,80 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.functions.TabulatedFunction
 import ru.ssau.tk.java_domination_339.java_labs_2024.io.FunctionsIO;
 import ru.ssau.tk.java_domination_339.java_labs_2024.repository.MathFunctionRepository;
 import ru.ssau.tk.java_domination_339.java_labs_2024.ui.api.services.MathFunctionService;
-
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 
 
 @RestController
 @RequestMapping("/api/function-io")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:3000")  // Изменили порт на 3000
 public class FunctionIOController {
 
-
     private final MathFunctionRepository mathFunctionRepository;
-    private final FunctionOperationsController tabulatedFunctionOperationsController;
     private final MathFunctionService mathFunctionService;
 
     @PostMapping("/input")
-    public ResponseEntity<MathFunctionDto> input(@RequestParam String path) throws IOException, ClassNotFoundException {
-        BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(path));
-        TabulatedFunction deserializedFunction = FunctionsIO.deserialize(inputStream);
-        MathFunctionDto savedDto = mathFunctionService.createAndSaveMathFunctionEntity(deserializedFunction).getBody();
+    public ResponseEntity<MathFunctionDto> input(@RequestParam("file") MultipartFile file) {
+        try {
+            // Создаем временный файл
+            File tempFile = File.createTempFile("function", ".txt");
+            // Копируем данные из загруженного файла во временный
+            file.transferTo(tempFile);
 
+            // Читаем функцию из временного файла
+            BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(tempFile));
+            TabulatedFunction deserializedFunction = FunctionsIO.deserialize(inputStream);
+            inputStream.close();
 
-        return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
+            // Удаляем временный файл
+            tempFile.delete();
+
+            // Сохраняем функцию в базу данных
+            MathFunctionDto savedDto = mathFunctionService.createAndSaveMathFunctionEntity(deserializedFunction).getBody();
+            return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/output")
-    public ResponseEntity<MathFunctionDto> output(@RequestParam String path,@RequestParam @NotNull Long hash) throws IOException, ClassNotFoundException {
-        TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(hash);
-        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path));
-        FunctionsIO.serialize(outputStream, function);
-        return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(function).getBody(),HttpStatus.OK);
+    public ResponseEntity<Resource> output(@RequestParam @NotNull Long hash) {
+        try {
+            TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(hash);
 
+            // Создаем временный файл
+            File tempFile = File.createTempFile("function", ".txt");
+            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(tempFile));
+
+            // Сериализуем функцию во временный файл
+            FunctionsIO.serialize(outputStream, function);
+            outputStream.close();
+
+            // Создаем ресурс из файла
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(tempFile));
+
+            // Настраиваем заголовки ответа
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=function_" + hash + ".txt");
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
+            headers.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(tempFile.length()));
+
+            // Удаляем временный файл после отправки (можно реализовать через ServletContext.cleanup)
+            tempFile.deleteOnExit();
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(resource);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-    //TODO compose methods and craft safe method
 }
-
-

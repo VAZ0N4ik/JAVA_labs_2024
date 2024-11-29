@@ -1,32 +1,130 @@
 import React, { useState, useEffect } from 'react';
-import { AlertCircle } from 'lucide-react';
+import api from '../services/api';
 import { Alert, AlertTitle, AlertDescription } from "../components/ui/alert";
-import { createArrayFunction, createMathFunction } from '../services/functionService';
-import api from "../services/api";
 
-const ErrorModal = ({ message, onClose }) => (
-    <div className="error-modal">
-        <div className="error-modal-content">
-            <Alert className="bg-red-50 border-red-200">
-                <AlertTitle className="text-red-700 flex items-center gap-2">
-                    <AlertCircle className="h-4 w-4" />
-                    Ошибка
-                </AlertTitle>
-                <AlertDescription className="text-red-600 mt-2">{message}</AlertDescription>
-            </Alert>
-            <button
-                onClick={onClose}
-                className="btn btn-primary mt-4 w-full"
-            >
-                Закрыть
-            </button>
+const FunctionTable = ({ functionId, points = [], isEditable = true, onYChange }) => {
+    const [tableData, setTableData] = useState([]);
+    const [error, setError] = useState(null);
+    const [modifiedData, setModifiedData] = useState({});
+
+    useEffect(() => {
+        if (!functionId || !points.length) return;
+
+        const loadPointValues = async () => {
+            const newPoints = [];
+            for (let i = 0; i < points.length; i++) {
+                try {
+                    const [xResponse, yResponse] = await Promise.all([
+                        api.post('/api/tabulated-function-operations/getX', null, {
+                            params: { functionId, index: i }
+                        }),
+                        api.post('/api/tabulated-function-operations/getY', null, {
+                            params: { functionId, index: i }
+                        })
+                    ]);
+                    newPoints.push({ x: xResponse.data, y: yResponse.data });
+                } catch (error) {
+                    setError('Ошибка при загрузке точек');
+                }
+            }
+            setTableData(newPoints);
+        };
+
+        loadPointValues();
+    }, [functionId, points]);
+
+    const handleYChange = (index, newValue) => {
+        if (!isEditable) return;
+
+        setModifiedData(prev => ({
+            ...prev,
+            [index]: newValue
+        }));
+    };
+
+    const saveChanges = async () => {
+        try {
+            const updatePromises = Object.entries(modifiedData).map(([index, y]) =>
+                api.post('/api/tabulated-function-operations/setY', null, {
+                    params: {
+                        functionId,
+                        index: parseInt(index),
+                        y
+                    }
+                })
+            );
+
+            const results = await Promise.all(updatePromises);
+            const finalResult = results[results.length - 1];
+
+            if (finalResult?.data) {
+                onYChange && onYChange(finalResult.data);
+                setModifiedData({}); // Очищаем изменения
+            }
+        } catch (error) {
+            setError('Ошибка при сохранении изменений');
+        }
+    };
+
+    if (!points.length) {
+        return <div className="text-center p-4">Функция не создана</div>;
+    }
+
+    return (
+        <div className="mt-4">
+            <div className="overflow-x-auto shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                    <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">X</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Y</th>
+                    </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                    {tableData.map((point, index) => (
+                        <tr key={index}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {point.x}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {isEditable ? (
+                                    <input
+                                        type="number"
+                                        value={modifiedData[index] ?? point.y}
+                                        onChange={(e) => handleYChange(index, parseFloat(e.target.value))}
+                                        className="w-full px-2 py-1 border rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                        step="any"
+                                    />
+                                ) : (
+                                    point.y
+                                )}
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
+            {isEditable && Object.keys(modifiedData).length > 0 && (
+                <button
+                    onClick={saveChanges}
+                    className="mt-4 btn btn-primary w-full"
+                >
+                    Сохранить изменения
+                </button>
+            )}
+            {error && (
+                <Alert className="mt-2 bg-red-50 border-red-200">
+                    <AlertDescription className="text-red-600">{error}</AlertDescription>
+                </Alert>
+            )}
         </div>
-    </div>
-);
+    );
+};
 
 const ArrayFunctionCreator = ({ onSubmit, onError }) => {
     const [pointCount, setPointCount] = useState('');
     const [points, setPoints] = useState([]);
+    const [createdFunction, setCreatedFunction] = useState(null);
 
     const handlePointCountSubmit = () => {
         try {
@@ -75,9 +173,17 @@ const ArrayFunctionCreator = ({ onSubmit, onError }) => {
                 }
             }
 
-            await onSubmit(validPoints);
-            setPoints([]);
-            setPointCount('');
+            // Изменяем формат отправки данных
+            const params = new URLSearchParams();
+            validPoints.forEach((point) => {
+                params.append('x', point.x);
+                params.append('y', point.y);
+            });
+
+            const response = await api.post(`/api/function-creation/create-from-points?${params.toString()}`);
+
+            setCreatedFunction(response.data);
+            onSubmit(response.data);
         } catch (error) {
             onError(error.message);
         }
@@ -101,8 +207,8 @@ const ArrayFunctionCreator = ({ onSubmit, onError }) => {
                 </div>
             ) : (
                 <div className="space-y-4">
-                    <div className="table-container">
-                        <table className="table">
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200">
                             <thead>
                             <tr>
                                 <th>X</th>
@@ -140,24 +246,37 @@ const ArrayFunctionCreator = ({ onSubmit, onError }) => {
                     </button>
                 </div>
             )}
+
+            {createdFunction && (
+                <div className="mt-4">
+                    <h3 className="text-lg font-medium mb-2">Созданная функция</h3>
+                    <FunctionTable
+                        functionId={createdFunction.id}
+                        points={createdFunction.points}
+                        isEditable={true}
+                        onYChange={(updatedFunction) => {
+                            setCreatedFunction(updatedFunction);
+                            onSubmit(updatedFunction);
+                        }}
+                    />
+                </div>
+            )}
         </div>
     );
 };
 
 const MathFunctionCreator = ({ onSubmit, onError }) => {
-    // Изменяем начальное состояние на пустой массив
-    const [functions, setFunctions] = useState([]);
     const [selectedFunction, setSelectedFunction] = useState('');
     const [xFrom, setXFrom] = useState('');
     const [xTo, setXTo] = useState('');
     const [pointCount, setPointCount] = useState('');
+    const [createdFunction, setCreatedFunction] = useState(null);
+    const [functions, setFunctions] = useState([]);
 
-    // Загрузка списка функций при монтировании компонента
     useEffect(() => {
         const loadFunctions = async () => {
             try {
                 const response = await api.get('/api/function-creation/math-functions');
-                // response.data уже является массивом строк
                 setFunctions(response.data);
             } catch (error) {
                 onError('Ошибка при загрузке списка функций');
@@ -177,13 +296,6 @@ const MathFunctionCreator = ({ onSubmit, onError }) => {
             const to = parseFloat(xTo);
             const count = parseInt(pointCount);
 
-            console.log('Submitting values:', {
-                selectedFunction,
-                from,
-                to,
-                count
-            });
-
             if (isNaN(from) || isNaN(to) || isNaN(count)) {
                 onError('Все поля должны быть заполнены числами');
                 return;
@@ -199,19 +311,18 @@ const MathFunctionCreator = ({ onSubmit, onError }) => {
                 return;
             }
 
-            await onSubmit({
-                name: selectedFunction,
-                from,
-                to,
-                count
+            const response = await api.post('/api/function-creation/create-from-math-function', null, {
+                params: {
+                    name: selectedFunction,
+                    from,
+                    to,
+                    count
+                }
             });
 
-            setSelectedFunction('');
-            setXFrom('');
-            setXTo('');
-            setPointCount('');
+            setCreatedFunction(response.data);
+            onSubmit(response.data);
         } catch (error) {
-            console.error('Submit error:', error);
             onError(error.message);
         }
     };
@@ -221,10 +332,10 @@ const MathFunctionCreator = ({ onSubmit, onError }) => {
             <select
                 value={selectedFunction}
                 onChange={(e) => setSelectedFunction(e.target.value)}
-                className="select"
+                className="select w-full"
             >
                 <option value="">Выберите функцию</option>
-                {Array.isArray(functions) && functions.map(name => (
+                {functions.map(name => (
                     <option key={name} value={name}>{name}</option>
                 ))}
             </select>
@@ -260,139 +371,67 @@ const MathFunctionCreator = ({ onSubmit, onError }) => {
             <button onClick={handleSubmit} className="btn btn-success w-full">
                 Создать функцию
             </button>
+
+            {createdFunction && (
+                <div className="mt-4">
+                    <h3 className="text-lg font-medium mb-2">Созданная функция</h3>
+                    <FunctionTable
+                        functionId={createdFunction.id}
+                        points={createdFunction.points}
+                        isEditable={true}
+                        onYChange={(updatedFunction) => {
+                            setCreatedFunction(updatedFunction);
+                            onSubmit(updatedFunction);
+                        }}
+                    />
+                </div>
+            )}
         </div>
     );
 };
 
-const TabulatedFunctionCreator = () => {
-    const [activeTab, setActiveTab] = useState('array');
+const TabulatedFunctionCreator = ({ isOpen, onClose, onSuccess, creatorType = 'array' }) => {
     const [error, setError] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [successMessage, setSuccessMessage] = useState('');
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        setIsLoggedIn(!!token);
-    }, []);
-
-    const handleArraySubmit = async (points) => {
-        try {
-            setIsLoading(true);
-            console.log('Submitting points:', points);
-            await createArrayFunction(points);
-            setSuccessMessage('Функция успешно создана!');
-            setTimeout(() => setSuccessMessage(''), 3000);
-        } catch (error) {
-            console.error('Error:', error);
-            setError(error.message);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handleMathFunctionSubmit = async (data) => {
-        try {
-            setIsLoading(true);
-            console.log('Submitting math function data:', data);
-
-            // Проверяем все данные перед отправкой
-            if (!data.name || !data.from || !data.to || !data.count) {
-                throw new Error('Все поля должны быть заполнены');
-            }
-
-            // Добавляем явное преобразование типов
-            const requestData = {
-                name: data.name,
-                from: Number(data.from),
-                to: Number(data.to),
-                count: Number(data.count)
-            };
-
-            console.log('Formatted request data:', requestData);
-            const result = await createMathFunction(
-                requestData.name,
-                requestData.from,
-                requestData.to,
-                requestData.count
-            );
-            console.log('Response:', result);
-            setSuccessMessage('Функция успешно создана!');
-            setTimeout(() => setSuccessMessage(''), 3000);
-        } catch (error) {
-            console.error('Full error object:', error);
-            // Проверяем, является ли это ошибкой авторизации
-            if (error.response?.status === 403 || error.response?.status === 401) {
-                localStorage.removeItem('token');
-                window.location.reload();
-            } else {
-                // Для других ошибок просто показываем сообщение
-                setError(error.message || 'Произошла ошибка при создании функции');
-            }
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    if (!isLoggedIn) {
-        return (
-            <div className="max-w-2xl mx-auto mt-8">
-                <Alert className="bg-yellow-50 border-yellow-200">
-                    <AlertTitle className="text-yellow-700">Требуется авторизация</AlertTitle>
-                    <AlertDescription className="text-yellow-600">
-                        Пожалуйста, войдите в систему для создания функций.
-                    </AlertDescription>
-                </Alert>
-            </div>
-        );
-    }
+    if (!isOpen) return null;
 
     return (
-        <div className="max-w-2xl mx-auto mt-8">
-            <div className="flex mb-4">
-                <button
-                    onClick={() => setActiveTab('array')}
-                    className={`tab flex-1 ${activeTab === 'array' ? 'tab-active' : 'tab-inactive'}`}
-                >
-                    Создать из массивов
-                </button>
-                <button
-                    onClick={() => setActiveTab('function')}
-                    className={`tab flex-1 ${activeTab === 'function' ? 'tab-active' : 'tab-inactive'}`}
-                >
-                    Создать из функции
-                </button>
-            </div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+                <h2 className="text-2xl font-bold mb-6">
+                    {creatorType === 'array' ? 'Создание функции из точек' : 'Создание функции из математической функции'}
+                </h2>
 
-            <div className="card">
-                {activeTab === 'array' ? (
+                {creatorType === 'array' ? (
                     <ArrayFunctionCreator
-                        onSubmit={handleArraySubmit}
+                        onSubmit={onSuccess}
                         onError={setError}
                     />
                 ) : (
                     <MathFunctionCreator
-                        onSubmit={handleMathFunctionSubmit}
+                        onSubmit={onSuccess}
                         onError={setError}
                     />
                 )}
+
+                {error && (
+                    <Alert className="mt-4 bg-red-50 border-red-200">
+                        <AlertTitle className="text-red-700">Ошибка</AlertTitle>
+                        <AlertDescription className="text-red-600">
+                            {error}
+                        </AlertDescription>
+                    </Alert>
+                )}
+
+                <div className="mt-6 flex justify-end">
+                    <button
+                        onClick={onClose}
+                        className="btn btn-secondary"
+                    >
+                        Закрыть
+                    </button>
+                </div>
             </div>
-
-            {isLoading && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-4 rounded-lg">
-                        <p className="text-lg">Создание функции...</p>
-                    </div>
-                </div>
-            )}
-
-            {successMessage && (
-                <div className="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
-                    {successMessage}
-                </div>
-            )}
-
-            {error && <ErrorModal message={error} onClose={() => setError(null)} />}
         </div>
     );
 };
