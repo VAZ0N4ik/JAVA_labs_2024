@@ -3,12 +3,13 @@ import { Settings, Calculator, LineChart } from 'lucide-react';
 import SettingsModal from './SettingsModal';
 import FunctionOperations from './FunctionOperations';
 import FunctionDifferential from './FunctionDifferential';
+import FunctionIntegral from "./FunctionIntegral";
 
 const MainPage = () => {
     const [showSettings, setShowSettings] = useState(false);
     const [showOperations, setShowOperations] = useState(false);
     const [showDifferential, setShowDifferential] = useState(false);
-
+    const [showIntegral, setShowIntegral] = useState(false);
     return (
         <div className="container mx-auto p-8">
             <h1 className="text-3xl font-bold mb-8 text-center">Управление табулированными функциями</h1>
@@ -18,7 +19,7 @@ const MainPage = () => {
                     onClick={() => setShowSettings(true)}
                     className="flex flex-col items-center p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
                 >
-                    <Settings className="w-12 h-12 mb-4 text-blue-500" />
+                    <Settings className="w-12 h-12 mb-4 text-blue-500"/>
                     <span className="text-lg font-medium">Настройки</span>
                 </button>
 
@@ -26,7 +27,7 @@ const MainPage = () => {
                     onClick={() => setShowOperations(true)}
                     className="flex flex-col items-center p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
                 >
-                    <Calculator className="w-12 h-12 mb-4 text-green-500" />
+                    <Calculator className="w-12 h-12 mb-4 text-green-500"/>
                     <span className="text-lg font-medium">Операции над функциями</span>
                 </button>
 
@@ -34,8 +35,16 @@ const MainPage = () => {
                     onClick={() => setShowDifferential(true)}
                     className="flex flex-col items-center p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
                 >
-                    <LineChart className="w-12 h-12 mb-4 text-purple-500" />
+                    <LineChart className="w-12 h-12 mb-4 text-purple-500"/>
                     <span className="text-lg font-medium">Дифференцирование</span>
+                </button>
+
+                <button
+                    onClick={() => setShowIntegral(true)}
+                    className="flex flex-col items-center p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
+                >
+                    <LineChart className="w-12 h-12 mb-4 text-purple-500"/>
+                    <span className="text-lg font-medium">Интегрирование</span>
                 </button>
             </div>
 
@@ -59,6 +68,13 @@ const MainPage = () => {
                 <FunctionDifferential
                     isOpen={showDifferential}
                     onClose={() => setShowDifferential(false)}
+                />
+            )}
+
+            {showDifferential && (
+                <FunctionIntegral
+                    isOpen={showIntegral}
+                    onClose={() => setShowIntegral(false)}
                 />
             )}
         </div>
