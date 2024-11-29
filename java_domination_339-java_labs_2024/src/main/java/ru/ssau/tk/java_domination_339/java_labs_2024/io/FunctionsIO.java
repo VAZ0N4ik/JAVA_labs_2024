@@ -23,7 +23,7 @@ public final class FunctionsIO {
         objectOutputStream.flush();
     }
 
-    public static void serializeJson(BufferedWriter writer, ArrayTabulatedFunction function) throws IOException {
+    public static void serializeJson(BufferedWriter writer, TabulatedFunction function) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         writer.write(mapper.writeValueAsString(function));
         writer.flush();
@@ -100,7 +100,7 @@ public final class FunctionsIO {
         return (TabulatedFunction) function;
     }
 
-    public static void serializeXml(BufferedWriter writer, ArrayTabulatedFunction function) throws IOException {
+    public static void serializeXml(BufferedWriter writer, TabulatedFunction function) throws IOException {
         XStream xStream = new XStream();
         String xml = xStream.toXML(function);
         writer.write(xml);

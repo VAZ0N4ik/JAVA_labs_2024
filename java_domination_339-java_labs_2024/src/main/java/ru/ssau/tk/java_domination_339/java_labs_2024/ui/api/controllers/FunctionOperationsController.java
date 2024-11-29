@@ -12,6 +12,7 @@ import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.ArrayTabu
 import ru.ssau.tk.java_domination_339.java_labs_2024.functions.factory.LinkedListTabulatedFunctionFactory;
 import ru.ssau.tk.java_domination_339.java_labs_2024.operations.TabulatedDifferentialOperator;
 import ru.ssau.tk.java_domination_339.java_labs_2024.operations.TabulatedFunctionOperationService;
+import ru.ssau.tk.java_domination_339.java_labs_2024.operations.TabulatedIntegrationOperator;
 import ru.ssau.tk.java_domination_339.java_labs_2024.repository.MathFunctionRepository;
 
 import jakarta.validation.constraints.NotNull;
@@ -132,6 +133,17 @@ public class FunctionOperationsController {
         }
     }
 
+    @GetMapping("/integral")
+    public ResponseEntity<Double> integralFunctions(
+            @RequestParam @NotNull Long functionId,@RequestParam @NotNull Integer threads
+    ) {
+
+            TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(functionId);
+            Double result = new TabulatedIntegrationOperator(threads).integrate(function);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+
+    }
+
     @PostMapping("/apply")
     public ResponseEntity<Double> applyFunctions(
             @RequestParam @NotNull Long functionId, @RequestParam Double x
@@ -140,9 +152,15 @@ public class FunctionOperationsController {
         double ans;
         if (function.indexOfX(x) == -1) {
             ans = function.apply(x);
+            if (function instanceof Insertable) {
+                Insertable insertableObject = (Insertable) function;
+                insertableObject.insert(x, ans);
+                mathFunctionRepository.deleteById(functionId);
+                mathFunctionService.createAndSaveMathFunctionEntity((TabulatedFunction) insertableObject);
+            }
         } else {
             ans = function.getY(function.indexOfX(x));
-            //TODO add insert
+
         }
 
         return new ResponseEntity<>(ans, HttpStatus.OK);
