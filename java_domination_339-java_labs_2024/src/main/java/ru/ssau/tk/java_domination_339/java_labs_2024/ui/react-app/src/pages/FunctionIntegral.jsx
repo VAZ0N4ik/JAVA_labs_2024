@@ -154,7 +154,7 @@ const FunctionTable = ({ functionId, points = [], isEditable = true, onYChange }
     );
 };
 
-const FunctionDifferential = ({ isOpen, onClose }) => {
+const FunctionIntegrate = ({ isOpen, onClose }) => {
     const [sourceFunction, setSourceFunction] = useState(null);
     const [result, setResult] = useState(null);
     const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -169,7 +169,7 @@ const FunctionDifferential = ({ isOpen, onClose }) => {
         setShowCreator(true);
     };
 
-    const handleDifferentiate = async () => {
+    const handleIntegrate = async () => {
         if (!sourceFunction?.hash_function) {
             setError('Необходимо выбрать функцию');
             return;
@@ -301,7 +301,7 @@ const FunctionDifferential = ({ isOpen, onClose }) => {
                         <div className="space-y-3">
                             <button
                                 className="btn btn-primary w-full"
-                                onClick={handleDifferentiate}
+                                onClick={handleIntegrate}
                                 disabled={loading || !sourceFunction}
                             >
                                 Интегрировать
@@ -365,4 +365,4 @@ const FunctionDifferential = ({ isOpen, onClose }) => {
     );
 };
 
-export default FunctionDifferential;
+export default FunctionIntegrate;
