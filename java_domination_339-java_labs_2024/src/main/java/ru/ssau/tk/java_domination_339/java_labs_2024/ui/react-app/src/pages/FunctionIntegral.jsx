@@ -178,7 +178,7 @@ const FunctionIntegral = ({ isOpen, onClose }) => {
 
         setLoading(true);
         try {
-            const response = await api.post('/api/tabulated-function-operations/integral', null, {
+            const response = await api.get('/api/tabulated-function-operations/integral', null, {
                 params: {
                     functionId: sourceFunction.hash_function,
                     threads: threads
