@@ -71,7 +71,7 @@ const MainPage = () => {
                 />
             )}
 
-            {showDifferential && (
+            {showIntegral && (
                 <FunctionIntegral
                     isOpen={showIntegral}
                     onClose={() => setShowIntegral(false)}

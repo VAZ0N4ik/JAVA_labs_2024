@@ -154,7 +154,7 @@ const FunctionTable = ({ functionId, points = [], isEditable = true, onYChange }
     );
 };
 
-const FunctionIntegrate = ({ isOpen, onClose }) => {
+const FunctionIntegral = ({ isOpen, onClose }) => {
     const [sourceFunction, setSourceFunction] = useState(null);
     const [result, setResult] = useState(null);
     const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -162,6 +162,7 @@ const FunctionIntegrate = ({ isOpen, onClose }) => {
     const [creatorType, setCreatorType] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [threads, setThreads] = useState(1);
 
     const handleSelectCreateType = (type) => {
         setShowCreateDialog(false);
@@ -180,12 +181,12 @@ const FunctionIntegrate = ({ isOpen, onClose }) => {
             const response = await api.post('/api/tabulated-function-operations/integral', null, {
                 params: {
                     functionId: sourceFunction.hash_function,
-                    threads: 4
+                    threads: threads
                 }
             });
 
-            if (response.data) {
-                setResult(response.data);
+            if (response.data !== undefined) {
+                setResult(response.data);  // Теперь это числовое значение
                 setError(null);
             } else {
                 throw new Error('Ответ от сервера не содержит данных');
@@ -221,31 +222,6 @@ const FunctionIntegrate = ({ isOpen, onClose }) => {
         }
     };
 
-    const handleSaveToFile = async (functionData) => {
-        try {
-            const response = await api.get('/api/function-io/output', {
-                params: {
-                    hash: functionData.hash_function
-                },
-                responseType: 'blob'
-            });
-
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `function_${functionData.hash_function}.txt`);
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            window.URL.revokeObjectURL(url);
-
-            setError(null);
-        } catch (error) {
-            console.error('Save error:', error);
-            setError('Ошибка при сохранении файла');
-        }
-    };
-
     if (!isOpen) return null;
 
     return (
@@ -276,14 +252,6 @@ const FunctionIntegrate = ({ isOpen, onClose }) => {
                                     accept=".txt"
                                 />
                             </label>
-                            {sourceFunction && (
-                                <button
-                                    className="btn btn-secondary w-full"
-                                    onClick={() => handleSaveToFile(sourceFunction)}
-                                >
-                                    Сохранить в файл
-                                </button>
-                            )}
                         </div>
                         {sourceFunction && (
                             <FunctionTable
@@ -299,6 +267,18 @@ const FunctionIntegrate = ({ isOpen, onClose }) => {
                     <div>
                         <h3 className="text-lg font-medium mb-4">Интеграл функции</h3>
                         <div className="space-y-3">
+                            <div className="flex items-center space-x-2">
+                                <label className="block text-sm font-medium text-gray-700">
+                                    Кол-во потоков:
+                                </label>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    value={threads}
+                                    onChange={(e) => setThreads(parseInt(e.target.value) || 1)}
+                                    className="w-20 px-2 py-1 border rounded focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
                             <button
                                 className="btn btn-primary w-full"
                                 onClick={handleIntegrate}
@@ -306,22 +286,13 @@ const FunctionIntegrate = ({ isOpen, onClose }) => {
                             >
                                 Интегрировать
                             </button>
-                            {result && (
-                                <button
-                                    className="btn btn-secondary w-full"
-                                    onClick={() => handleSaveToFile(result)}
-                                >
-                                    Сохранить результат
-                                </button>
+                            {result !== null && (
+                                <div className="bg-gray-100 p-4 rounded-md text-center">
+                                    <h4 className="text-lg font-semibold">Значение интеграла:</h4>
+                                    <p className="text-2xl font-bold">{result.toFixed(4)}</p>
+                                </div>
                             )}
                         </div>
-                        {result && (
-                            <FunctionTable
-                                functionId={result.hash_function}
-                                points={result.points}
-                                isEditable={false}
-                            />
-                        )}
                     </div>
                 </div>
 
@@ -365,4 +336,4 @@ const FunctionIntegrate = ({ isOpen, onClose }) => {
     );
 };
 
-export default FunctionIntegrate;
+export default FunctionIntegral;
