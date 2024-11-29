@@ -56,7 +56,7 @@ public class FunctionCreationController {
 
         MathFunctionEntity entity = MathFunctionEntity.builder()
                 .points(points)
-                .name(function.Name())
+                .name(function.getClass().getSimpleName())
                 .hash(function.HashName())
                 .build();
 
@@ -98,7 +98,7 @@ public class FunctionCreationController {
 
         MathFunctionEntity entity = MathFunctionEntity.builder()
                 .points(points)
-                .name(function.Name())
+                .name(function.getClass().getSimpleName())
                 .hash(function.HashName())
                 .build();
 

@@ -90,7 +90,7 @@ public  class MathFunctionService {
                                 .mapToObj(i -> new PointEntity(function.getX(i), function.getY(i)))
                                 .collect(Collectors.toList())
                 )
-                .name(function.Name())
+                .name(function.getClass().getSimpleName())
                 .hash(function.HashName())
                 .build();
 
