@@ -1,82 +1,100 @@
 import React, { useState } from 'react';
 import { Settings, Calculator, LineChart, Search } from 'lucide-react';
 import SettingsModal from './SettingsModal';
-import FunctionOperations from './FunctionOperations';
-import FunctionDifferential from './FunctionDifferential';
-import FunctionExplorer from './FunctionExplorer';
+import FunctionOperations from '../components/FunctionOperations';
+import FunctionDifferential from '../components/FunctionDifferential';
+import FunctionExplorer from '../components/FunctionExplorer';
+import { Sigma } from 'lucide-react';
+import FunctionIntegral from './FunctionIntegral';
+
+const MenuCard = ({ icon: Icon, title, onClick }) => (
+    <button
+        onClick={onClick}
+        className="flex flex-col items-center p-6 bg-white dark:bg-gray-800
+                   rounded-xl shadow-lg hover:shadow-xl
+                   border border-gray-200 dark:border-gray-700
+                   transition-all duration-200
+                   hover:scale-105 active:scale-100
+                   group"
+    >
+        <Icon className="w-12 h-12 mb-4 text-blue-500 dark:text-blue-400
+                        group-hover:text-blue-600 dark:group-hover:text-blue-300
+                        transition-colors duration-200" />
+        <span className="text-lg font-medium text-gray-900 dark:text-gray-100
+                        group-hover:text-blue-600 dark:group-hover:text-blue-300
+                        transition-colors duration-200">
+            {title}
+        </span>
+    </button>
+);
 
 const MainPage = () => {
     const [showSettings, setShowSettings] = useState(false);
     const [showOperations, setShowOperations] = useState(false);
     const [showDifferential, setShowDifferential] = useState(false);
     const [showExplorer, setShowExplorer] = useState(false);
+    const [showIntegral, setShowIntegral] = useState(false);
+
 
     return (
         <div className="container mx-auto p-8">
-            <h1 className="text-3xl font-bold mb-8 text-center">Управление табулированными функциями</h1>
+            <h1 className="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
+                Управление табулированными функциями
+            </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <button
+                <MenuCard
+                    icon={Settings}
+                    title="Настройки"
                     onClick={() => setShowSettings(true)}
-                    className="flex flex-col items-center p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-                >
-                    <Settings className="w-12 h-12 mb-4 text-blue-500" />
-                    <span className="text-lg font-medium">Настройки</span>
-                </button>
-
-                <button
+                />
+                <MenuCard
+                    icon={Calculator}
+                    title="Операции над функциями"
                     onClick={() => setShowOperations(true)}
-                    className="flex flex-col items-center p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-                >
-                    <Calculator className="w-12 h-12 mb-4 text-green-500" />
-                    <span className="text-lg font-medium">Операции над функциями</span>
-                </button>
-
-                <button
+                />
+                <MenuCard
+                    icon={LineChart}
+                    title="Дифференцирование"
                     onClick={() => setShowDifferential(true)}
-                    className="flex flex-col items-center p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-                >
-                    <LineChart className="w-12 h-12 mb-4 text-purple-500" />
-                    <span className="text-lg font-medium">Дифференцирование</span>
-                </button>
-
-                <button
+                />
+                <MenuCard
+                    icon={Search}
+                    title="Изучение функции"
                     onClick={() => setShowExplorer(true)}
-                    className="flex flex-col items-center p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-                >
-                    <Search className="w-12 h-12 mb-4 text-yellow-500" />
-                    <span className="text-lg font-medium">Изучение функции</span>
-                </button>
+                />
+                <MenuCard
+                    icon={Sigma}
+                    title="Вычисление интеграла"
+                    onClick={() => setShowIntegral(true)}
+                />
             </div>
 
             {/* Модальные окна */}
-            {showSettings && (
-                <SettingsModal
-                    isOpen={showSettings}
-                    onClose={() => setShowSettings(false)}
-                />
-            )}
+            <SettingsModal
+                isOpen={showSettings}
+                onClose={() => setShowSettings(false)}
+            />
 
-            {showOperations && (
-                <FunctionOperations
-                    isOpen={showOperations}
-                    onClose={() => setShowOperations(false)}
-                />
-            )}
+            <FunctionOperations
+                isOpen={showOperations}
+                onClose={() => setShowOperations(false)}
+            />
 
-            {showDifferential && (
-                <FunctionDifferential
-                    isOpen={showDifferential}
-                    onClose={() => setShowDifferential(false)}
-                />
-            )}
+            <FunctionDifferential
+                isOpen={showDifferential}
+                onClose={() => setShowDifferential(false)}
+            />
 
-            {showExplorer && (
-                <FunctionExplorer
-                    isOpen={showExplorer}
-                    onClose={() => setShowExplorer(false)}
-                />
-            )}
+            <FunctionExplorer
+                isOpen={showExplorer}
+                onClose={() => setShowExplorer(false)}
+            />
+
+            <FunctionIntegral
+                isOpen={showIntegral}
+                onClose={() => setShowIntegral(false)}
+            />
         </div>
     );
 };

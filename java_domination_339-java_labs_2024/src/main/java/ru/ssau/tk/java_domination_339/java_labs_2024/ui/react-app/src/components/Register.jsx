@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import api from '../services/api';
 import { Alert, AlertTitle, AlertDescription } from "./ui/alert";
+import { UserPlus } from 'lucide-react';
 
 const Register = ({ onSuccess }) => {
     const [username, setUsername] = useState('');
@@ -20,7 +21,7 @@ const Register = ({ onSuccess }) => {
             });
 
             if (response.data.token) {
-                onSuccess(); // Возвращаемся к форме входа
+                onSuccess();
                 setUsername('');
                 setPassword('');
             }
@@ -34,10 +35,12 @@ const Register = ({ onSuccess }) => {
 
     return (
         <div className="card">
-            <h2 className="text-2xl font-bold mb-6 text-center">Регистрация</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">
+                Регистрация
+            </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Имя пользователя
                     </label>
                     <input
@@ -48,10 +51,11 @@ const Register = ({ onSuccess }) => {
                         required
                         minLength={5}
                         maxLength={50}
+                        placeholder="Придумайте имя пользователя"
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Пароль
                     </label>
                     <input
@@ -61,21 +65,25 @@ const Register = ({ onSuccess }) => {
                         className="input"
                         required
                         minLength={8}
+                        placeholder="Придумайте пароль"
                     />
                 </div>
                 {error && (
-                    <Alert className="bg-red-50 border-red-200">
-                        <AlertTitle className="text-red-700">Ошибка</AlertTitle>
-                        <AlertDescription className="text-red-600">
+                    <Alert className="bg-red-50 border-red-200 dark:bg-red-900/30 dark:border-red-800">
+                        <AlertTitle className="text-red-700 dark:text-red-400">
+                            Ошибка
+                        </AlertTitle>
+                        <AlertDescription className="text-red-600 dark:text-red-300">
                             {error}
                         </AlertDescription>
                     </Alert>
                 )}
                 <button
                     type="submit"
-                    className="btn btn-primary w-full"
+                    className="btn btn-primary w-full flex items-center justify-center gap-2"
                     disabled={isLoading}
                 >
+                    <UserPlus className="w-4 h-4" />
                     {isLoading ? 'Регистрация...' : 'Зарегистрироваться'}
                 </button>
             </form>
