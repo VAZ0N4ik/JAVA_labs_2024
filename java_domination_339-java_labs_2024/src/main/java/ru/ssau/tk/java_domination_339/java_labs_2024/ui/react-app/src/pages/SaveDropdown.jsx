@@ -1,13 +1,13 @@
 import React from 'react';
-import { Download, File, FileJson, FileCode } from 'lucide-react';
+import {Download, File, FileJson, FileCode} from 'lucide-react';
 
-const SaveDropdown = ({ onSave, disabled }) => (
+const SaveDropdown = ({onSave, disabled}) => (
     <div className="dropdown">
         <button
             className="btn btn-secondary w-full flex items-center justify-center gap-2"
             disabled={disabled}
         >
-            <Download className="w-4 h-4" />
+            <Download className="w-4 h-4"/>
             Сохранить
         </button>
         <div className="dropdown-content">
@@ -18,7 +18,7 @@ const SaveDropdown = ({ onSave, disabled }) => (
                          hover:bg-gray-100 dark:hover:bg-gray-700
                          transition-colors duration-150"
             >
-                <File className="w-4 h-4" />
+                <File className="w-4 h-4"/>
                 Бинарный файл (.txt)
             </button>
             <button
@@ -28,7 +28,7 @@ const SaveDropdown = ({ onSave, disabled }) => (
                          hover:bg-gray-100 dark:hover:bg-gray-700
                          transition-colors duration-150"
             >
-                <FileJson className="w-4 h-4" />
+                <FileJson className="w-4 h-4"/>
                 JSON файл (.json)
             </button>
             <button
@@ -38,7 +38,7 @@ const SaveDropdown = ({ onSave, disabled }) => (
                          hover:bg-gray-100 dark:hover:bg-gray-700
                          transition-colors duration-150"
             >
-                <FileCode className="w-4 h-4" />
+                <FileCode className="w-4 h-4"/>
                 XML файл (.xml)
             </button>
         </div>

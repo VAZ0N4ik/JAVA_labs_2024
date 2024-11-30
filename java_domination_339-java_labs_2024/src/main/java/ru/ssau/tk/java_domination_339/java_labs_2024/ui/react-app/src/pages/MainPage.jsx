@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { Settings, Calculator, LineChart, Search } from 'lucide-react';
+import React, {useState} from 'react';
+import {Settings, Calculator, LineChart, Search} from 'lucide-react';
 import SettingsModal from './SettingsModal';
 import FunctionOperations from '../components/FunctionOperations';
 import FunctionDifferential from '../components/FunctionDifferential';
 import FunctionExplorer from '../components/FunctionExplorer';
-import { Sigma } from 'lucide-react';
+import {Sigma} from 'lucide-react';
 import FunctionIntegral from './FunctionIntegral';
-import { GitMerge } from 'lucide-react';
+import {GitMerge} from 'lucide-react';
 import CompositeFunctionCreator from './CompositeFunctionCreator';
 
-const MenuCard = ({ icon: Icon, title, onClick }) => (
+const MenuCard = ({icon: Icon, title, onClick}) => (
     <button
         onClick={onClick}
         className="flex flex-col items-center p-6 bg-white dark:bg-gray-800
@@ -21,7 +21,7 @@ const MenuCard = ({ icon: Icon, title, onClick }) => (
     >
         <Icon className="w-12 h-12 mb-4 text-blue-500 dark:text-blue-400
                         group-hover:text-blue-600 dark:group-hover:text-blue-300
-                        transition-colors duration-200" />
+                        transition-colors duration-200"/>
         <span className="text-lg font-medium text-gray-900 dark:text-gray-100
                         group-hover:text-blue-600 dark:group-hover:text-blue-300
                         transition-colors duration-200">

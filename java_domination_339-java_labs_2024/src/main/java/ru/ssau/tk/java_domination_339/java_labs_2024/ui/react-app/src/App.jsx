@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { ThemeProvider } from './components/ThemeProvider';
+import React, {useState, useEffect} from 'react';
+import {ThemeProvider} from './components/ThemeProvider';
 import MainPage from './pages/MainPage';
 import Login from './components/Login';
 import Register from './components/Register';
-import { LogOut } from 'lucide-react';
+import {LogOut} from 'lucide-react';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -26,7 +26,7 @@ function App() {
                     <div className="max-w-md mx-auto pt-8 px-4">
                         {!showRegister ? (
                             <>
-                                <Login onSuccess={() => setIsLoggedIn(true)} />
+                                <Login onSuccess={() => setIsLoggedIn(true)}/>
                                 <button
                                     onClick={() => setShowRegister(true)}
                                     className="mt-4 text-blue-600 hover:text-blue-700 dark:text-blue-400
@@ -37,7 +37,7 @@ function App() {
                             </>
                         ) : (
                             <>
-                                <Register onSuccess={() => setShowRegister(false)} />
+                                <Register onSuccess={() => setShowRegister(false)}/>
                                 <button
                                     onClick={() => setShowRegister(false)}
                                     className="mt-4 text-blue-600 hover:text-blue-700 dark:text-blue-400
@@ -65,13 +65,13 @@ function App() {
                                                  focus:outline-none focus:ring-2 focus:ring-offset-2
                                                  focus:ring-red-500 dark:focus:ring-red-400"
                                     >
-                                        <LogOut className="w-4 h-4 mr-2" />
+                                        <LogOut className="w-4 h-4 mr-2"/>
                                         Выйти
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <MainPage />
+                        <MainPage/>
                     </div>
                 )}
             </div>

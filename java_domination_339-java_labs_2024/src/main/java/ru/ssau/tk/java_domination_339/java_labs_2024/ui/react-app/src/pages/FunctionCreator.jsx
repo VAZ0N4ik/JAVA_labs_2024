@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { AlertCircle, X } from 'lucide-react';
+import React, {useState, useEffect} from 'react';
+import {AlertCircle, X} from 'lucide-react';
 import api from '../services/api';
-import { Alert, AlertTitle, AlertDescription } from "../components/ui/alert";
+import {Alert, AlertTitle, AlertDescription} from "../components/ui/alert";
 
-const ArrayFunctionCreator = ({ onSubmit, onError }) => {
+const ArrayFunctionCreator = ({onSubmit, onError}) => {
     const [pointCount, setPointCount] = useState('');
     const [points, setPoints] = useState([]);
     const [setCreatedFunction] = useState(null);
@@ -19,7 +19,7 @@ const ArrayFunctionCreator = ({ onSubmit, onError }) => {
                 onError('Минимальное количество точек: 2');
                 return;
             }
-            setPoints(Array(count).fill().map(() => ({ x: '', y: '' })));
+            setPoints(Array(count).fill().map(() => ({x: '', y: ''})));
         } catch (error) {
             onError(error.message);
         }
@@ -27,7 +27,7 @@ const ArrayFunctionCreator = ({ onSubmit, onError }) => {
 
     const handlePointChange = (index, field, value) => {
         const newPoints = [...points];
-        newPoints[index] = { ...newPoints[index], [field]: value };
+        newPoints[index] = {...newPoints[index], [field]: value};
         setPoints(newPoints);
     };
 
@@ -147,7 +147,7 @@ const ArrayFunctionCreator = ({ onSubmit, onError }) => {
     );
 };
 
-const MathFunctionCreator = ({ onSubmit, onError }) => {
+const MathFunctionCreator = ({onSubmit, onError}) => {
     const [selectedFunction, setSelectedFunction] = useState('');
     const [xFrom, setXFrom] = useState('');
     const [xTo, setXTo] = useState('');
@@ -278,7 +278,7 @@ const MathFunctionCreator = ({ onSubmit, onError }) => {
     );
 };
 
-const TabulatedFunctionCreator = ({ isOpen, onClose, onSuccess, creatorType = 'array' }) => {
+const TabulatedFunctionCreator = ({isOpen, onClose, onSuccess, creatorType = 'array'}) => {
     const [error, setError] = useState(null);
 
     if (!isOpen) return null;
@@ -298,7 +298,7 @@ const TabulatedFunctionCreator = ({ isOpen, onClose, onSuccess, creatorType = 'a
                         className="text-gray-500 hover:text-gray-700 dark:text-gray-400
                                  dark:hover:text-gray-200 transition-colors"
                     >
-                        <X className="w-6 h-6" />
+                        <X className="w-6 h-6"/>
                     </button>
                 </div>
 
@@ -320,7 +320,7 @@ const TabulatedFunctionCreator = ({ isOpen, onClose, onSuccess, creatorType = 'a
                             Ошибка
                         </AlertTitle>
                         <AlertDescription className="text-red-600 dark:text-red-300 flex items-center gap-2">
-                            <AlertCircle className="w-4 h-4" />
+                            <AlertCircle className="w-4 h-4"/>
                             {error}
                         </AlertDescription>
                     </Alert>

@@ -10,7 +10,7 @@ public class ArrayTabulatedFunctionJsonSerialization {
             double[] xValues = {1.0, 2.0, 3.0, 4.0, 5.0};
             double[] yValues = {2.0, 8.0, 18.0, 32.0, 50.0};
             ArrayTabulatedFunction function1 = new ArrayTabulatedFunction(xValues, yValues);
-            ArrayTabulatedFunction function2 = new ArrayTabulatedFunction(xValues, yValues);
+            new ArrayTabulatedFunction(xValues, yValues);
             FunctionsIO.serializeJson(bufWriter, function1);
         } catch (IOException e) {
             e.printStackTrace();

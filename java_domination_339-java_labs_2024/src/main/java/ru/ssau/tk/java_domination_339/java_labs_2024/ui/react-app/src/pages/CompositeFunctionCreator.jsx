@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { Binary, AlertCircle, ArrowRight } from 'lucide-react';
+import React, {useState} from 'react';
+import {Binary, AlertCircle, ArrowRight} from 'lucide-react';
 import CommonModal from '../components/CommonModal';
-import { FunctionSection } from './ModalWrappers';
-import { Alert, AlertTitle, AlertDescription } from "../components/ui/alert";
-import { uploadFunction, checkFunctionCapabilities } from '../lib/functionUtils';
+import {FunctionSection} from './ModalWrappers';
+import {Alert, AlertTitle, AlertDescription} from "../components/ui/alert";
+import {uploadFunction, checkFunctionCapabilities} from '../lib/functionUtils';
 import api from '../services/api';
 import TabulatedFunctionCreator from "./FunctionCreator";
-import { CreateFunctionDialog } from "./CreateFunctionDialog";
+import {CreateFunctionDialog} from "./CreateFunctionDialog";
 
-const CompositeFunctionCreator = ({ isOpen, onClose }) => {
+const CompositeFunctionCreator = ({isOpen, onClose}) => {
     const [function1, setFunction1] = useState(null);
     const [function2, setFunction2] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -183,7 +183,7 @@ const CompositeFunctionCreator = ({ isOpen, onClose }) => {
                         <div className="flex-1 text-center font-medium text-gray-700 dark:text-gray-300">
                             {function1.hash_function}
                         </div>
-                        <ArrowRight className="w-6 h-6 text-blue-500 dark:text-blue-400" />
+                        <ArrowRight className="w-6 h-6 text-blue-500 dark:text-blue-400"/>
                         <div className="flex-1 text-center font-medium text-gray-700 dark:text-gray-300">
                             {function2.hash_function}
                         </div>
@@ -210,7 +210,7 @@ const CompositeFunctionCreator = ({ isOpen, onClose }) => {
                         onClick={handleCreateComposite}
                         disabled={loading || !function1 || !function2 || !localizedName.trim()}
                     >
-                        <Binary className="w-4 h-4" />
+                        <Binary className="w-4 h-4"/>
                         {loading ? 'Создание...' : 'Создать композитную функцию'}
                     </button>
                 </div>
@@ -221,7 +221,7 @@ const CompositeFunctionCreator = ({ isOpen, onClose }) => {
                             Ошибка
                         </AlertTitle>
                         <AlertDescription className="text-red-600 dark:text-red-300 flex items-center gap-2">
-                            <AlertCircle className="w-4 h-4" />
+                            <AlertCircle className="w-4 h-4"/>
                             {error}
                         </AlertDescription>
                     </Alert>

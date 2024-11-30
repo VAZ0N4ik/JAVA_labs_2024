@@ -1,5 +1,5 @@
 import api from '../services/api';
-import { saveAs } from 'file-saver';
+import {saveAs} from 'file-saver';
 
 export const uploadFunction = async (formData, fileExtension) => {
     let endpoint = '/api/function-io/input';
@@ -30,7 +30,7 @@ export const saveFunction = async (functionData, format = 'binary') => {
             '/api/function-io/output';
 
     const response = await api.get(endpoint, {
-        params: { hash: functionData.hash_function },
+        params: {hash: functionData.hash_function},
         responseType: 'blob'
     });
 
@@ -41,15 +41,15 @@ export const saveFunction = async (functionData, format = 'binary') => {
 };
 
 export const checkFunctionCapabilities = async (functionId) => {
-    if (!functionId) return { canInsert: false, canRemove: false };
+    if (!functionId) return {canInsert: false, canRemove: false};
 
     try {
         const [insertResponse, removeResponse] = await Promise.all([
             api.get('/api/tabulated-function-operations/is-insert', {
-                params: { functionId }
+                params: {functionId}
             }),
             api.get('/api/tabulated-function-operations/is-remove', {
-                params: { functionId }
+                params: {functionId}
             })
         ]);
 
@@ -59,6 +59,6 @@ export const checkFunctionCapabilities = async (functionId) => {
         };
     } catch (error) {
         console.error('Error checking capabilities:', error);
-        return { canInsert: false, canRemove: false };
+        return {canInsert: false, canRemove: false};
     }
 };

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Calculator, AlertCircle } from 'lucide-react';
-import { Alert, AlertDescription } from '../components/ui/alert';
+import React, {useState} from 'react';
+import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from 'recharts';
+import {Calculator, AlertCircle} from 'lucide-react';
+import {Alert, AlertDescription} from '../components/ui/alert';
 
 const FunctionVisualizer = ({
                                 functionId,
@@ -43,11 +43,12 @@ const FunctionVisualizer = ({
 
     return (
         <div className="space-y-4">
-            <div className="h-64 w-full bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+            <div
+                className="h-64 w-full bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
                 <ResponsiveContainer>
                     <LineChart
-                        data={points.map((point, index) => ({ x: point.x, y: point.y, index }))}
-                        margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
+                        data={points.map((point, index) => ({x: point.x, y: point.y, index}))}
+                        margin={{top: 10, right: 10, left: 10, bottom: 10}}
                     >
                         <CartesianGrid
                             strokeDasharray="3 3"
@@ -119,7 +120,7 @@ const FunctionVisualizer = ({
                     className="btn btn-primary flex items-center gap-2"
                     disabled={loading || !applyX}
                 >
-                    <Calculator className="w-4 h-4" />
+                    <Calculator className="w-4 h-4"/>
                     {loading ? 'Вычисление...' : 'Вычислить'}
                 </button>
                 {calculatedY !== null && (
@@ -133,7 +134,7 @@ const FunctionVisualizer = ({
             {error && (
                 <Alert className="bg-red-50 border-red-200 dark:bg-red-900/30 dark:border-red-800">
                     <AlertDescription className="text-red-600 dark:text-red-300 flex items-center gap-2">
-                        <AlertCircle className="w-4 h-4" />
+                        <AlertCircle className="w-4 h-4"/>
                         {error}
                     </AlertDescription>
                 </Alert>

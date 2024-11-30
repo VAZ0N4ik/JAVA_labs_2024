@@ -1,5 +1,5 @@
 import React from 'react';
-import { Upload, Trash2 } from 'lucide-react';
+import {Upload, Trash2} from 'lucide-react';
 
 const FunctionControls = ({
                               onCreateClick,
@@ -41,7 +41,7 @@ const FunctionControls = ({
                         onClick={onClearFunction}
                         disabled={loading}
                     >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-4 h-4"/>
                     </button>
                 )}
             </div>
@@ -56,7 +56,7 @@ const FunctionControls = ({
                         disabled={loading}
                     />
                     <div className="btn btn-secondary w-full flex items-center justify-center gap-2">
-                        <Upload className="w-4 h-4" />
+                        <Upload className="w-4 h-4"/>
                         Загрузить из файла
                     </div>
                 </div>

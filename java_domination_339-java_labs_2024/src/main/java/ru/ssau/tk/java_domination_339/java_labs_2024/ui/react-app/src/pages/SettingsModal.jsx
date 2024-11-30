@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Save, X } from 'lucide-react';
+import React, {useState, useEffect} from 'react';
+import {Save, X} from 'lucide-react';
 import api from '../services/api';
-import { Alert, AlertTitle, AlertDescription } from "../components/ui/alert";
+import {Alert, AlertTitle, AlertDescription} from "../components/ui/alert";
 
-const SettingsModal = ({ isOpen, onClose }) => {
+const SettingsModal = ({isOpen, onClose}) => {
     const [selectedFactory, setSelectedFactory] = useState('');
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
@@ -32,7 +32,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
         setLoading(true);
         try {
             await api.post('/api/settings/factory-type', null, {
-                params: { name: selectedFactory }
+                params: {name: selectedFactory}
             });
             setSuccess(true);
             setTimeout(() => {
@@ -60,7 +60,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                         className="text-gray-500 hover:text-gray-700 dark:text-gray-400
                                  dark:hover:text-gray-200 transition-colors"
                     >
-                        <X className="w-6 h-6" />
+                        <X className="w-6 h-6"/>
                     </button>
                 </div>
 
@@ -114,7 +114,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                         className="btn btn-primary flex items-center gap-2"
                         disabled={loading}
                     >
-                        <Save className="w-4 h-4" />
+                        <Save className="w-4 h-4"/>
                         {loading ? 'Сохранение...' : 'Сохранить'}
                     </button>
                 </div>

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import api from '../services/api';
-import { Alert, AlertTitle, AlertDescription } from "./ui/alert";
-import { UserPlus } from 'lucide-react';
+import {Alert, AlertTitle, AlertDescription} from "./ui/alert";
+import {UserPlus} from 'lucide-react';
 
-const Register = ({ onSuccess }) => {
+const Register = ({onSuccess}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -83,7 +83,7 @@ const Register = ({ onSuccess }) => {
                     className="btn btn-primary w-full flex items-center justify-center gap-2"
                     disabled={isLoading}
                 >
-                    <UserPlus className="w-4 h-4" />
+                    <UserPlus className="w-4 h-4"/>
                     {isLoading ? 'Регистрация...' : 'Зарегистрироваться'}
                 </button>
             </form>

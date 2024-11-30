@@ -15,9 +15,10 @@ public class MathFunctionType {
 
     private final String localizedName;
     private final MathFunction function;
-    private static  Map<String, MathFunction> map = new HashMap<>();
+    private static Map<String, MathFunction> map = new HashMap<>();
     private static List<String> func = new ArrayList<>();
     private static List<Class<?>> classes = findSimpleFunctions();
+
     MathFunctionType(String localizedName, MathFunction function) {
         this.localizedName = localizedName;
         this.function = function;
@@ -30,43 +31,45 @@ public class MathFunctionType {
     public MathFunction getFunction() {
         return function;
     }
+
     public static List<String> getFunctions() {
         return func;
     }
+
     static public List<Class<?>> findSimpleFunctions() {
 
-            List<Class<?>> functions = new ArrayList<>();
-            ClassPathScanningCandidateComponentProvider scanner =
-                    new ClassPathScanningCandidateComponentProvider(false);
+        List<Class<?>> functions = new ArrayList<>();
+        ClassPathScanningCandidateComponentProvider scanner =
+                new ClassPathScanningCandidateComponentProvider(false);
 
-            scanner.addIncludeFilter(new AnnotationTypeFilter(SimpleFunctionAnnotation.class));
+        scanner.addIncludeFilter(new AnnotationTypeFilter(SimpleFunctionAnnotation.class));
 
-            Set<BeanDefinition> beans = scanner.findCandidateComponents("ru.ssau.tk");
-            System.out.println(beans);
-            for (BeanDefinition bean : beans) {
-                try {
-                    Class<?> cls = Class.forName(bean.getBeanClassName());
-                    functions.add(cls);
+        Set<BeanDefinition> beans = scanner.findCandidateComponents("ru.ssau.tk");
+        System.out.println(beans);
+        for (BeanDefinition bean : beans) {
+            try {
+                Class<?> cls = Class.forName(bean.getBeanClassName());
+                functions.add(cls);
 
-                } catch (ClassNotFoundException e) {
-                    // Обработка ошибки
-                }
+            } catch (ClassNotFoundException e) {
+                // Обработка ошибки
             }
-            System.out.println(functions);
-            // Сортировка функций по приоритету и названию
-            functions.sort((a, b) -> {
-                SimpleFunctionAnnotation annotA = a.getAnnotation(SimpleFunctionAnnotation.class);
-                SimpleFunctionAnnotation annotB = b.getAnnotation(SimpleFunctionAnnotation.class);
+        }
+        System.out.println(functions);
+        // Сортировка функций по приоритету и названию
+        functions.sort((a, b) -> {
+            SimpleFunctionAnnotation annotA = a.getAnnotation(SimpleFunctionAnnotation.class);
+            SimpleFunctionAnnotation annotB = b.getAnnotation(SimpleFunctionAnnotation.class);
 
-                int priorityCompare = Integer.compare(annotB.priority(), annotA.priority());
-                if (priorityCompare != 0) return priorityCompare;
+            int priorityCompare = Integer.compare(annotB.priority(), annotA.priority());
+            if (priorityCompare != 0) return priorityCompare;
 
-                return annotA.name().compareTo(annotB.name());
-            });
-            classes = functions;
-            for (Class<?> cls : classes) {
-                func.add(cls.getAnnotation(SimpleFunctionAnnotation.class).name());
-            }
+            return annotA.name().compareTo(annotB.name());
+        });
+        classes = functions;
+        for (Class<?> cls : classes) {
+            func.add(cls.getAnnotation(SimpleFunctionAnnotation.class).name());
+        }
         return classes;
     }
 
@@ -74,7 +77,7 @@ public class MathFunctionType {
         if (map.isEmpty()) {
             List<Class<?>> functions = classes;
             for (Class<?> type : functions) {
-                map.put(type.getAnnotation(SimpleFunctionAnnotation.class).name(),(MathFunction) type.getDeclaredConstructor().newInstance());
+                map.put(type.getAnnotation(SimpleFunctionAnnotation.class).name(), (MathFunction) type.getDeclaredConstructor().newInstance());
             }
             System.out.println(map);
         }

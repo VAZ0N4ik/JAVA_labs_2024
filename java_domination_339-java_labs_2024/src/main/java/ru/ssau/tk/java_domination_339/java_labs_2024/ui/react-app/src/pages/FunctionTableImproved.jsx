@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, AlertCircle } from 'lucide-react';
+import React, {useState, useEffect} from 'react';
+import {Plus, Trash2, AlertCircle} from 'lucide-react';
 import api from '../services/api';
-import { Alert, AlertDescription } from "../components/ui/alert";
+import {Alert, AlertDescription} from "../components/ui/alert";
 
 const FunctionTableImproved = ({
                                    functionId,
@@ -32,10 +32,10 @@ const FunctionTableImproved = ({
                 for (let i = 0; i < points.length; i++) {
                     const [xResponse, yResponse] = await Promise.all([
                         api.post('/api/tabulated-function-operations/getX', null, {
-                            params: { functionId, index: i }
+                            params: {functionId, index: i}
                         }),
                         api.post('/api/tabulated-function-operations/getY', null, {
-                            params: { functionId, index: i }
+                            params: {functionId, index: i}
                         })
                     ]);
 
@@ -175,7 +175,7 @@ const FunctionTableImproved = ({
                         className="btn btn-secondary flex items-center gap-2"
                         disabled={!insertX || !insertY}
                     >
-                        <Plus className="w-4 h-4" />
+                        <Plus className="w-4 h-4"/>
                         Вставить точку
                     </button>
                 </div>
@@ -225,7 +225,7 @@ const FunctionTableImproved = ({
                                                      dark:hover:text-red-400 transition-colors flex items-center gap-1"
                                         title="Удалить точку"
                                     >
-                                        <Trash2 className="w-4 h-4" />
+                                        <Trash2 className="w-4 h-4"/>
                                         Удалить
                                     </button>
                                 </td>
@@ -248,7 +248,7 @@ const FunctionTableImproved = ({
             {error && (
                 <Alert className="mt-2 bg-red-50 border-red-200 dark:bg-red-900/30 dark:border-red-800">
                     <AlertDescription className="text-red-600 dark:text-red-300 flex items-center gap-2">
-                        <AlertCircle className="w-4 h-4" />
+                        <AlertCircle className="w-4 h-4"/>
                         {error}
                     </AlertDescription>
                 </Alert>

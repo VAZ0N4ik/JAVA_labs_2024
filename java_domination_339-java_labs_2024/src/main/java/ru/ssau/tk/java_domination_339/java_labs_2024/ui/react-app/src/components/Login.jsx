@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import api from '../services/api';
-import { Alert, AlertTitle, AlertDescription } from "./ui/alert";
-import { LogIn } from 'lucide-react';
+import {Alert, AlertTitle, AlertDescription} from "./ui/alert";
+import {LogIn} from 'lucide-react';
 
-const Login = ({ onSuccess }) => {
+const Login = ({onSuccess}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -83,7 +83,7 @@ const Login = ({ onSuccess }) => {
                     className="btn btn-primary w-full flex items-center justify-center gap-2"
                     disabled={isLoading}
                 >
-                    <LogIn className="w-4 h-4" />
+                    <LogIn className="w-4 h-4"/>
                     {isLoading ? 'Вход...' : 'Войти'}
                 </button>
             </form>

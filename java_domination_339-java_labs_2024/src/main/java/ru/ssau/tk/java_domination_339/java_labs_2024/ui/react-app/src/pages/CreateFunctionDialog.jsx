@@ -1,7 +1,7 @@
 import React from 'react';
-import { Grid2X2, LineChart } from 'lucide-react';
+import {Grid2X2, LineChart} from 'lucide-react';
 
-export const CreateFunctionDialog = ({ isOpen, onClose, onTypeSelect }) => {
+export const CreateFunctionDialog = ({isOpen, onClose, onTypeSelect}) => {
     if (!isOpen) return null;
 
     return (
@@ -17,7 +17,7 @@ export const CreateFunctionDialog = ({ isOpen, onClose, onTypeSelect }) => {
                                  transition-colors duration-200"
                         onClick={() => onTypeSelect('array')}
                     >
-                        <Grid2X2 className="w-5 h-5" />
+                        <Grid2X2 className="w-5 h-5"/>
                         Создать из массива
                     </button>
                     <button
@@ -26,7 +26,7 @@ export const CreateFunctionDialog = ({ isOpen, onClose, onTypeSelect }) => {
                                  transition-colors duration-200"
                         onClick={() => onTypeSelect('function')}
                     >
-                        <LineChart className="w-5 h-5" />
+                        <LineChart className="w-5 h-5"/>
                         Создать из функции
                     </button>
                     <button

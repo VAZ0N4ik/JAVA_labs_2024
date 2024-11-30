@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { Plus, Minus, X as Multiply, Divide } from 'lucide-react';
+import React, {useState} from 'react';
+import {Plus, Minus, X as Multiply, Divide} from 'lucide-react';
 import CommonModal from './CommonModal';
-import { FunctionSection, OperationResultSection } from '../pages/ModalWrappers';
-import { uploadFunction, saveFunction, checkFunctionCapabilities } from '../lib/functionUtils';
-import { CreateFunctionDialog } from '../pages/CreateFunctionDialog';
+import {FunctionSection, OperationResultSection} from '../pages/ModalWrappers';
+import {uploadFunction, saveFunction, checkFunctionCapabilities} from '../lib/functionUtils';
+import {CreateFunctionDialog} from '../pages/CreateFunctionDialog';
 import TabulatedFunctionCreator from '../pages/FunctionCreator';
 import api from '../services/api';
 
-const OperationButton = ({ onClick, loading, disabled, icon: Icon, children }) => (
+const OperationButton = ({onClick, loading, disabled, icon: Icon, children}) => (
     <button
         className="btn btn-primary w-full flex items-center justify-center gap-2"
         onClick={onClick}
         disabled={loading || disabled}
     >
-        <Icon className="w-4 h-4" />
+        <Icon className="w-4 h-4"/>
         {children}
     </button>
 );
 
-const FunctionOperations = ({ isOpen, onClose }) => {
+const FunctionOperations = ({isOpen, onClose}) => {
     const [function1, setFunction1] = useState(null);
     const [function2, setFunction2] = useState(null);
     const [result, setResult] = useState(null);
@@ -58,6 +58,28 @@ const FunctionOperations = ({ isOpen, onClose }) => {
             return;
         }
 
+        // Для деления проверяем нули
+        if (operation === 'divide') {
+            try {
+                const points = function2.points;
+                for (let i = 0; i < points.length; i++) {
+                    const response = await api.post('/api/tabulated-function-operations/getY', null, {
+                        params: {
+                            functionId: function2.hash_function,
+                            index: i
+                        }
+                    });
+                    if (response.data === 0) {
+                        setError('Невозможно выполнить деление: в знаменателе присутствуют нулевые значения');
+                        return;
+                    }
+                }
+            } catch (error) {
+                setError('Ошибка при проверке значений второй функции');
+                return;
+            }
+        }
+
         setLoading(true);
         try {
             const response = await api.post(`/api/tabulated-function-operations/${operation}`, null, {
@@ -67,10 +89,32 @@ const FunctionOperations = ({ isOpen, onClose }) => {
                 }
             });
 
+            // Проверяем результат
+            for (let i = 0; i < response.data.points.length; i++) {
+                const y = await api.post('/api/tabulated-function-operations/getY', null, {
+                    params: {
+                        functionId: response.data.hash_function,
+                        index: i
+                    }
+                });
+
+                if (isNaN(y.data) || !isFinite(y.data) || Math.abs(y.data) > Number.MAX_SAFE_INTEGER) {
+                    setError('Операция привела к некорректным значениям. Проверьте исходные функции');
+                    return;
+                }
+            }
+
             setResult(response.data);
             setError(null);
         } catch (error) {
-            setError(error.response?.data?.message || 'Ошибка при выполнении операции');
+            const errorMessage = error.response?.data?.message || 'Ошибка при выполнении операции';
+            if (errorMessage.includes('ArithmeticException')) {
+                setError('Арифметическая ошибка: некорректные значения');
+            } else if (errorMessage.includes('IllegalArgumentException')) {
+                setError('Некорректные аргументы операции');
+            } else {
+                setError(errorMessage);
+            }
         } finally {
             setLoading(false);
         }
@@ -148,7 +192,6 @@ const FunctionOperations = ({ isOpen, onClose }) => {
                     canRemove={canRemove1}
                     onRemovePoint={(x) => handleRemovePoint(function1, setFunction1, x)}
                     onInsertPoint={(x, y) => handleInsertPoint(function1, setFunction1, x, y)}
-                    error={error}
                 />
 
                 <FunctionSection
@@ -163,7 +206,6 @@ const FunctionOperations = ({ isOpen, onClose }) => {
                     canRemove={canRemove2}
                     onRemovePoint={(x) => handleRemovePoint(function2, setFunction2, x)}
                     onInsertPoint={(x, y) => handleInsertPoint(function2, setFunction2, x, y)}
-                    error={error}
                 />
 
                 <div className="space-y-4">

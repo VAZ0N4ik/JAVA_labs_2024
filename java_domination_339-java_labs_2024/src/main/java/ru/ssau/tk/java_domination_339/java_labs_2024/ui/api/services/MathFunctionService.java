@@ -22,14 +22,15 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 @RequiredArgsConstructor
 @Service
-public  class MathFunctionService {
+public class MathFunctionService {
     @Autowired
-    private  final MathFunctionRepository mathFunctionRepository;
+    private final MathFunctionRepository mathFunctionRepository;
     private static final SettingsController settingsController = new SettingsController();
 
-    public  ResponseEntity<MathFunctionDto> saveAndUpdateMathFunction(MathFunctionEntity entity) {
+    public ResponseEntity<MathFunctionDto> saveAndUpdateMathFunction(MathFunctionEntity entity) {
         Optional<MathFunctionEntity> entityFind = mathFunctionRepository.findByHash(entity.getHash());
         if (entityFind.isPresent()) {
             entity.setUpdateAt(Instant.now());
@@ -41,7 +42,7 @@ public  class MathFunctionService {
         return new ResponseEntity<>(savedDto, HttpStatus.OK);
     }
 
-    public  TabulatedFunction createTabulatedFunction(
+    public TabulatedFunction createTabulatedFunction(
             double[] xValues,
             double[] yValues,
             TabulatedFunctionFactoryType factoryType
@@ -52,7 +53,7 @@ public  class MathFunctionService {
         };
     }
 
-    public  TabulatedFunction createTabulatedFunction(
+    public TabulatedFunction createTabulatedFunction(
             MathFunction source,
             double xFrom,
             double xTo,
@@ -65,7 +66,7 @@ public  class MathFunctionService {
         };
     }
 
-    public  TabulatedFunction convertToTabulatedFunction(Long functionId) {
+    public TabulatedFunction convertToTabulatedFunction(Long functionId) {
 
         MathFunctionEntity functionEntity = mathFunctionRepository.findById(functionId)
                 .orElseThrow(() -> new RuntimeException("Function not found"));
@@ -83,7 +84,7 @@ public  class MathFunctionService {
         return createTabulatedFunction(xValues, yValues, factoryType);
     }
 
-    public  ResponseEntity<MathFunctionDto> createAndSaveMathFunctionEntity(TabulatedFunction function) {
+    public ResponseEntity<MathFunctionDto> createAndSaveMathFunctionEntity(TabulatedFunction function) {
         MathFunctionEntity entity = MathFunctionEntity.builder()
                 .points(
                         IntStream.range(0, function.getCount())

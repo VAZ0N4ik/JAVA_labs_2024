@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { TrendingUp } from 'lucide-react';
+import React, {useState} from 'react';
+import {TrendingUp} from 'lucide-react';
 import CommonModal from './CommonModal';
-import { FunctionSection, OperationResultSection } from '../pages/ModalWrappers';
-import { uploadFunction, saveFunction, checkFunctionCapabilities } from '../lib/functionUtils';
-import { CreateFunctionDialog } from '../pages/CreateFunctionDialog';
+import {FunctionSection, OperationResultSection} from '../pages/ModalWrappers';
+import {uploadFunction, saveFunction, checkFunctionCapabilities} from '../lib/functionUtils';
+import {CreateFunctionDialog} from '../pages/CreateFunctionDialog';
 import TabulatedFunctionCreator from '../pages/FunctionCreator';
 import api from '../services/api';
 
-const FunctionDifferential = ({ isOpen, onClose }) => {
+const FunctionDifferential = ({isOpen, onClose}) => {
     const [sourceFunction, setSourceFunction] = useState(null);
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
@@ -156,7 +156,7 @@ const FunctionDifferential = ({ isOpen, onClose }) => {
                         onClick={handleDifferentiate}
                         disabled={loading || !sourceFunction}
                     >
-                        <TrendingUp className="w-4 h-4" />
+                        <TrendingUp className="w-4 h-4"/>
                         {loading ? 'Вычисление...' : 'Дифференцировать'}
                     </button>
 

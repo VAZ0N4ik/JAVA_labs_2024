@@ -30,19 +30,19 @@ public class FunctionOperationsController {
     private final TabulatedFunctionOperationService operationService = new TabulatedFunctionOperationService();
     private final MathFunctionRepository mathFunctionRepository;
     private final SettingsController settingsController;
-    private final FunctionCreationController functionCreationController ;
+    private final FunctionCreationController functionCreationController;
     private final MathFunctionService mathFunctionService;
+
     @PostMapping("/add")
     public ResponseEntity<MathFunctionDto> addFunctions(
-            @RequestParam @NotNull  Long functionId1,
-            @RequestParam @NotNull  Long functionId2
+            @RequestParam @NotNull Long functionId1,
+            @RequestParam @NotNull Long functionId2
     ) {
         try {
             TabulatedFunction function1 = mathFunctionService.convertToTabulatedFunction(functionId1);
             TabulatedFunction function2 = mathFunctionService.convertToTabulatedFunction(functionId2);
 
             TabulatedFunction resultFunction = operationService.additionOperation(function1, function2);
-
 
 
             return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(resultFunction).getBody(), HttpStatus.CREATED);
@@ -136,12 +136,12 @@ public class FunctionOperationsController {
 
     @GetMapping("/integral")
     public ResponseEntity<Double> integralFunctions(
-            @RequestParam @NotNull Long functionId,@RequestParam @NotNull Integer threads
+            @RequestParam @NotNull Long functionId, @RequestParam @NotNull Integer threads
     ) {
 
-            TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(functionId);
-            Double result = new TabulatedIntegrationOperator(threads).integrate(function);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+        TabulatedFunction function = mathFunctionService.convertToTabulatedFunction(functionId);
+        Double result = new TabulatedIntegrationOperator(threads).integrate(function);
+        return new ResponseEntity<>(result, HttpStatus.OK);
 
     }
 
@@ -184,11 +184,11 @@ public class FunctionOperationsController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<MathFunctionDto> insertFunction(@RequestParam @NotNull Long functionId,@RequestParam  Double x,@RequestParam  Double y) {
+    public ResponseEntity<MathFunctionDto> insertFunction(@RequestParam @NotNull Long functionId, @RequestParam Double x, @RequestParam Double y) {
         TabulatedFunction myObject = mathFunctionService.convertToTabulatedFunction(functionId);
         if (myObject instanceof Insertable) {
             Insertable insertableObject = (Insertable) myObject;
-            insertableObject.insert(x,y);
+            insertableObject.insert(x, y);
             mathFunctionRepository.deleteById(functionId);
             return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity((TabulatedFunction) insertableObject).getBody(), HttpStatus.CREATED);
         }
@@ -206,7 +206,7 @@ public class FunctionOperationsController {
     }
 
     @PostMapping("/remove")
-    public ResponseEntity<MathFunctionDto> removeFunction(@RequestParam @NotNull Long functionId,@RequestParam Double x){
+    public ResponseEntity<MathFunctionDto> removeFunction(@RequestParam @NotNull Long functionId, @RequestParam Double x) {
         TabulatedFunction myObject = mathFunctionService.convertToTabulatedFunction(functionId);
         int index = myObject.indexOfX(x);
         if (myObject instanceof Removable) {
@@ -231,9 +231,9 @@ public class FunctionOperationsController {
     }
 
     @PostMapping("/setY")
-    public ResponseEntity<MathFunctionDto> setYFunction(@RequestParam Long functionId, @RequestParam int index,@RequestParam Double y) {
+    public ResponseEntity<MathFunctionDto> setYFunction(@RequestParam Long functionId, @RequestParam int index, @RequestParam Double y) {
         TabulatedFunction myObject = mathFunctionService.convertToTabulatedFunction(functionId);
-        myObject.setY(index,y);
+        myObject.setY(index, y);
         mathFunctionRepository.deleteById(functionId);
         return new ResponseEntity<>(mathFunctionService.createAndSaveMathFunctionEntity(myObject).getBody(), HttpStatus.OK);
     }

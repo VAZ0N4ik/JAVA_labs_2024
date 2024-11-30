@@ -1,14 +1,15 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Sun, Moon } from 'lucide-react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
+import {Sun, Moon} from 'lucide-react';
 
 const ThemeContext = createContext({
     theme: 'light',
-    toggleTheme: () => {}
+    toggleTheme: () => {
+    }
 });
 
 export const useTheme = () => useContext(ThemeContext);
 
-export const ThemeProvider = ({ children }) => {
+export const ThemeProvider = ({children}) => {
     const [theme, setTheme] = useState('light');
 
     useEffect(() => {
@@ -33,7 +34,7 @@ export const ThemeProvider = ({ children }) => {
     };
 
     return (
-        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <ThemeContext.Provider value={{theme, toggleTheme}}>
             {children}
             <button
                 onClick={toggleTheme}
@@ -42,9 +43,9 @@ export const ThemeProvider = ({ children }) => {
                 aria-label="Toggle theme"
             >
                 {theme === 'light' ? (
-                    <Moon className="w-5 h-5 text-gray-800 dark:text-gray-200" />
+                    <Moon className="w-5 h-5 text-gray-800 dark:text-gray-200"/>
                 ) : (
-                    <Sun className="w-5 h-5 text-gray-800 dark:text-gray-200" />
+                    <Sun className="w-5 h-5 text-gray-800 dark:text-gray-200"/>
                 )}
             </button>
         </ThemeContext.Provider>

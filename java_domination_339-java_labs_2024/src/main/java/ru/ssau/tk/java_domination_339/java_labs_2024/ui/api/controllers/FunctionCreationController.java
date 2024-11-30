@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
-
 @RestController
 @RequestMapping("/api/function-creation")
 @RequiredArgsConstructor
@@ -61,7 +60,6 @@ public class FunctionCreationController {
                 .build();
 
 
-
         Optional<MathFunctionEntity> entityFind = mathFunctionRepository.findByHash(entity.getHash());
         if (entityFind.isPresent()) {
             entity.setUpdateAt(Instant.now());
@@ -80,7 +78,7 @@ public class FunctionCreationController {
     ) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         TabulatedFunctionFactoryType factoryType = settingsController.getCurrentFactoryType().getBody().getFactoryType();
 
-        MathFunction mathFunction =  MathFunctionType.getLocalizedFunctionMap()
+        MathFunction mathFunction = MathFunctionType.getLocalizedFunctionMap()
                 .get(name);
         System.out.println(mathFunction.apply(1));
         TabulatedFunction function = mathFunctionService.createTabulatedFunction(
@@ -113,9 +111,9 @@ public class FunctionCreationController {
         );
 
 
-
         return new ResponseEntity<>(savedDto, HttpStatus.CREATED);
     }
+
     @GetMapping("/functions-to-create")
     public ResponseEntity<List<String>> getSimpleFunctions() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         List<String> ans = MathFunctionType.getFunctions();
@@ -129,7 +127,7 @@ public class FunctionCreationController {
         TabulatedFunction function2 = mathFunctionService.convertToTabulatedFunction(hash2);
         CompositeFunction composite = new CompositeFunction(function1, function2);
 
-        MathFunctionType.addFunctionMap(name,(MathFunction) composite);
+        MathFunctionType.addFunctionMap(name, (MathFunction) composite);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

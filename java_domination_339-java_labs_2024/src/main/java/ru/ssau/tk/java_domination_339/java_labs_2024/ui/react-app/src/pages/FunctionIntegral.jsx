@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { Sigma, Calculator, AlertCircle } from 'lucide-react';
+import React, {useState} from 'react';
+import {Sigma, Calculator, AlertCircle} from 'lucide-react';
 import CommonModal from '../components/CommonModal';
 import FunctionControls from './FunctionControls';
 import FunctionTableImproved from './FunctionTableImproved';
-import { uploadFunction, checkFunctionCapabilities } from '../lib/functionUtils';
-import { CreateFunctionDialog } from './CreateFunctionDialog';
+import {uploadFunction, checkFunctionCapabilities} from '../lib/functionUtils';
+import {CreateFunctionDialog} from './CreateFunctionDialog';
 import TabulatedFunctionCreator from './FunctionCreator';
-import { Alert, AlertDescription } from "../components/ui/alert";
+import {Alert, AlertDescription} from "../components/ui/alert";
 import api from '../services/api';
 
-const FunctionIntegral = ({ isOpen, onClose }) => {
+const FunctionIntegral = ({isOpen, onClose}) => {
     const MAX_THREADS = 4; // максимальное количество потоков
 
     const [currentFunction, setCurrentFunction] = useState(null);
@@ -209,7 +209,7 @@ const FunctionIntegral = ({ isOpen, onClose }) => {
                 {error && (
                     <Alert className="bg-red-50 border-red-200 dark:bg-red-900/30 dark:border-red-800">
                         <AlertDescription className="text-red-600 dark:text-red-300 flex items-center gap-2">
-                            <AlertCircle className="w-4 h-4" />
+                            <AlertCircle className="w-4 h-4"/>
                             {error}
                         </AlertDescription>
                     </Alert>

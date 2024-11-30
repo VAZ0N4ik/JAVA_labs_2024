@@ -1,10 +1,10 @@
 import React from 'react';
-import { AlertCircle } from 'lucide-react';
+import {AlertCircle} from 'lucide-react';
 import FunctionControls from './FunctionControls';
 import FunctionTableImproved from './FunctionTableImproved';
 import FunctionVisualizer from './FunctionVisualizer';
 import SaveDropdown from './SaveDropdown';
-import { Alert, AlertDescription } from "../components/ui/alert";
+import {Alert, AlertDescription} from "../components/ui/alert";
 
 export const OperationResultSection = ({
                                            result,
@@ -16,7 +16,7 @@ export const OperationResultSection = ({
         {error && (
             <Alert className="mb-4 bg-red-50 border-red-200 dark:bg-red-900/30 dark:border-red-800">
                 <AlertDescription className="text-red-600 dark:text-red-300 flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4" />
+                    <AlertCircle className="w-4 h-4"/>
                     {error}
                 </AlertDescription>
             </Alert>
@@ -105,7 +105,7 @@ export const FunctionSection = ({
         {error && (
             <Alert className="bg-red-50 border-red-200 dark:bg-red-900/30 dark:border-red-800">
                 <AlertDescription className="text-red-600 dark:text-red-300 flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4" />
+                    <AlertCircle className="w-4 h-4"/>
                     {error}
                 </AlertDescription>
             </Alert>

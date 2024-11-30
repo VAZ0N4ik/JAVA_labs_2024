@@ -1,6 +1,7 @@
 package ru.ssau.tk.java_domination_339.java_labs_2024.entities.builder;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;

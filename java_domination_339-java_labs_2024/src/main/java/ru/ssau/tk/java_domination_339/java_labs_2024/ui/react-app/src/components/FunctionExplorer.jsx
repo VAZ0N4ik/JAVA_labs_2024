@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import CommonModal from './CommonModal';
-import { FunctionExplorerSection } from '../pages/ModalWrappers';
+import {FunctionExplorerSection} from '../pages/ModalWrappers';
 import SaveDropdown from '../pages/SaveDropdown';
-import { CreateFunctionDialog } from '../pages/CreateFunctionDialog';
+import {CreateFunctionDialog} from '../pages/CreateFunctionDialog';
 import TabulatedFunctionCreator from '../pages/FunctionCreator';
-import { uploadFunction, saveFunction, checkFunctionCapabilities } from '../lib/functionUtils';
-import { Alert, AlertDescription } from "./ui/alert";
-import { AlertCircle } from 'lucide-react';
+import {uploadFunction, saveFunction, checkFunctionCapabilities} from '../lib/functionUtils';
+import {Alert, AlertDescription} from "./ui/alert";
+import {AlertCircle} from 'lucide-react';
 import api from '../services/api';
 import FunctionControls from "../pages/FunctionControls";
 
-export const FunctionExplorer = ({ isOpen, onClose }) => {
+export const FunctionExplorer = ({isOpen, onClose}) => {
     const [currentFunction, setCurrentFunction] = useState(null);
     const [showCreateDialog, setShowCreateDialog] = useState(false);
     const [showCreator, setShowCreator] = useState(false);
@@ -187,7 +187,7 @@ export const FunctionExplorer = ({ isOpen, onClose }) => {
                     {error && (
                         <Alert className="bg-red-50 border-red-200 dark:bg-red-900/30 dark:border-red-800">
                             <AlertDescription className="text-red-600 dark:text-red-300 flex items-center gap-2">
-                                <AlertCircle className="w-4 h-4" />
+                                <AlertCircle className="w-4 h-4"/>
                                 {error}
                             </AlertDescription>
                         </Alert>

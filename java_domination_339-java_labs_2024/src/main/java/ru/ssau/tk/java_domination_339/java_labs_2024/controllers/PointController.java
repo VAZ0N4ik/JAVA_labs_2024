@@ -19,8 +19,8 @@ public class PointController {
 
 
     @PostMapping("/api/points")
-    public ResponseEntity<PointDto> createOrUpdatePoint( @RequestParam(value = "x", required = false) Double X,
-                                                         @RequestParam(value = "y", required = false) Double Y) {
+    public ResponseEntity<PointDto> createOrUpdatePoint(@RequestParam(value = "x", required = false) Double X,
+                                                        @RequestParam(value = "y", required = false) Double Y) {
         PointEntity pointEntity = pointRepository.saveAndFlush(new PointEntity(X, Y));
 
         //MathFunctionEntity foundFunction = mathFunctionRepository.findById(Math.toIntExact(function.getHash())).orElse(null);
@@ -34,8 +34,7 @@ public class PointController {
             PointEntity entity = pointRepository.findById(id).orElseThrow(() -> new NotFoundException("Can't find point with id " + id));
             pointRepository.delete(entity);
             return ResponseEntity.ok().build();
-        }
-        catch (NotFoundException e) {
+        } catch (NotFoundException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.notFound().build();
 
@@ -46,9 +45,8 @@ public class PointController {
     public ResponseEntity<PointDto> read(@PathVariable Long id) {
         try {
             PointDto pointDTO = PointDtoBuilder.makePointDto(pointRepository.findById(id).orElseThrow(() -> new NotFoundException("Can't find point with id " + id)));
-            return  ResponseEntity.ok(pointDTO);
-        }
-        catch (NotFoundException e) {
+            return ResponseEntity.ok(pointDTO);
+        } catch (NotFoundException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.notFound().build();
         }
