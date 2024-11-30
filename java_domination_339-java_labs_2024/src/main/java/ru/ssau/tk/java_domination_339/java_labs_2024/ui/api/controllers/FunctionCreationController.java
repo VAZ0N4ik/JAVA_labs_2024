@@ -130,7 +130,6 @@ public class FunctionCreationController {
         CompositeFunction composite = new CompositeFunction(function1, function2);
 
         MathFunctionType.addFunctionMap(name,(MathFunction) composite);
-        //return mathFunctionService.createAndSaveMathFunctionEntity((MathFunction) composite);
-        return null;
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

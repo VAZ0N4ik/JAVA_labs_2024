@@ -6,6 +6,8 @@ import FunctionDifferential from '../components/FunctionDifferential';
 import FunctionExplorer from '../components/FunctionExplorer';
 import { Sigma } from 'lucide-react';
 import FunctionIntegral from './FunctionIntegral';
+import { GitMerge } from 'lucide-react';
+import CompositeFunctionCreator from './CompositeFunctionCreator';
 
 const MenuCard = ({ icon: Icon, title, onClick }) => (
     <button
@@ -34,6 +36,7 @@ const MainPage = () => {
     const [showDifferential, setShowDifferential] = useState(false);
     const [showExplorer, setShowExplorer] = useState(false);
     const [showIntegral, setShowIntegral] = useState(false);
+    const [showComposite, setShowComposite] = useState(false);
 
 
     return (
@@ -68,6 +71,11 @@ const MainPage = () => {
                     title="Вычисление интеграла"
                     onClick={() => setShowIntegral(true)}
                 />
+                <MenuCard
+                    icon={GitMerge}
+                    title="Создание композитной функции"
+                    onClick={() => setShowComposite(true)}
+                />
             </div>
 
             {/* Модальные окна */}
@@ -94,6 +102,11 @@ const MainPage = () => {
             <FunctionIntegral
                 isOpen={showIntegral}
                 onClose={() => setShowIntegral(false)}
+            />
+
+            <CompositeFunctionCreator
+                isOpen={showComposite}
+                onClose={() => setShowComposite(false)}
             />
         </div>
     );

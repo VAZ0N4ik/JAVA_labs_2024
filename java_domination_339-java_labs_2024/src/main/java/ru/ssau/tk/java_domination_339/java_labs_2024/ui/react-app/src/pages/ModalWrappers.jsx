@@ -1,6 +1,5 @@
 import React from 'react';
 import { AlertCircle } from 'lucide-react';
-import CommonModal from '../components/CommonModal';
 import FunctionControls from './FunctionControls';
 import FunctionTableImproved from './FunctionTableImproved';
 import FunctionVisualizer from './FunctionVisualizer';
@@ -46,9 +45,8 @@ export const FunctionSection = ({
                                     function: func,
                                     setFunction,
                                     loading,
-                                    onCreateClick,
+                                    onCreateClick,  // Добавляем этот проп
                                     onFileUpload,
-                                    onSave,
                                     canInsert,
                                     canRemove,
                                     onRemovePoint,
@@ -60,29 +58,48 @@ export const FunctionSection = ({
             {title}
         </h3>
 
-        <FunctionControls
-            onCreateClick={onCreateClick}
-            onFileUpload={onFileUpload}
-            loading={loading}
-        />
+        <div className="space-y-3">
+            <button
+                className="btn btn-primary w-full"
+                onClick={onCreateClick}  // Добавляем обработчик
+                disabled={loading}
+            >
+                Создать функцию
+            </button>
+
+            <label className="block">
+                <input
+                    type="file"
+                    onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const formData = new FormData();
+                            formData.append('file', file);
+                            onFileUpload(formData, file.name.split('.').pop().toLowerCase());
+                        }
+                    }}
+                    className="block w-full text-sm text-gray-500 dark:text-gray-400
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-md file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-blue-50 file:text-blue-700 dark:file:bg-blue-900 dark:file:text-blue-300
+                        hover:file:bg-blue-100 dark:hover:file:bg-blue-800"
+                    accept=".txt,.json,.xml"
+                />
+            </label>
+        </div>
 
         {func && (
-            <>
-                <FunctionTableImproved
-                    functionId={func.hash_function}
-                    points={func.points}
-                    isEditable={true}
-                    onYChange={setFunction}
-                    canRemove={canRemove}
-                    canInsert={canInsert}
-                    onRemovePoint={onRemovePoint}
-                    onInsertPoint={onInsertPoint}
-                />
-                <SaveDropdown
-                    onSave={onSave}
-                    disabled={loading}
-                />
-            </>
+            <FunctionTableImproved
+                functionId={func.hash_function}
+                points={func.points}
+                isEditable={true}
+                onYChange={setFunction}
+                canRemove={canRemove}
+                canInsert={canInsert}
+                onRemovePoint={onRemovePoint}
+                onInsertPoint={onInsertPoint}
+            />
         )}
 
         {error && (

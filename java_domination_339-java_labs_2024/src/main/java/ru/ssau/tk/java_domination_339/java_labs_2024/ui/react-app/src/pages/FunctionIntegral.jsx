@@ -10,6 +10,8 @@ import { Alert, AlertDescription } from "../components/ui/alert";
 import api from '../services/api';
 
 const FunctionIntegral = ({ isOpen, onClose }) => {
+    const MAX_THREADS = 4; // максимальное количество потоков
+
     const [currentFunction, setCurrentFunction] = useState(null);
     const [showCreateDialog, setShowCreateDialog] = useState(false);
     const [showCreator, setShowCreator] = useState(false);
@@ -112,6 +114,17 @@ const FunctionIntegral = ({ isOpen, onClose }) => {
         }
     };
 
+    const handleThreadsChange = (e) => {
+        const value = parseInt(e.target.value);
+        if (isNaN(value) || value < 1) {
+            setThreads(1);
+        } else if (value > MAX_THREADS) {
+            setThreads(MAX_THREADS);
+        } else {
+            setThreads(value);
+        }
+    };
+
     return (
         <CommonModal
             isOpen={isOpen}
@@ -144,16 +157,22 @@ const FunctionIntegral = ({ isOpen, onClose }) => {
                     <div className="flex items-end gap-4">
                         <div className="flex-1">
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Количество потоков
+                                Количество потоков (макс. {MAX_THREADS})
                             </label>
                             <input
                                 type="number"
                                 value={threads}
-                                onChange={(e) => setThreads(parseInt(e.target.value))}
+                                onChange={handleThreadsChange}
                                 className="input"
                                 min="1"
+                                max={MAX_THREADS}
                                 disabled={loading}
                             />
+                            {threads > MAX_THREADS && (
+                                <div className="text-sm text-red-500 mt-1">
+                                    Максимальное количество потоков: {MAX_THREADS}
+                                </div>
+                            )}
                         </div>
                         <button
                             onClick={handleCalculate}
@@ -162,12 +181,12 @@ const FunctionIntegral = ({ isOpen, onClose }) => {
                         >
                             {loading ? (
                                 <>
-                                    <Calculator className="w-4 h-4 animate-spin" />
+                                    <Calculator className="w-4 h-4 animate-spin"/>
                                     Вычисление...
                                 </>
                             ) : (
                                 <>
-                                    <Sigma className="w-4 h-4" />
+                                    <Sigma className="w-4 h-4"/>
                                     Вычислить интеграл
                                 </>
                             )}

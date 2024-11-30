@@ -6,7 +6,7 @@ import { Alert, AlertTitle, AlertDescription } from "../components/ui/alert";
 const ArrayFunctionCreator = ({ onSubmit, onError }) => {
     const [pointCount, setPointCount] = useState('');
     const [points, setPoints] = useState([]);
-    const [createdFunction, setCreatedFunction] = useState(null);
+    const [setCreatedFunction] = useState(null);
 
     const handlePointCountSubmit = () => {
         try {
@@ -62,7 +62,7 @@ const ArrayFunctionCreator = ({ onSubmit, onError }) => {
             });
 
             const response = await api.post(`/api/function-creation/create-from-points?${params.toString()}`);
-            setCreatedFunction(response.data);
+            //setCreatedFunction(response.data);
             onSubmit(response.data);
         } catch (error) {
             onError(error.message);

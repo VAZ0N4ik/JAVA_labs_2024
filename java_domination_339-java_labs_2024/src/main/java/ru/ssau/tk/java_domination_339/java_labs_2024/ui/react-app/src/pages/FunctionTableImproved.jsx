@@ -95,8 +95,8 @@ const FunctionTableImproved = ({
     const handleRemove = async (x) => {
         if (!canRemove || !onRemovePoint) return;
 
-        if (points.length <= 3) {
-            setError('Невозможно удалить точку: функция должна содержать минимум 3 точки');
+        if (points.length <= 2) {
+            setError('Невозможно удалить точку: функция должна содержать минимум 2 точки');
             return;
         }
 
