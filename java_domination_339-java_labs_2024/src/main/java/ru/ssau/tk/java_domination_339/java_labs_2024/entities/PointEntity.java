@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jdk.jshell.Snippet;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @Setter
@@ -13,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "points")
+@DynamicUpdate
 public class PointEntity {
 
     @Id

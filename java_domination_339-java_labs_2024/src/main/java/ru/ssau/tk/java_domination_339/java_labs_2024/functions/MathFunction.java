@@ -7,7 +7,7 @@ public interface MathFunction {
         return this.getClass().getSimpleName();
     }
 
-    default int HashName() {
+    default long HashName() {
         return this.Name().hashCode();
     }
 

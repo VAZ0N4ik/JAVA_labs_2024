@@ -40,7 +40,7 @@ class MathFunctionControllerTest {
         MockitoAnnotations.openMocks(this);
 
         List<PointDto> pointDtos = new ArrayList<>();
-        pointDtos.add(new PointDto(1L,1.0, 1.0));
+        pointDtos.add(new PointDto(1L, 1.0, 1.0));
 
         testDto = new MathFunctionDto();
         testDto.setHashFunction(TEST_HASH);

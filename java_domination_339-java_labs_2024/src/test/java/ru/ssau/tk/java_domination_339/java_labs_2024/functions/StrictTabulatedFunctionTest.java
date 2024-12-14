@@ -119,7 +119,6 @@ class StrictTabulatedFunctionTest {
         assertThrows(UnsupportedOperationException.class, () -> strict.setY(3, 1));
 
         LinkedListTabulatedFunction arr = new LinkedListTabulatedFunction(new double[]{-1, 0, 1.1}, new double[]{3.3, 4.4, 5.5});
-        UnmodifiableTabulatedFunction unmod2 = new UnmodifiableTabulatedFunction(arr);
         StrictTabulatedFunction strict2 = new StrictTabulatedFunction(unmod);
         assertThrows(UnsupportedOperationException.class, () -> strict2.apply(100));
         assertThrows(UnsupportedOperationException.class, () -> strict2.apply(1.5));

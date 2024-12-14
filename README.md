@@ -49,7 +49,7 @@
 
 ЛР7
 ---
-***in progress***
-- [ ] Task 1
-- [ ] Task 2
-- [ ] Task 3
+**Completed**
+- [x] Task 1
+- [x] Task 2
+- [x] Task 3

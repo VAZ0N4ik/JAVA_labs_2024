@@ -13,7 +13,7 @@ import java.text.ParseException;
 import java.util.Locale;
 
 public final class FunctionsIO {
-    private FunctionsIO() {
+    public FunctionsIO() {
         throw new UnsupportedOperationException();
     }
 
@@ -23,7 +23,7 @@ public final class FunctionsIO {
         objectOutputStream.flush();
     }
 
-    public static void serializeJson(BufferedWriter writer, ArrayTabulatedFunction function) throws IOException {
+    public static void serializeJson(BufferedWriter writer, TabulatedFunction function) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         writer.write(mapper.writeValueAsString(function));
         writer.flush();
@@ -94,13 +94,13 @@ public final class FunctionsIO {
         return factory.create(xValues, yValues);
     }
 
-    static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException {
+    public static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException {
         ObjectInputStream objectInputStream = new ObjectInputStream(stream);
         Object function = objectInputStream.readObject();
         return (TabulatedFunction) function;
     }
 
-    public static void serializeXml(BufferedWriter writer, ArrayTabulatedFunction function) throws IOException {
+    public static void serializeXml(BufferedWriter writer, TabulatedFunction function) throws IOException {
         XStream xStream = new XStream();
         String xml = xStream.toXML(function);
         writer.write(xml);

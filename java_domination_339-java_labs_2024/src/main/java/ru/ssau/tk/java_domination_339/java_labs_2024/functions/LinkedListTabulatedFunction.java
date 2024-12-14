@@ -223,7 +223,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             addNode(x, y);
         } else {
             Node cur = head;
-            Node prev = head.prev;
 
             while (cur.x < x && cur.next != head) {
                 cur = cur.next;

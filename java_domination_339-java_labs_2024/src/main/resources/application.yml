@@ -13,3 +13,18 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/
+        - classpath:/public/
+        - file:react-app/build/
+
+  # Добавим настройки для CORS
+  mvc:
+    cors:
+      allowed-origins: http://localhost:3000
+      allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+      allowed-headers: "*"
+      allow-credentials: true

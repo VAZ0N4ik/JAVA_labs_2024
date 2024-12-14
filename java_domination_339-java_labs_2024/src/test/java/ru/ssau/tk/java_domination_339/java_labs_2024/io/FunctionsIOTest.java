@@ -125,7 +125,6 @@ public class FunctionsIOTest {
         BufferedOutputStream bufOut = new BufferedOutputStream(new FileOutputStream("output/serialized linked list functions.bin"));
 
         TabulatedFunction ll = new LinkedListTabulatedFunction(new SqrFunction(), 1, 3, 3);
-        TabulatedDifferentialOperator der = new TabulatedDifferentialOperator(new LinkedListTabulatedFunctionFactory());
 
         FunctionsIO.serialize(bufOut, ll);
 

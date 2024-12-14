@@ -117,7 +117,7 @@ class CompositeFunctionTest {
         CompositeFunction composite1 = new CompositeFunction(f9, f10);
         ConstantFunction constant = new ConstantFunction(2);
         CompositeFunction composite3 = new CompositeFunction(constant, new SqrFunction());
-        MathFunction andThen = composite3.andThen(composite1);
+        composite3.andThen(composite1);
         assertEquals("CompositeFunction ArrayTabulatedFunction size = 4\n" +
                 "[1.0; 1.0]\n" +
                 "[2.0; 2.0]\n" +
