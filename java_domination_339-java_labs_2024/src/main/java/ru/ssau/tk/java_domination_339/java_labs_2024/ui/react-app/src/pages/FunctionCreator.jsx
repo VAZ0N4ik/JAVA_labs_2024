@@ -6,7 +6,6 @@ import {Alert, AlertTitle, AlertDescription} from "../components/ui/alert";
 const ArrayFunctionCreator = ({onSubmit, onError}) => {
     const [pointCount, setPointCount] = useState('');
     const [points, setPoints] = useState([]);
-    const [setCreatedFunction] = useState(null);
 
     const handlePointCountSubmit = () => {
         try {
@@ -19,7 +18,11 @@ const ArrayFunctionCreator = ({onSubmit, onError}) => {
                 onError('Минимальное количество точек: 2');
                 return;
             }
-            setPoints(Array(count).fill().map(() => ({x: '', y: ''})));
+            if (count > 100) {
+                onError('Максимальное количество точек: 100');
+                return;
+            }
+            setPoints(Array(count).fill().map(() => ({ x: '', y: '' })));
         } catch (error) {
             onError(error.message);
         }
@@ -83,6 +86,7 @@ const ArrayFunctionCreator = ({onSubmit, onError}) => {
                             onChange={(e) => setPointCount(e.target.value)}
                             className="input"
                             min="2"
+                            max="100"
                             placeholder="Введите количество точек"
                         />
                     </div>
@@ -187,6 +191,11 @@ const MathFunctionCreator = ({onSubmit, onError}) => {
                 return;
             }
 
+            if (count > 100) {
+                onError('Максимальное количество точек: 100');
+                return;
+            }
+
             if (from >= to) {
                 onError('Значение "От" должно быть меньше значения "До"');
                 return;
@@ -264,6 +273,7 @@ const MathFunctionCreator = ({onSubmit, onError}) => {
                     onChange={(e) => setPointCount(e.target.value)}
                     className="input"
                     min="2"
+                    max="100"
                     placeholder="Количество точек разбиения"
                 />
             </div>
