@@ -181,7 +181,7 @@ const FunctionTableImproved = ({
                 </div>
             )}
 
-            <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+            <div className={`${tableData.length > 10 ? 'max-h-[400px] overflow-y-auto' : ''}`}>
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-800">
                     <tr>

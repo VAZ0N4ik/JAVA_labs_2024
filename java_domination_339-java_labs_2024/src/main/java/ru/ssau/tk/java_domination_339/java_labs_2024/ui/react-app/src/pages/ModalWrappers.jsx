@@ -1,6 +1,5 @@
 import React from 'react';
 import {AlertCircle} from 'lucide-react';
-import FunctionControls from './FunctionControls';
 import FunctionTableImproved from './FunctionTableImproved';
 import FunctionVisualizer from './FunctionVisualizer';
 import SaveDropdown from './SaveDropdown';
